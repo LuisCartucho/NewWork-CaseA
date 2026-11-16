@@ -59,10 +59,21 @@ export interface Extraction {
   factsAsked: string[];
 }
 
+/** One product (products.csv `name`) mentioned in the email, narrowed by variant hints. */
+export interface ProductMatch {
+  name: string;
+  matchedBy: string; // the text that identified it, e.g. "Kantarell Pendant" or family "Atlas"
+  variants: Product[]; // rows still consistent with the email (1 = exact SKU)
+  hints: string[]; // variant attributes found in the email, e.g. ["Ø60", "Nickel Plated"]
+}
+
 export interface Resolution {
-  candidates: Product[];
-  chosen: Product[]; // empty when ambiguous; never guessed
-  ambiguous: boolean;
+  matches: ProductMatch[]; // one per product mentioned; empty = no product found
+  families: string[]; // families named without a specific product ("Atlas family")
+  candidates: Product[]; // every row of every matched product
+  chosen: Product[]; // rows still consistent with the email; >1 means not a single SKU. Never guessed.
+  ambiguous: boolean; // some product still has more than one row left
+  unmatchedHints: string[]; // LLM variant hints that fit no row (e.g. "leather")
 }
 
 export interface Fact {

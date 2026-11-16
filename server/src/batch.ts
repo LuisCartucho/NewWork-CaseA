@@ -19,10 +19,10 @@ for (const email of data.emails) {
 fs.mkdirSync(config.paths.results, { recursive: true });
 fs.writeFileSync(path.join(config.paths.results, "results.json"), JSON.stringify(results, null, 2));
 const md = [
-  "| id | status | intents | product | reason |",
+  "| id | status | intents | product (rows left) | reason |",
   "|---|---|---|---|---|",
   ...results.map((r) =>
-    `| ${r.email.id} | ${ICON[r.status]} | ${r.extraction?.intents.join(", ") ?? "-"} | ${r.resolution.chosen[0]?.name ?? "-"} | ${r.flags[0]?.reason ?? ""} |`),
+    `| ${r.email.id} | ${ICON[r.status]} | ${r.extraction?.intents.join(", ") ?? "-"} | ${r.resolution.matches.map((m) => `${m.name} (${m.variants.length})`).join(", ") || "-"} | ${r.flags[0]?.reason ?? ""} |`),
 ].join("\n");
 fs.writeFileSync(path.join(config.paths.results, "results.md"), md + "\n");
 console.log(`Wrote ${results.length} results`);
