@@ -55,5 +55,8 @@ npm run dev               # http://localhost:3000
 
 ## Deploy (Render)
 
+Render does not run the batch: the Inbox reads the committed `server/results/results.json`.
+Run `npm run batch` locally and commit `server/results/` before deploying.
+
 Push to a private GitHub repo → Render → New → Blueprint → pick the repo (uses `render.yaml`).
 Set `BASIC_AUTH_USER`, `BASIC_AUTH_PASS`, `GEMINI_API_KEY`, `GROQ_API_KEY` in the dashboard.

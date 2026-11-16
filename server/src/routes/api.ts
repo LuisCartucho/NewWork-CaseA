@@ -22,7 +22,13 @@ export function apiRouter(data: Data) {
     const subject = String(req.body?.subject ?? "").slice(0, 300);
     if (!body.trim()) return res.status(400).json({ error: "Empty email" });
     const email = { id: "LIVE", date: new Date().toISOString().slice(0, 10), from_retailer: "(live test)", subject, body };
-    res.json(await runPipeline(email, data));
+    // Express 4 does not catch async errors: without this the request would hang.
+    try {
+      res.json(await runPipeline(email, data));
+    } catch (err) {
+      console.error("POST /api/try failed:", err);
+      res.status(500).json({ error: "Processing failed. Please try again." });
+    }
   });
 
   // Data issues page: populated in step 2 from the lookup's conflict detection.

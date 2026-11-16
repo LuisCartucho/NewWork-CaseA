@@ -1,6 +1,8 @@
 // Step 4 (plain code, no AI): pull each requested fact from products.csv AND the
 // hand-checked fact sheet facts, compare the two, and attach a source to every value.
 // Why not AI: this is a table lookup; an LLM could only add risk (invented numbers).
+// Without an extraction (LLM down), return the core facts of the chosen product(s):
+// dimensions, weight, material, lead time, status. Never prices (see rules.ts).
 import type { Extraction, Fact, FactSheet, Resolution } from "../types.js";
 
 export interface LookupResult {

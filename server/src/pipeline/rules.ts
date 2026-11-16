@@ -4,6 +4,7 @@
 //   green  = every requested fact found, sources agree, no personal data, product active
 //   yellow = partial answer, sources disagree, ambiguous variant, date reasoning (Christmas)
 //   red    = prices/price lists, certificates, discontinued, orders/personal data, not in data
+// The status itself is always worst(flags): one source of truth.
 import type { Extraction, Flag, Redaction, Resolution, Status } from "../types.js";
 import type { LookupResult } from "./lookup.js";
 
@@ -13,9 +14,9 @@ export function decide(_input: {
   resolution: Resolution;
   lookup: LookupResult;
   body: string;
-}): { status: Status; flags: Flag[] } {
+}): Flag[] {
   // TODO step 2
-  return { status: "red", flags: [{ level: "red", reason: "Not processed yet." }] };
+  return [{ level: "red", reason: "Not processed yet." }];
 }
 
 export function worst(flags: Flag[]): Status {
