@@ -7,6 +7,16 @@ The guiding rule: **the AI writes, the code decides.** Facts, SKUs, prices and t
 from plain code over the product data. The AI only reads the question and words the reply, and
 every number it writes is checked against the data before anyone sees it.
 
+**Case deliverables**
+
+| The brief | Where |
+|---|---|
+| What are the emails really asking, and which can the data answer? | [`docs/email_analysis.md`](docs/email_analysis.md) |
+| A first version that helps, and why | This README, and the live app: https://newworks-inbox-helper.fly.dev |
+| At least five emails run through it, including the difficult ones | [`docs/sample_outputs.md`](docs/sample_outputs.md) (9 emails) |
+| The one-page note for Cecilie | [`docs/note_for_cecilie.md`](docs/note_for_cecilie.md) |
+| Unanswerable emails · data that disagrees · things not to paste anywhere | [`docs/email_analysis.md#the-three-things`](docs/email_analysis.md#the-three-things) |
+
 ## What it does with the 30 sample emails
 
 | Status | Count | Meaning | Examples |
@@ -129,7 +139,11 @@ NewWork-CaseA/
 │           ├── draft.ts       6. reply text                 (AI)
 │           ├── numberCheck.ts 7. no unknown numbers         (code)
 │           └── *.test.ts      Tests next to the code they test
-├── docs/data_issues.md        Hand-checked comparison of products.csv and the fact sheets
+├── docs/
+│   ├── note_for_cecilie.md    One-page note for the person who answers these emails today
+│   ├── email_analysis.md      All 30 emails: what they ask, can the data answer it, the three issues
+│   ├── sample_outputs.md      Real output for 9 emails incl. the hard ones (npm run report)
+│   └── data_issues.md         Hand-checked comparison of products.csv and the fact sheets
 ├── Dockerfile                 Two-stage image: compile TypeScript, then slim runtime (non-root)
 ├── .dockerignore              Keeps .env, node_modules, PDFs and tests out of the image
 ├── fly.toml                   Fly.io app config (region, health check, auto-stop)

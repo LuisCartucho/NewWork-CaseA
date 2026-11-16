@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "batch": "tsx src/batch.ts",
+    "report": "tsx src/report.ts",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test src/**/*.test.ts"
   },
