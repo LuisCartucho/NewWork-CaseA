@@ -5,6 +5,7 @@ import { Router } from "express";
 import { config } from "../config.js";
 import type { Data } from "../data/loadData.js";
 import { runPipeline } from "../pipeline/index.js";
+import { findDataIssues } from "../pipeline/conflicts.js";
 
 export function apiRouter(data: Data) {
   const r = Router();
@@ -31,8 +32,9 @@ export function apiRouter(data: Data) {
     }
   });
 
-  // Data issues page: populated in step 2 from the lookup's conflict detection.
-  r.get("/data-issues", (_req, res) => res.json([]));
+  // Data issues page: every products.csv vs fact sheet disagreement, computed at startup.
+  const dataIssues = findDataIssues(data.products, data.factSheets);
+  r.get("/data-issues", (_req, res) => res.json(dataIssues));
 
   return r;
 }

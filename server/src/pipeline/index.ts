@@ -15,7 +15,9 @@ export async function runPipeline(email: Email, data: Data): Promise<PipelineRes
   const resolution = resolve({                                             // 3. plain code
     extraction, subject: email.subject, redactedBody: redaction.redactedBody, products: data.products,
   });
-  const found = lookup(extraction, resolution, data.factSheets);           // 4. plain code
+  const found = lookup({                                                   // 4. plain code
+    extraction, resolution, factSheets: data.factSheets, text: [email.subject, redaction.redactedBody].join("\n"),
+  });
   const flags = decide({ redaction, extraction, resolution, lookup: found, body: redaction.redactedBody }); // 5. rules
 
   let draft = await draftReply({                                           // 6. LLM

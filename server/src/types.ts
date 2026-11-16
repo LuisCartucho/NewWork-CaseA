@@ -80,6 +80,7 @@ export interface Fact {
   label: string;
   value: string;
   source: string; // "products.csv SKU 42711" | "Atlas Dining Table - Fact Sheet.pdf p.2"
+  skus: string[]; // rows this value is true for
 }
 
 export type Status = "green" | "yellow" | "red";

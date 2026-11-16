@@ -34,6 +34,8 @@ newworks-kb/
 │           ├── extract.ts   2. what is being asked     (LLM, zod-validated)
 │           ├── resolve.ts   3. which product/variant   (plain code)
 │           ├── lookup.ts    4. facts + sources + conflicts (plain code)
+│           ├── asked.ts        which facts were asked (keywords + LLM)
+│           ├── conflicts.ts    products.csv vs fact sheet, per SKU (also the Data issues page)
 │           ├── rules.ts     5. green/yellow/red        (plain code)
 │           ├── draft.ts     6. reply text              (LLM, facts only)
 │           └── numberCheck.ts 7. no unknown numbers    (plain code)
