@@ -6,8 +6,9 @@
 // The email body is deliberately NOT allowed: a number the retailer wrote is not a checked fact.
 import type { Fact, Product } from "../types.js";
 
-export function unknownNumbers(draft: string, facts: Fact[], products: Product[] = []): string[] {
+export function unknownNumbers(draft: string, facts: Fact[], products: Product[] = [], extra: string[] = []): string[] {
   const allowed = new Set([
+    ...extra.flatMap(numbersIn),
     // Labels are built from our data too ("Price category of Hallingdal 65"), so their numbers count.
     ...facts.flatMap((f) => numbersIn(`${f.label} ${f.value} ${f.source}`)),
     ...products.flatMap((p) => numbersIn(`${p.name} ${p.variant} ${p.sku}`)),

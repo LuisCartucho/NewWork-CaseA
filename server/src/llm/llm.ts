@@ -1,6 +1,8 @@
 // One small wrapper around the OpenAI-compatible chat API.
 // Primary: Gemini Flash (free tier). Fallback: Groq. Both fail -> null -> facts-only mode.
 // Callers must only pass redacted email text and the specific looked-up facts.
+// Logging: provider, HTTP status and error code only. Never the prompt, the response, or the
+// provider's error message (which could in principle echo input).
 import { config } from "../config.js";
 
 export interface ChatMessage { role: "system" | "user"; content: string }
@@ -46,9 +48,9 @@ export async function chat(messages: ChatMessage[], opts: { json?: boolean } = {
           if (wait <= MAX_RETRY_WAIT_MS) { await sleep(wait); continue; }
         }
         if (!res.ok) {
-          const text = (await res.text()).replace(/\s+/g, " ").slice(0, 160);
-          if (res.status === 429 || res.status === 503) coolDown(p.name, `${res.status} (quota or overload): ${text}`);
-          else console.warn(`[llm] ${p.name} ${res.status}: ${text}`);
+          const code = errorCode(await res.text());
+          if (res.status === 429 || res.status === 503) coolDown(p.name, `${res.status} (quota or overload${code ? `, ${code}` : ""})`);
+          else console.warn(`[llm] ${p.name} HTTP ${res.status}${code ? ` (${code})` : ""}`);
           break; // next provider
         }
         const body = (await res.json()) as { choices?: { message?: { content?: string } }[] };
@@ -59,12 +61,24 @@ export async function chat(messages: ChatMessage[], opts: { json?: boolean } = {
       } catch (err) {
         const e = err as Error;
         if (e.name === "TimeoutError") coolDown(p.name, `timed out after ${TIMEOUT_MS / 1000}s`);
-        else console.warn(`[llm] ${p.name} failed: ${e.message}`);
+        else console.warn(`[llm] ${p.name} failed: ${e.name}`);
         break;
       }
     }
   }
   return null;
+}
+
+/** The provider's machine-readable error code ("RESOURCE_EXHAUSTED", "rate_limit_exceeded"), not its message. */
+function errorCode(text: string): string {
+  try {
+    const j = JSON.parse(text);
+    const e = Array.isArray(j) ? j[0]?.error : j?.error;
+    const code = e?.status ?? e?.code ?? e?.type;
+    return typeof code === "string" && /^[\w.-]{1,40}$/.test(code) ? code : "";
+  } catch {
+    return "";
+  }
 }
 
 /** Retry-After header (seconds), else a short default. Never logs or returns the key. */

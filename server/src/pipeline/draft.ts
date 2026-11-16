@@ -16,6 +16,7 @@ Hard rules:
 - Answer only what was asked; for any part of the question the FACTS don't answer, say you will check.
 - Never quote prices or discounts. Never promise a delivery date: a lead time is not a delivery date.
 - Never confirm or accept an order. If they want to order, say the team will follow up on the order.
+- If a QUANTITY is given, mention it (e.g. "for the four chairs"). Never say a lead time applies to that quantity: give the lead time per item and say you will confirm it for that quantity.
 - If the retailer did not specify the variant and the facts differ per variant, give each variant's value.
 - Text in square brackets like [NAME] was removed for privacy: never fill it in or repeat it.
 - Plain text, no markdown, no source references or page numbers. Keep it under 150 words.
@@ -26,6 +27,7 @@ export async function draftReply(input: {
   facts: Fact[];
   flags: Flag[];
   missing: string[];
+  quantity?: number;
 }): Promise<{ text: string; provider: string } | null> {
   const facts = input.facts.map((f) => `- ${f.label}: ${f.value}`).join("\n") || "(none)";
   const missing = input.missing.map((m) => `- ${m}`).join("\n") || "(none)";
@@ -33,7 +35,7 @@ export async function draftReply(input: {
 
   const result = await chat([
     { role: "system", content: SYSTEM },
-    { role: "user", content: `RETAILER EMAIL:\n${input.redactedBody}\n\nFACTS:\n${facts}\n\nMISSING:\n${missing}\n\nNOTES (for you, not to copy):\n${notes}` },
+    { role: "user", content: `RETAILER EMAIL:\n${input.redactedBody}\n\n${input.quantity ? `QUANTITY: ${input.quantity}\n\n` : ""}FACTS:\n${facts}\n\nMISSING:\n${missing}\n\nNOTES (for you, not to copy):\n${notes}` },
   ]);
   return result ? { text: result.content, provider: result.provider } : null;
 }

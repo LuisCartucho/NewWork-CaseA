@@ -6,6 +6,7 @@ import { loadData } from "./data/loadData.js";
 import { runPipeline } from "./pipeline/index.js";
 import { llmConfigured, resetCooldowns, sleep } from "./llm/llm.js";
 import type { PipelineResult } from "./types.js";
+import { markDuplicates } from "./pipeline/duplicates.js";
 
 const ICON = { green: "🟢", yellow: "🟡", red: "🔴" } as const;
 
@@ -29,20 +30,7 @@ for (const email of data.emails) {
   console.log(email.id, ICON[r.status], r.aiUsed ? `extract=${r.ai.extract} draft=${r.ai.draft}` : "facts only");
   if (llmConfigured()) await sleep(PACE_MS);
 }
-// Duplicates: same retailer + same subject + same body -> answer once (M007 = M015).
-// Same question from DIFFERENT retailers (M003 / M020) is not a duplicate: both need a reply.
-const seen = new Map<string, string>();
-for (const r of results) {
-  const key = [r.email.from_retailer, r.email.subject, r.email.body].map((s) => s.trim().toLowerCase()).join("\u0000");
-  const first = seen.get(key);
-  if (first) {
-    r.duplicateOf = first;
-    r.flags.unshift({ level: "yellow", reason: `Duplicate of ${first} (same retailer, same text). Reply once.` });
-    if (r.status === "green") r.status = "yellow";
-  } else {
-    seen.set(key, r.email.id);
-  }
-}
+markDuplicates(results);
 
 fs.mkdirSync(config.paths.results, { recursive: true });
 fs.writeFileSync(path.join(config.paths.results, "results.json"), JSON.stringify(results, null, 2));
@@ -50,7 +38,7 @@ const md = [
   "| id | status | intents | product (rows left) | reason |",
   "|---|---|---|---|---|",
   ...results.map((r) =>
-    `| ${r.email.id} | ${ICON[r.status]} | ${r.extraction?.intents.join(", ") ?? "-"} | ${r.resolution.matches.map((m) => `${m.name} (${m.variants.length})`).join(", ") || "-"} | ${r.flags[0]?.reason ?? ""} |`),
+    `| ${r.email.id} | ${ICON[r.status]} | ${r.extraction?.intents.join(", ") ?? "-"} | ${r.resolution.matches.map((m) => `${m.name} (${m.variants.length})`).join(", ") || "-"} | ${r.flags[0]?.short ?? r.flags[0]?.reason ?? ""} |`),
 ].join("\n");
 fs.writeFileSync(path.join(config.paths.results, "results.md"), md + "\n");
 console.log(`Wrote ${results.length} results`);

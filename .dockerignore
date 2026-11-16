@@ -6,9 +6,9 @@
 .idea
 *.log
 
-# Not needed at runtime: the app reads fact_sheet_facts.json, not the PDFs or their text.
+# Not needed at runtime: the app reads fact_sheet_facts.json, not the PDFs.
+# (fact_sheets_text IS needed: the detail page shows the source lines a fact was read from.)
 server/data/fact_sheets
-server/data/fact_sheets_text
 server/scripts
 server/src/**/*.test.ts
 docs

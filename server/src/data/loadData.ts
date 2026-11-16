@@ -16,6 +16,7 @@ const FactSheetsSchema = z.array(z.object({
     value: z.string(),
     appliesTo: z.array(z.string()).optional(),
     page: z.number().int().positive(),
+    doubt: z.string().optional(), // the sheet says it, but it looks wrong: never trusted as-is
   })),
 }));
 

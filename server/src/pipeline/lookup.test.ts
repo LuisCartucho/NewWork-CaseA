@@ -93,15 +93,37 @@ test("conflicts only for fields that were asked: price-list emails show none", (
   assert.deepEqual(run("M022").conflicts, []);
 });
 
-test("data issues: known disagreements found, agreeing products clean", () => {
-  const issues = findDataIssues(data.products, data.factSheets);
+test("data issues vs fact sheets: weight rule tells 'packed weight' from 'looks wrong'", () => {
+  const issues = findDataIssues(data.products, data.factSheets, data.emails);
   const has = (sku: string, kind: string) => issues.some((i) => i.sku === sku && i.kind === kind);
   assert.ok(has("20310UK", "mismatch")); // height 23 vs 23.5 (A2)
-  assert.ok(has("20310AU", "csv_blank")); // height empty (A2)
-  assert.ok(has("20415AU", "net_ge_packed")); // Kizu Kunis 7.8 kg (A3)
-  assert.ok(has("20425US", "net_ge_packed")); // (A4)
-  assert.ok(has("20311", "net_ge_packed")); // Karl-Johan marble (A1)
-  assert.ok(has("10310", "net_ge_packed")); // Pi-No-Pi-No (A13)
-  assert.ok(!issues.some((i) => i.product.startsWith("Atlas"))); // A11: Atlas sources agree
-  assert.ok(!issues.some((i) => i.product === "May Lounge Armchair")); // 2-pack packed weight is not a conflict
+  assert.ok(has("20310AU", "missing")); // height empty, fact sheet has it (A2)
+  assert.ok(has("20415AU", "packed_as_net")); // Kizu Kunis 7.8 = 7.8 packed (A3)
+  assert.ok(has("20425US", "packed_as_net")); // 4.4 = 4.4 (A4)
+  assert.ok(has("10310", "packed_as_net")); // Pi-No-Pi-No (A13)
+  assert.ok(has("20310", "weight_wrong")); // Karl-Johan 10.2 kg vs 1.9 kg packed: not a packed weight (A1)
+  assert.ok(!has("20310", "packed_as_net"));
+  assert.ok(!has("12110", "packed_as_net")); // Knot Rug 28.2 vs 28.6 kg packed: plausible, not flagged
+  assert.ok(has("42220", "implausible")); // Covent COM fabric 0.6 m
+  assert.ok(!issues.some((i) => i.product.startsWith("Atlas") && i.severity !== "cosmetic")); // A11: Atlas sources agree
+  assert.ok(!issues.some((i) => i.product === "May Lounge Armchair" && i.field === "weight_kg")); // 2-pack: no weight issue
+});
+
+test("data issues inside products.csv", () => {
+  const issues = findDataIssues(data.products, data.factSheets, data.emails);
+  const find = (sku: string, field: string) => issues.find((i) => i.sku === sku && i.field === field && i.kind !== "missing");
+  assert.match(find("20415", "weight_kg")!.message, /5\.6 kg \(EU\) vs 7\.8 kg \(AU, UK, US\)/); // market variants disagree
+  assert.match(find("20425", "weight_kg")!.message, /3 kg \(EU\) vs 4\.4 kg/);
+  assert.match(find("44821", "height_cm")!.message, /"65" but the height is 66 cm/); // Coupe name vs height
+  assert.match(find("44811", "height_cm")!.message, /"75" but the height is 76 cm/);
+  assert.match(find("43250", "category")!.message, /Outdoor Table/); // May is not a table
+  assert.match(find("42220NEBA024", "category")!.message, /Dining Chair.*Lounge Chair/);
+  assert.ok(!issues.some((i) => i.sku === "10330" && i.field === "category")); // the Lid really is a lid
+  assert.match(find("21520US", "variant")!.message, /Anodized.*Anodised/); // spelling
+  assert.ok(issues.some((i) => i.sku === "40101-F" && i.field === "weight_kg" && i.kind === "missing")); // Tembo F
+  assert.ok(issues.some((i) => i.sku === "44830" && i.field === "family")); // Coupe family empty
+  assert.ok(issues.some((i) => i.sku === "45110" && i.field === "made_to_order")); // Rand
+  const discontinued = issues.filter((i) => i.field === "status");
+  assert.deepEqual(discontinued.map((i) => i.sku).sort(), ["10303", "11610"]); // asked for in M022
+  assert.ok(discontinued.every((i) => i.emails?.includes("M022")));
 });

@@ -32,6 +32,7 @@ export interface FactSheetFact {
   value: string;
   appliesTo?: string[]; // SKUs; omitted = whole product
   page: number;
+  doubt?: string; // the sheet says it, but it looks implausible: shown, never trusted
 }
 export interface FactSheet {
   file: string;
@@ -82,12 +83,16 @@ export interface Fact {
   value: string;
   source: string; // "products.csv SKU 42711" | "Atlas Dining Table - Fact Sheet.pdf p.2"
   skus: string[]; // rows this value is true for
+  doubt?: string; // set when the source value looks implausible (see FactSheetFact.doubt)
 }
 
 export type Status = "green" | "yellow" | "red";
 export interface Flag {
   level: Status;
-  reason: string; // one plain-language sentence for Sales Support
+  reason: string; // full plain-language sentence for the detail page: names the product and the fact
+  short?: string; // max ~90 characters for the inbox row
+  action?: string; // what the person must do before sending: one "Before sending" checklist item
+  issueKeys?: string[]; // data issues that cause this flag ("Karl-Johan Table Lamp|weight_kg"): fixing them clears it
 }
 
 export interface PipelineResult {
@@ -98,10 +103,15 @@ export interface PipelineResult {
   facts: Fact[];
   conflicts: string[];
   missing: string[]; // asked for but not in our data
+  asked?: string[]; // which facts the retailer asks for (dimensions, lead_time, price…): inbox topic tags
   flags: Flag[];
   status: Status;
   draft: string;
   aiUsed: boolean; // the draft was written by an LLM; false => "AI unavailable, facts only"
   ai: { extract: string | null; draft: string | null }; // provider per AI step, null = not used
-  duplicateOf?: string;
+  aiTimedOut?: boolean; // Try page: the AI took too long, so this result is facts only
+  quantity?: number; // units the retailer mentions ("four Covent Club Chairs"), when more than one
+  duplicateOf?: string; // identical email (same retailer + text) seen earlier: reply once
+  identicalTo?: string[]; // all other identical emails
+  sameQuestionAs?: string[]; // same text from a different retailer: same checked answer, separate reply
 }

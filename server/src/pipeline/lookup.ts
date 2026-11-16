@@ -10,19 +10,23 @@
 // - Prices are never looked up. A price question lands in `missing` and rules.ts makes it red.
 import type { Extraction, Fact, FactSheet, Product, ProductMatch, Resolution } from "../types.js";
 import { fieldsAsked, type Field } from "./asked.js";
-import { conflictsForSku, factFor, leadingNumber, sameNumber } from "./conflicts.js";
+import { catalogueIssues, conflictsForSku, factFor, leadingNumber, sameNumber, type DataConflict } from "./conflicts.js";
 
 export interface LookupResult {
   asked: Field[]; // what the retailer asked for (keywords + LLM)
   facts: Fact[];
-  conflicts: string[]; // CSV vs fact sheet disagreements relevant to this email
+  conflicts: string[]; // data issues relevant to this email, as "Product SKU: message"
+  conflictItems: DataConflict[]; // the same, structured (rules.ts builds specific reasons from them)
   missing: string[]; // asked for but not answerable from the data, e.g. "Atlas Dining Table: lead time"
 }
 
 /** When nothing specific was recognised but a product was: give the basics. */
 const DEFAULT_FIELDS: Field[] = ["dimensions", "weight", "material"];
 
-type RowValue = { value: string; source: string } | null;
+type RowValue = { value: string; source: string; doubt?: string } | null;
+
+/** Issues that prove the CSV value itself is wrong: that value is withheld, never stated. */
+const WITHHOLD = new Set(["mismatch", "packed_as_net", "weight_wrong"]);
 
 export function lookup(input: {
   extraction: Extraction | null;
@@ -32,7 +36,7 @@ export function lookup(input: {
 }): LookupResult {
   const { resolution, factSheets } = input;
   const asked = fieldsAsked(input.text, input.extraction);
-  const out: LookupResult = { asked, facts: [], conflicts: [], missing: [] };
+  const out: LookupResult = { asked, facts: [], conflicts: [], conflictItems: [], missing: [] };
   const fields = asked.length ? asked : resolution.matches.length ? DEFAULT_FIELDS : [];
 
   for (const m of resolution.matches) {
@@ -40,12 +44,18 @@ export function lookup(input: {
     const allRows = resolution.candidates.filter((p) => p.name === m.name);
     const ctx: Ctx = { m, sheet, out, file: sheet?.file ?? "", allRows };
 
-    // Conflicts that affect what we'd tell the retailer (csv_blank is harmless: we use the sheet).
-    // Only conflicts for fields this email asks about: a price-list email shouldn't list weight problems.
-    const rowConflicts = m.variants.flatMap((p) => conflictsForSku(p, sheet))
-      .filter((c) => c.kind !== "csv_blank" && relevant(c.field, fields));
-    out.conflicts.push(...rowConflicts.map((c) => c.message));
-    const conflicted = (sku: string, field: string) => rowConflicts.some((c) => c.sku === sku && c.field === field);
+    // Data issues that affect what we'd tell the retailer, only for fields this email asks about
+    // (a price-list email shouldn't list weight problems). Left out: empty CSV values (lookup uses
+    // the fact sheet or reports "missing"), doubted facts (flagged on the fact itself), cosmetic issues.
+    const chosen = new Set(m.variants.map((p) => p.sku));
+    const rowConflicts = [
+      ...m.variants.flatMap((p) => conflictsForSku(p, sheet)),
+      ...catalogueIssues(allRows, sheet ? [sheet] : []).filter((c) => chosen.has(c.sku)),
+    ].filter((c) => c.kind !== "missing" && c.kind !== "implausible" && c.severity !== "cosmetic" && relevant(c.field, fields));
+    out.conflictItems.push(...rowConflicts);
+    out.conflicts.push(...rowConflicts.map((c) => `${c.product} ${c.sku}: ${c.message}`));
+    const conflicted = (sku: string, field: string) =>
+      rowConflicts.some((c) => c.sku === sku && c.field === field && WITHHOLD.has(c.kind));
 
     for (const field of fields) {
       switch (field) {
@@ -104,10 +114,12 @@ export function lookup(input: {
 
 /** Which asked fields a conflict on a CSV/fact sheet field matters for. */
 function relevant(conflictField: string, fields: Field[]): boolean {
-  if (/^(width|depth|height)_cm$/.test(conflictField)) return fields.includes("dimensions");
+  if (/^(width|depth)_cm$/.test(conflictField)) return fields.includes("dimensions");
+  if (conflictField === "height_cm") return fields.includes("dimensions") || fields.includes("seat_height");
   if (conflictField === "weight_kg") return fields.includes("weight");
   // Variant missing from its fact sheet: matters whenever we answer from that fact sheet.
-  return fields.some((f) => !["price", "availability", "lead_time"].includes(f));
+  if (conflictField === "colour") return fields.some((f) => !["price", "availability", "lead_time"].includes(f));
+  return false; // category, family, spelling, status…: data-page issues, not answer issues
 }
 
 interface Ctx { m: ProductMatch; sheet: FactSheet | undefined; out: LookupResult; file: string; allRows: Product[] }
@@ -117,7 +129,7 @@ interface Ctx { m: ProductMatch; sheet: FactSheet | undefined; out: LookupResult
  * Rows with no value become one `missing` entry. Label gets a variant suffix when values differ.
  */
 function collect(ctx: Ctx, label: string, perRow: (p: Product) => RowValue, opts: { optional?: boolean } = {}) {
-  const groups = new Map<string, { value: string; sources: Set<string>; rows: Product[] }>();
+  const groups = new Map<string, { value: string; sources: Set<string>; rows: Product[]; doubt?: string }>();
   const without: Product[] = [];
   for (const p of ctx.m.variants) {
     const v = perRow(p);
@@ -125,6 +137,7 @@ function collect(ctx: Ctx, label: string, perRow: (p: Product) => RowValue, opts
     const g = groups.get(v.value) ?? { value: v.value, sources: new Set(), rows: [] };
     g.sources.add(v.source);
     g.rows.push(p);
+    g.doubt ??= v.doubt;
     groups.set(v.value, g);
   }
   const split = groups.size > 1 || (groups.size === 1 && without.length > 0);
@@ -134,6 +147,7 @@ function collect(ctx: Ctx, label: string, perRow: (p: Product) => RowValue, opts
       value: g.value,
       source: mergeSources([...g.sources]),
       skus: g.rows.map((p) => p.sku),
+      ...(g.doubt ? { doubt: g.doubt } : {}),
     });
   }
   if (without.length && !opts.optional) {
@@ -161,7 +175,7 @@ function sheetOnly(ctx: Ctx, label: string, field: string, opts: { optional?: bo
   const unit = field.endsWith("_cm") ? "cm" : field.endsWith("_kg") ? "kg" : "";
   collect(ctx, label, (p) => {
     const f = factFor(ctx.sheet, field, p.sku);
-    return f ? { value: withUnit(f.value, unit), source: `${ctx.file} p.${f.page}` } : null;
+    return f ? { value: withUnit(f.value, unit), source: `${ctx.file} p.${f.page}`, doubt: f.doubt } : null;
   }, opts);
 }
 

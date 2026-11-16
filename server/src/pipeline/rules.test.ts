@@ -61,7 +61,45 @@ test("every non-green result explains itself, most serious reason first", async 
   }
 });
 
+const run = async (id: string) => runPipeline(data.emails.find((e) => e.id === id)!, data);
+
+test("reasons are specific: product and fact named, short version fits the inbox", async () => {
+  for (const e of data.emails) {
+    const r = await runPipeline(e, data);
+    for (const f of r.flags) {
+      assert.ok(f.short && f.short.length <= 90, `${e.id}: short reason missing or too long: ${f.short}`);
+      assert.ok(!/^Asks about prices or a price list/.test(f.reason), `${e.id}: generic price reason`);
+    }
+  }
+  const m001 = await run("M001");
+  assert.match(m001.flags[0].reason, /price for 4 × Covent Club Chair \(COM\)/);
+  assert.equal(m001.quantity, 4);
+  assert.ok(m001.flags.some((f) => /0\.6 metre.*looks too low/.test(f.reason))); // COM fabric not trusted
+  assert.ok(m001.flags.some((f) => /4 made-to-order units/.test(f.reason))); // quantity can change the lead time
+  const m026 = await run("M026");
+  assert.equal(m026.status, "yellow");
+  assert.match(m026.flags[0].reason, /email says 27 cm, but our data says 26\.5 cm.*products\.csv.*Fact Sheet/i);
+  const m012 = await run("M012");
+  assert.ok(m012.flags.some((f) => /Net weight 10\.2 kg, but only 1\.9 kg packed/.test(f.short!)));
+  const m005 = await run("M005");
+  assert.match(m005.flags[0].reason, /from 2 Nov that's 14 Dec–28 Dec/);
+});
+
 test("M027: the stored result never contains the unredacted body", async () => {
   const r = await runPipeline(data.emails.find((e) => e.id === "M027")!, data);
   assert.ok(!JSON.stringify(r).includes("Lindqvist"));
+});
+
+test("duplicates: identical (same retailer) vs same question (other retailer)", async () => {
+  const { markDuplicates } = await import("./duplicates.js");
+  const rs = await Promise.all(["M003", "M007", "M015", "M020"].map(run));
+  markDuplicates(rs);
+  const [m003, m007, m015, m020] = rs;
+  assert.deepEqual(m007.identicalTo, ["M015"]);
+  assert.deepEqual(m015.identicalTo, ["M007"]);
+  assert.equal(m015.duplicateOf, "M007");
+  assert.equal(m007.duplicateOf, undefined);
+  assert.deepEqual(m003.sameQuestionAs, ["M020"]);
+  assert.deepEqual(m020.sameQuestionAs, ["M003"]);
+  assert.equal(m020.status, "green"); // same question from another retailer still needs its own reply
 });

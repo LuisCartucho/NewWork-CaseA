@@ -41,7 +41,9 @@ export async function extract(subject: string, redactedBody: string): Promise<Ex
   try {
     return { ...ExtractionSchema.parse(parseJsonLoose(result.content)), provider: result.provider };
   } catch (err) {
-    console.warn(`[extract] invalid JSON from ${result.provider}: ${(err as Error).message.slice(0, 200)}`);
+    // Only the count of problems: the error text can quote the AI's output, which can quote the email.
+    const issues = (err as { issues?: unknown[] }).issues?.length ?? 1;
+    console.warn(`[extract] ${result.provider} returned invalid JSON (${issues} problem${issues === 1 ? "" : "s"})`);
     return null; // => facts-only mode for this step; keyword rules still run
   }
 }
