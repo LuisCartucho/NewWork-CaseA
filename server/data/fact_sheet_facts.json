@@ -1,0 +1,386 @@
+[
+  {
+    "file": "Atlas Coffee Table - Fact Sheet.pdf",
+    "name": "Atlas Coffee Table",
+    "facts": [
+      { "field": "height_cm", "value": "26.5", "appliesTo": ["42610", "42611", "42612", "42630", "42631"], "page": 2 },
+      { "field": "width_cm", "value": "82", "appliesTo": ["42610", "42611", "42612", "42630", "42631"], "page": 2 },
+      { "field": "depth_cm", "value": "82", "appliesTo": ["42610", "42611", "42612", "42630", "42631"], "page": 2 },
+      { "field": "height_cm", "value": "36", "appliesTo": ["42620", "42621", "42622", "42640", "42641"], "page": 2 },
+      { "field": "width_cm", "value": "60", "appliesTo": ["42620", "42621", "42622", "42640", "42641"], "page": 2 },
+      { "field": "depth_cm", "value": "60", "appliesTo": ["42620", "42621", "42622", "42640", "42641"], "page": 2 },
+      { "field": "weight_kg", "value": "80", "appliesTo": ["42610", "42611", "42612"], "page": 2 },
+      { "field": "weight_kg", "value": "60", "appliesTo": ["42620", "42621", "42622"], "page": 2 },
+      { "field": "weight_kg", "value": "25", "appliesTo": ["42630", "42631"], "page": 2 },
+      { "field": "weight_kg", "value": "18", "appliesTo": ["42640", "42641"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "110", "appliesTo": ["42610", "42611", "42612"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "77", "appliesTo": ["42620", "42621", "42622"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "28", "appliesTo": ["42630", "42631"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "21", "appliesTo": ["42640", "42641"], "page": 2 },
+      { "field": "material", "value": "Natural stone: travertine limestone", "appliesTo": ["42610", "42620"], "page": 1 },
+      { "field": "material", "value": "Natural stone: Costa Black marble", "appliesTo": ["42611", "42621"], "page": 1 },
+      { "field": "material", "value": "Natural stone: Gris Du Marais marble", "appliesTo": ["42612", "42622"], "page": 1 },
+      { "field": "material", "value": "Solid oak, natural or traditionally fumed", "appliesTo": ["42630", "42631", "42640", "42641"], "page": 1 },
+      { "field": "finish", "value": "Unfilled Travertine", "appliesTo": ["42610", "42620"], "page": 3 },
+      { "field": "care", "value": "Stone is a natural material and sensitive to liquids; spilled liquids not removed immediately can leave a permanent stain on the table top.", "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "Latvia & Türkiye", "page": 1 },
+      { "field": "assembly", "value": "Attach legs to tabletop", "page": 1 },
+      { "field": "certificates", "value": "FSC Mix (wood); factory certifications ISO 14001, ISO 50001, ISO 9001. No product test certificate listed.", "page": 4 }
+    ]
+  },
+  {
+    "file": "Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf",
+    "name": "Atlas Dining Table",
+    "facts": [
+      { "field": "height_cm", "value": "74", "page": 2 },
+      { "field": "width_cm", "value": "200", "appliesTo": ["42710", "42711"], "page": 2 },
+      { "field": "width_cm", "value": "250", "appliesTo": ["42720", "42721"], "page": 2 },
+      { "field": "depth_cm", "value": "95", "page": 2 },
+      { "field": "weight_kg", "value": "46", "appliesTo": ["42710", "42711"], "page": 2 },
+      { "field": "weight_kg", "value": "56", "appliesTo": ["42720", "42721"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "58", "appliesTo": ["42710", "42711"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "68", "appliesTo": ["42720", "42721"], "page": 2 },
+      { "field": "material", "value": "Solid oak, natural or traditionally fumed", "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "Latvia", "page": 1 },
+      { "field": "assembly", "value": "Attach legs to tabletop", "page": 1 },
+      { "field": "certificates", "value": "EN 15372:2023 (strength, durability and safety, non-domestic tables), test severity L2; FSC Mix (wood); factory certifications ISO 14001, ISO 50001, ISO 9001. The test report itself is not in the data.", "page": 3 }
+    ]
+  },
+  {
+    "file": "Atlas Stool - Fact Sheet.pdf",
+    "name": "Atlas Stool",
+    "facts": [
+      { "field": "height_cm", "value": "44", "page": 2 },
+      { "field": "width_cm", "value": "32", "appliesTo": ["42730", "42731", "42732", "42733", "42734"], "page": 2 },
+      { "field": "depth_cm", "value": "32", "appliesTo": ["42730", "42731", "42732", "42733", "42734"], "page": 2 },
+      { "field": "width_cm", "value": "36", "appliesTo": ["42735", "42736", "42737"], "page": 2 },
+      { "field": "depth_cm", "value": "36", "appliesTo": ["42735", "42736", "42737"], "page": 2 },
+      { "field": "weight_kg", "value": "8.49", "appliesTo": ["42730", "42731"], "page": 2 },
+      { "field": "weight_kg", "value": "9.2", "appliesTo": ["42732", "42733", "42734"], "page": 2 },
+      { "field": "weight_kg", "value": "11", "appliesTo": ["42735", "42736", "42737"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "10.53", "appliesTo": ["42730", "42731"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "11.2", "appliesTo": ["42732", "42733", "42734"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "12.7", "appliesTo": ["42735", "42736", "42737"], "page": 2 },
+      { "field": "material", "value": "Solid oak (FSC certified), natural or fumed", "appliesTo": ["42730", "42731"], "page": 1 },
+      { "field": "material", "value": "High-gloss lacquered MDF (FSC certified)", "appliesTo": ["42732", "42733", "42734", "42735", "42736", "42737"], "page": 1 },
+      { "field": "country_of_origin", "value": "Latvia", "appliesTo": ["42730", "42731"], "page": 1 },
+      { "field": "country_of_origin", "value": "China", "appliesTo": ["42732", "42733", "42734", "42735", "42736", "42737"], "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "assembly", "value": "Preassembled", "page": 1 },
+      { "field": "certificates", "value": "EN 16139:2025, L2 Extreme Use (non-domestic seating); FSC-C205234", "appliesTo": ["42730", "42731"], "page": 3 },
+      { "field": "certificates", "value": "FSC-C205234 only. No strength/safety test listed for the lacquered version.", "appliesTo": ["42732", "42733", "42734", "42735", "42736", "42737"], "page": 3 }
+    ]
+  },
+  {
+    "file": "Coupe Stool - Fact Sheet + Disassembly.pdf",
+    "name": "Coupe Stool / Bar Stool",
+    "facts": [
+      { "field": "height_cm", "value": "46", "appliesTo": ["44830", "44831"], "page": 2 },
+      { "field": "height_cm", "value": "66", "appliesTo": ["44820", "44821"], "page": 2 },
+      { "field": "height_cm", "value": "76", "appliesTo": ["44810", "44811"], "page": 2 },
+      { "field": "width_cm", "value": "40", "page": 2 },
+      { "field": "depth_cm", "value": "40", "page": 2 },
+      { "field": "weight_kg", "value": "11.8", "appliesTo": ["44830", "44831"], "page": 2 },
+      { "field": "weight_kg", "value": "13.6", "appliesTo": ["44820", "44821"], "page": 2 },
+      { "field": "weight_kg", "value": "14.8", "appliesTo": ["44810", "44811"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "15.0", "appliesTo": ["44830", "44831"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "17.6", "appliesTo": ["44820", "44821"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "18.8", "appliesTo": ["44810", "44811"], "page": 2 },
+      { "field": "material", "value": "Passivated stainless steel", "appliesTo": ["44830", "44820", "44810"], "page": 1 },
+      { "field": "material", "value": "Powder-coated steel", "appliesTo": ["44831", "44821", "44811"], "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 },
+      { "field": "assembly", "value": "Preassembled", "page": 1 }
+    ]
+  },
+  {
+    "file": "Fact Sheet - Brolly Pendant.pdf",
+    "name": "Brolly Pendant Lamp",
+    "facts": [
+      { "field": "height_cm", "value": "29", "appliesTo": ["21520", "21520US"], "page": 2 },
+      { "field": "diameter_cm", "value": "70", "appliesTo": ["21520", "21520US"], "page": 2 },
+      { "field": "height_cm", "value": "32", "appliesTo": ["21530", "21530US"], "page": 2 },
+      { "field": "diameter_cm", "value": "90", "appliesTo": ["21530", "21530US"], "page": 2 },
+      { "field": "cord_length_cm", "value": "400", "page": 2 },
+      { "field": "weight_kg", "value": "3", "appliesTo": ["21520", "21520US"], "page": 2 },
+      { "field": "weight_kg", "value": "4", "appliesTo": ["21530", "21530US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "9.4", "appliesTo": ["21520", "21520US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "14", "appliesTo": ["21530", "21530US"], "page": 2 },
+      { "field": "material", "value": "Brushed anodized aluminium", "page": 1 },
+      { "field": "dimmable", "value": "Yes (Triac phase dimming)", "page": 3 },
+      { "field": "light_source", "value": "Integrated LED, 21 W, 2700 K, CRI 95, included", "page": 3 },
+      { "field": "voltage", "value": "CE: 220-240 V, ETL: 110-120 V", "page": 2 },
+      { "field": "ip_rating", "value": "IP20, Class II", "page": 2 },
+      { "field": "certificates", "value": "CE, RCM, UKCA, ETL, FCC", "page": 3 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Fact Sheet - Kantarell Pendant.pdf",
+    "name": "Kantarell Pendant Lamp",
+    "facts": [
+      { "field": "height_cm", "value": "40", "appliesTo": ["22120", "22120US", "22121", "22121US"], "page": 2 },
+      { "field": "diameter_cm", "value": "55", "appliesTo": ["22120", "22120US", "22121", "22121US"], "page": 2 },
+      { "field": "height_cm", "value": "51", "appliesTo": ["22110", "22110US", "22111", "22111US"], "page": 2 },
+      { "field": "diameter_cm", "value": "60", "appliesTo": ["22110", "22110US", "22111", "22111US"], "page": 2 },
+      { "field": "canopy_diameter_cm", "value": "13", "page": 2 },
+      { "field": "weight_kg", "value": "5.8", "appliesTo": ["22120", "22120US", "22121", "22121US"], "page": 2 },
+      { "field": "weight_kg", "value": "6.9", "appliesTo": ["22110", "22110US", "22111", "22111US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "6.9", "appliesTo": ["22120", "22120US", "22121", "22121US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "7.8", "appliesTo": ["22110", "22110US", "22111", "22111US"], "page": 2 },
+      { "field": "material", "value": "Die-cast aluminium LED cup, spun metal reflector, steel tube; nickel-plated finish, reflector interior powder-coated white", "appliesTo": ["22111", "22111US", "22121", "22121US"], "page": 1 },
+      { "field": "material", "value": "Die-cast aluminium LED cup, spun metal reflector, steel tube; black powder coat, reflector interior powder-coated white", "appliesTo": ["22110", "22110US", "22120", "22120US"], "page": 1 },
+      { "field": "dimmable", "value": "Yes (Triac phase dimming)", "page": 3 },
+      { "field": "light_source", "value": "Integrated LED, 14 W, 2700 K, CRI 94, included", "page": 3 },
+      { "field": "voltage", "value": "CE: 220-240 V, ETL: 110-120 V", "page": 3 },
+      { "field": "certificates", "value": "CE, ETL, UKCA, SAA, FCC", "page": 3 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Fact Sheet - Tense Pendant.pdf",
+    "name": "Tense Pendant Lamp",
+    "facts": [
+      { "field": "height_cm", "value": "10", "appliesTo": ["21240", "21240US"], "page": 2 },
+      { "field": "diameter_cm", "value": "55", "appliesTo": ["21240", "21240US"], "page": 2 },
+      { "field": "height_cm", "value": "14", "appliesTo": ["21230", "21230US"], "page": 2 },
+      { "field": "diameter_cm", "value": "70", "appliesTo": ["21230", "21230US"], "page": 2 },
+      { "field": "height_cm", "value": "17", "appliesTo": ["21210", "21210US"], "page": 2 },
+      { "field": "diameter_cm", "value": "90", "appliesTo": ["21210", "21210US"], "page": 2 },
+      { "field": "height_cm", "value": "20", "appliesTo": ["21220", "21220US"], "page": 2 },
+      { "field": "diameter_cm", "value": "120", "appliesTo": ["21220", "21220US"], "page": 2 },
+      { "field": "cord_length_cm", "value": "500", "page": 2 },
+      { "field": "weight_kg", "value": "0.7", "appliesTo": ["21240", "21240US"], "page": 2 },
+      { "field": "weight_kg", "value": "0.9", "appliesTo": ["21230", "21230US"], "page": 2 },
+      { "field": "weight_kg", "value": "1.3", "appliesTo": ["21210", "21210US"], "page": 2 },
+      { "field": "weight_kg", "value": "1.5", "appliesTo": ["21220", "21220US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "2.1", "appliesTo": ["21240", "21240US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "3.2", "appliesTo": ["21230", "21230US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "5.1", "appliesTo": ["21210", "21210US"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "5.8", "appliesTo": ["21220", "21220US"], "page": 2 },
+      { "field": "material", "value": "Sewn Tyvek shade tensioned by a carbon rod frame; magnetic hanging system", "page": 1 },
+      { "field": "dimmable", "value": "Yes (Triac phase dimming)", "page": 3 },
+      { "field": "voltage", "value": "CE: 220-240 V, ETL: 110-120 V", "page": 3 },
+      { "field": "certificates", "value": "CE, ETL, SAA", "appliesTo": ["21240", "21240US"], "page": 4 },
+      { "field": "certificates", "value": "CE, ETL, SAA, PSE, FCC", "appliesTo": ["21230", "21230US", "21210", "21210US", "21220", "21220US"], "page": 4 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Karl-Johan Table Lamp New Works Fact Sheet.pdf",
+    "name": "Karl-Johan Table Lamp",
+    "facts": [
+      { "field": "height_cm", "value": "23.5", "page": 1 },
+      { "field": "diameter_cm", "value": "23", "page": 1 },
+      { "field": "weight_incl_packaging_kg", "value": "1.9", "page": 1 },
+      { "field": "packaging_dimensions_cm", "value": "H 35 x W 30 x D 30", "page": 1 },
+      { "field": "material", "value": "Glass shade and wooden base (smoked oak), or Black Marquina marble base with smoked glass", "page": 1 },
+      { "field": "dimmable", "value": "Yes, dimmer switch on the cord 30 cm from the lamp base", "page": 1 },
+      { "field": "light_source", "value": "E14 LED max 7 W, 220-240 V; bulb not included", "page": 1 },
+      { "field": "certificates", "value": "CE, Class II, IP20", "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Kizu Table Lamp Large New Works Fact Sheet.pdf",
+    "name": "Kizu Table Lamp Large",
+    "facts": [
+      { "field": "height_cm", "value": "45", "page": 1 },
+      { "field": "diameter_cm", "value": "30", "page": 1 },
+      { "field": "weight_incl_packaging_kg", "value": "7.8", "page": 1 },
+      { "field": "packaging_dimensions_cm", "value": "H 37 x W 37 x D 55", "page": 1 },
+      { "field": "material", "value": "Marble and acrylic", "page": 1 },
+      { "field": "colours_listed", "value": "White Marble, Black Marble, Gris du Marais Marble, Breccia Pernice Marble, Rosso Levanto Marble (Kunis Breccia is not on this fact sheet)", "page": 1 },
+      { "field": "dimmable", "value": "Yes, dimmer switch on the cord 30 cm from the lamp base", "page": 1 },
+      { "field": "light_source", "value": "E27 LED 7 W (max 11 W), 220-240 V; bulb not included", "page": 1 },
+      { "field": "certificates", "value": "CE, Class II, IP20", "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Kizu Table Lamp Small New Works Fact Sheet.pdf",
+    "name": "Kizu Table Lamp Small",
+    "facts": [
+      { "field": "height_cm", "value": "35", "page": 1 },
+      { "field": "diameter_cm", "value": "25", "page": 1 },
+      { "field": "weight_incl_packaging_kg", "value": "4.4", "page": 1 },
+      { "field": "packaging_dimensions_cm", "value": "H 32 x W 32 x D 45", "page": 1 },
+      { "field": "material", "value": "Marble and acrylic", "page": 1 },
+      { "field": "colours_listed", "value": "White Marble, Black Marble, Gris du Marais Marble, Breccia Pernice Marble, Rosso Levanto Marble (Kunis Breccia is not on this fact sheet)", "page": 1 },
+      { "field": "dimmable", "value": "Yes, dimmer switch on the cord 30 cm from the lamp base", "page": 1 },
+      { "field": "light_source", "value": "E14 LED max 7 W, 220-240 V; bulb not included", "page": 1 },
+      { "field": "certificates", "value": "CE, Class II, IP20", "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Knot Rug_fact sheet.pdf",
+    "name": "Knot Rug",
+    "facts": [
+      { "field": "width_cm", "value": "200", "appliesTo": ["12110", "12111", "12112"], "page": 2 },
+      { "field": "depth_cm", "value": "300", "appliesTo": ["12110", "12111", "12112"], "page": 2 },
+      { "field": "height_cm", "value": "2", "appliesTo": ["12110", "12111", "12112"], "page": 2 },
+      { "field": "width_cm", "value": "300", "appliesTo": ["12120", "12121", "12122"], "page": 2 },
+      { "field": "depth_cm", "value": "400", "appliesTo": ["12120", "12121", "12122"], "page": 2 },
+      { "field": "height_cm", "value": "2.7", "appliesTo": ["12120", "12121", "12122"], "page": 2 },
+      { "field": "weight_kg", "value": "28.2", "appliesTo": ["12110", "12111", "12112"], "page": 2 },
+      { "field": "weight_kg", "value": "63.5", "appliesTo": ["12120", "12121", "12122"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "28.6", "appliesTo": ["12110", "12111", "12112"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "66", "appliesTo": ["12120", "12121", "12122"], "page": 2 },
+      { "field": "material", "value": "100% recycled PET (rPET) rope, handwoven on pit looms", "page": 1 },
+      { "field": "certificates", "value": "US surface flammability of carpets and rugs, 16 CFR Part 1630 / 1631", "page": 3 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "India", "page": 1 }
+    ]
+  },
+  {
+    "file": "May Lounge Armchair - Fact sheet.pdf",
+    "name": "May Lounge Armchair",
+    "facts": [
+      { "field": "height_cm", "value": "71.9", "page": 2 },
+      { "field": "width_cm", "value": "59", "page": 2 },
+      { "field": "depth_cm", "value": "62.8", "page": 2 },
+      { "field": "seat_height_cm", "value": "33.5", "page": 2 },
+      { "field": "weight_kg", "value": "13", "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "30 (one package holds two chairs)", "page": 2 },
+      { "field": "pack_size", "value": "Each package includes two May Lounge Armchairs", "page": 1 },
+      { "field": "material", "value": "Steel (bent, welded tube frame; cold-formed seat and back) with primer and outdoor powder-coat top coat", "page": 1 },
+      { "field": "colours_listed", "value": "Light Grey, Dark Green", "page": 2 },
+      { "field": "use", "value": "Outdoor", "page": 1 },
+      { "field": "outdoor_care", "value": "With regular use, minor rust spots may naturally appear. Scratches or chips in the powder coat make those areas more prone to corrosion. Placing the furniture near the sea can accelerate the corrosion process.", "page": 1 },
+      { "field": "stackable", "value": "Yes", "page": 1 },
+      { "field": "country_of_origin", "value": "Latvia", "page": 1 }
+    ]
+  },
+  {
+    "file": "Nebra Floor - Fact Sheet + Disassembly.pdf",
+    "name": "Nebra Floor Lamp",
+    "facts": [
+      { "field": "height_cm", "value": "148-175", "page": 2 },
+      { "field": "width_cm", "value": "40", "page": 2 },
+      { "field": "depth_cm", "value": "40", "page": 2 },
+      { "field": "weight_kg", "value": "8.4", "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "14.4 (two boxes)", "page": 2 },
+      { "field": "material", "value": "Pleated shade in PES (polyester) textile pressed with a stiff plastic film; LED module in cast aluminium; steel tubes", "page": 1 },
+      { "field": "colours_listed", "value": "One version only: 22250 Floor Lamp", "page": 2 },
+      { "field": "light_source", "value": "Integrated LED, 21 W, included", "page": 2 },
+      { "field": "voltage", "value": "CE: 220-240 V, ETL: 110-120 V", "page": 2 },
+      { "field": "certificates", "value": "CE, ETL, RCM", "page": 2 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Product Fact Sheet_Covent_Club_Chair.pdf",
+    "name": "Covent Club Chair",
+    "facts": [
+      { "field": "height_cm", "value": "80", "page": 1 },
+      { "field": "width_cm", "value": "60", "page": 1 },
+      { "field": "depth_cm", "value": "54.5", "page": 1 },
+      { "field": "seat_height_cm", "value": "46", "page": 1 },
+      { "field": "weight_incl_packaging_kg", "value": "20", "page": 1 },
+      { "field": "lead_time", "value": "6-8 weeks for made to order", "appliesTo": ["42220", "42220-A", "42220-B", "42220-C", "42220-D", "42220-E", "42220-F"], "page": 1 },
+      { "field": "lead_time", "value": "Stock item", "appliesTo": ["42220NEBA024"], "page": 1 },
+      { "field": "com_fabric_requirement", "value": "0.6 metre per chair; COM orders: contact info@newworks.dk", "appliesTo": ["42220"], "page": 2 },
+      { "field": "material", "value": "Plywood core construction with seat and back in foam, upholstered in selected textiles", "page": 1 },
+      { "field": "fabric_category_A", "value": "Alessandro Bini Bel Lino; JAB Endless, Hot Madison, City Velvet; Kvadrat Remix; Nevotex Eros, Marlon, Megan, Wooly; Romo Linara", "page": 2 },
+      { "field": "fabric_category_B", "value": "JAB Be Mine; Nevotex Barnum; Osborne & Little Carnavon; Romo Ruskin", "page": 2 },
+      { "field": "fabric_category_C", "value": "Kvadrat Molly 2, Hallingdal 65, Harald 3; Alessandro Bini Talla", "page": 2 },
+      { "field": "fabric_category_D", "value": "Dedar Karakorum, Nimbus; Sahco Moss, Nabis", "page": 2 },
+      { "field": "fabric_category_E", "value": "Dedar Atlas; Élitis Pur Lin; Manuel Canovas Roma", "page": 2 },
+      { "field": "fabric_category_F", "value": "Astrid Mons, Velvet Baby Mohair; Dedar Hibou; Febrik Gentle 2; Kvadrat Byram; Zinc Billy; Kirkby Design Rest", "page": 2 },
+      { "field": "use", "value": "Indoor only", "page": 1 },
+      { "field": "country_of_origin", "value": "Lithuania", "page": 1 }
+    ]
+  },
+  {
+    "file": "Tembo Lounge Chair New Works Fact Sheet.pdf",
+    "name": "Tembo Lounge Chair",
+    "facts": [
+      { "field": "height_cm", "value": "101.5", "page": 2 },
+      { "field": "width_cm", "value": "96.3", "page": 2 },
+      { "field": "depth_cm", "value": "81", "page": 2 },
+      { "field": "seat_height_cm", "value": "40", "page": 2 },
+      { "field": "weight_kg", "value": "21 (printed on the packaging line; unclear if net or with packaging)", "page": 2 },
+      { "field": "packaging_dimensions_cm", "value": "H 81.4 x W 96.3 x D 81.3", "page": 2 },
+      { "field": "lead_time", "value": "6-8 weeks", "page": 2 },
+      { "field": "com_fabric_requirement", "value": "3.0 metres", "page": 2 },
+      { "field": "leather", "value": "Upholstery with leather not possible", "page": 2 },
+      { "field": "material", "value": "Upholstery, steel corpus, moulded foam core and wooden feet", "page": 2 },
+      { "field": "fabric_category_A", "value": "Kvadrat Floyd, Merit, Remix 2", "page": 3 },
+      { "field": "fabric_category_B", "value": "Kvadrat Fjord 2, Harald 3, Molly 2, Re-Wool", "page": 3 },
+      { "field": "fabric_category_C", "value": "Kvadrat Divina Melange 2, Hallingdal 65", "page": 3 },
+      { "field": "fabric_category_D", "value": "Astrid Mons; Dedar Karakorum; Febrik Sprinkles, Uniform Melange", "page": 3 },
+      { "field": "fabric_category_E", "value": "Febrik Gentle 2; Kvadrat Coda 2, Vidar 3", "page": 3 },
+      { "field": "item_numbers_on_sheet", "value": "41000 (COM), 41001 (categories A-F); products.csv uses 40101-A to 40101-F", "page": 1 },
+      { "field": "use", "value": "Indoor only", "page": 3 },
+      { "field": "country_of_origin", "value": "Europe", "page": 2 }
+    ]
+  },
+  {
+    "file": "Rand Side Table Steel - Fact Sheet.pdf",
+    "name": "Rand Side Table",
+    "facts": [
+      { "field": "height_cm", "value": "48.4", "page": 2 },
+      { "field": "width_cm", "value": "40", "page": 2 },
+      { "field": "depth_cm", "value": "40", "page": 2 },
+      { "field": "weight_kg", "value": "12.75", "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "14.5", "page": 2 },
+      { "field": "material", "value": "Powder-coated black carbon steel", "appliesTo": ["45110"], "page": 1 },
+      { "field": "material", "value": "Sandblasted, passivated stainless steel", "appliesTo": ["45111"], "page": 1 },
+      { "field": "assembly", "value": "Flat-packed; complete assembly of all parts is required", "page": 1 },
+      { "field": "use", "value": "Indoor", "page": 1 },
+      { "field": "country_of_origin", "value": "China", "page": 1 }
+    ]
+  },
+  {
+    "file": "Tana Wall Mounted Shelf_Product Fact Sheet.pdf",
+    "name": "Tana Wall Shelf",
+    "facts": [
+      { "field": "height_cm", "value": "17.5", "page": 1 },
+      { "field": "width_cm", "value": "75", "page": 1 },
+      { "field": "depth_cm", "value": "18.6", "page": 1 },
+      { "field": "weight_kg", "value": "3.5", "page": 1 },
+      { "field": "weight_incl_packaging_kg", "value": "5.7", "page": 1 },
+      { "field": "material", "value": "Wood veneer", "page": 1 },
+      { "field": "use", "value": "Indoor only", "page": 1 },
+      { "field": "country_of_origin", "value": "Turkey", "page": 1 }
+    ]
+  },
+  {
+    "file": "Pleat Pitcher New Works Fact Sheet.pdf",
+    "name": "Pleat Pitcher",
+    "facts": [
+      { "field": "height_cm", "value": "21", "page": 2 },
+      { "field": "diameter_cm", "value": "9", "page": 2 },
+      { "field": "weight_kg", "value": "0.5", "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "0.7", "page": 2 },
+      { "field": "material", "value": "Mirror polished stainless steel", "page": 2 },
+      { "field": "certificates", "value": "BS EN 13130-1:2004", "page": 2 }
+    ]
+  },
+  {
+    "file": "Pi-No-Pi-No Vase New Works Fact Sheet.pdf",
+    "name": "Pi-No-Pi-No Vase",
+    "facts": [
+      { "field": "height_cm", "value": "14.5", "appliesTo": ["10301", "10303"], "page": 2 },
+      { "field": "height_cm", "value": "12", "appliesTo": ["10310", "10311", "10312"], "page": 2 },
+      { "field": "height_cm", "value": "10", "appliesTo": ["10320", "10321", "10322"], "page": 2 },
+      { "field": "height_cm", "value": "2.5", "appliesTo": ["10330"], "page": 2 },
+      { "field": "diameter_cm", "value": "11", "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "1.3", "appliesTo": ["10301", "10303"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "0.9", "appliesTo": ["10310", "10311", "10312"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "0.8", "appliesTo": ["10320", "10321", "10322"], "page": 2 },
+      { "field": "weight_incl_packaging_kg", "value": "0.3", "appliesTo": ["10330"], "page": 2 },
+      { "field": "material", "value": "Painted glass and wood", "page": 2 }
+    ]
+  }
+]
