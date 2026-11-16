@@ -29,7 +29,7 @@ const pill = (status) => `<span class="pill pill-${status}"><span class="dot" ar
 const badges = (r) => [
   r.duplicateOf ? `<span class="badge">Duplicate of ${esc(r.duplicateOf)}</span>` : "",
   r.redaction?.containsPersonalData ? `<span class="badge badge-warn">Personal data removed</span>` : "",
-  r.aiUsed ? "" : `<span class="badge badge-muted">Facts only</span>`,
+  r.aiUsed ? `<span class="badge badge-muted">AI: ${esc(r.ai?.draft ?? "yes")}</span>` : `<span class="badge badge-muted">Facts only</span>`,
 ].join("");
 
 /** Redacted body with [PHONE]-style tokens highlighted. */
@@ -56,29 +56,32 @@ function detail(r) {
       </div>
     </header>
 
+    <!-- The conversation first: what the retailer wrote, next to the reply. -->
+    <div class="grid grid-even">
+      <section class="card">
+        <h2>Email <span class="muted small">(personal data removed)</span></h2>
+        <pre class="email">${emailBody(r.email.body)}</pre>
+      </section>
+
+      <section class="card">
+        <h2>Draft reply</h2>
+        <p class="muted small">${r.aiUsed
+          ? `Written by ${esc(r.ai?.draft ?? "AI")} from the facts on this page only. Every number in it was checked against our data.${r.ai?.extract ? "" : " (Question understood by keyword rules: the AI extraction step was unavailable.)"}`
+          : "AI was not available: this is a plain list of the facts we found. Edit before sending."}</p>
+        <textarea id="draft" class="draft" rows="12" aria-label="Draft reply">${esc(r.draft)}</textarea>
+        <div class="row gap">
+          <button class="btn" id="copy">Copy draft</button>
+          <span class="muted small" id="copied" role="status"></span>
+        </div>
+      </section>
+    </div>
+
     <section class="card flags flags-${r.status}" aria-label="Why this status">
       <h2>Why ${esc(STATUS[r.status].short.toLowerCase())}</h2>
       <ul>${r.flags.map((f) => `<li class="flag flag-${f.level}"><span class="dot" aria-hidden="true"></span><span>${esc(f.reason)}</span></li>`).join("")}</ul>
     </section>
 
     <div class="grid">
-      <div class="col">
-        <section class="card">
-          <h2>Draft reply</h2>
-          ${r.aiUsed ? "" : `<p class="muted small">AI was not used: this is a plain list of the facts we found. Edit before sending.</p>`}
-          <textarea id="draft" class="draft" rows="12" aria-label="Draft reply">${esc(r.draft)}</textarea>
-          <div class="row gap">
-            <button class="btn" id="copy">Copy draft</button>
-            <span class="muted small" id="copied" role="status"></span>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>Email <span class="muted small">(personal data removed)</span></h2>
-          <pre class="email">${emailBody(r.email.body)}</pre>
-        </section>
-      </div>
-
       <div class="col">
         <section class="card">
           <h2>Product</h2>
@@ -93,6 +96,14 @@ function detail(r) {
             </div>`).join("") : `<p class="muted">No product from our range recognised.</p>`}
         </section>
 
+        ${r.conflicts.length ? `
+        <section class="card">
+          <h2>Sources disagree</h2>
+          <ul class="plain small">${r.conflicts.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>
+        </section>` : ""}
+      </div>
+
+      <div class="col">
         <section class="card">
           <h2>Facts found</h2>
           ${r.facts.length ? [...byProduct].map(([product, facts]) => `
@@ -107,12 +118,6 @@ function detail(r) {
             <h3>Not in our data</h3>
             <ul class="plain">${r.missing.map((m) => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
         </section>
-
-        ${r.conflicts.length ? `
-        <section class="card">
-          <h2>Sources disagree</h2>
-          <ul class="plain small">${r.conflicts.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>
-        </section>` : ""}
       </div>
     </div>
   </article>`;

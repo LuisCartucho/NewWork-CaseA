@@ -51,7 +51,11 @@ export function decide(input: {
       yellow(`The retailer didn't say which ${m.name} variant (${m.variants.length} possible), and the answer differs between them.`);
     }
   }
-  for (const hint of resolution.unmatchedHints) yellow(`Asks for "${hint}", which doesn't match any variant in our data.`);
+  // A hint that matches no variant, unless a fact already answers it ("leather" -> "leather not possible").
+  for (const hint of resolution.unmatchedHints) {
+    if (lookup.facts.some((f) => f.value.toLowerCase().includes(hint.toLowerCase()))) continue;
+    yellow(`Asks for "${hint}", which doesn't match any variant in our data.`);
+  }
   if (lookup.asked.includes("lead_time") && DATE_PROMISE.test(body)) {
     yellow("Asks about a delivery date. A lead time is not a delivery promise; confirm the date before replying.");
   }

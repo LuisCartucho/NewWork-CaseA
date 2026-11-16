@@ -87,6 +87,9 @@ export function lookup(input: {
           sheetOnly(ctx, "Care", "care");
           sheetOnly(ctx, "Finish", "finish", { optional: true });
           break;
+        // No fact sheet has a sealing field: this always becomes an explicit "not in our data"
+        // item, so the draft says "I'll check" instead of the AI guessing from "Unfilled".
+        case "sealing": sheetOnly(ctx, "Sealing", "sealing"); break;
         case "availability": collect(ctx, "Status", (p) => ({ value: p.status, source: `products.csv SKU ${p.sku}` })); break;
         case "price": out.missing.push(`${m.name}: price (never quoted by this tool)`); break;
       }

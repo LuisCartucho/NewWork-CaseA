@@ -6,7 +6,7 @@ import type { Extraction, Intent } from "../types.js";
 
 export const FIELDS = [
   "dimensions", "seat_height", "weight", "lead_time", "material", "colours", "dimmable",
-  "certificates", "com_fabric", "fabric_category", "leather", "outdoor", "care", "availability", "price",
+  "certificates", "com_fabric", "fabric_category", "leather", "outdoor", "care", "sealing", "availability", "price",
 ] as const;
 export type Field = (typeof FIELDS)[number];
 
@@ -16,7 +16,7 @@ const KEYWORDS: [Field, RegExp][] = [
   ["weight", /weigh/],
   ["lead_time", /lead time|delivery time|before christmas|how long .*deliver|when can .*deliver/],
   ["material", /made of|\bmaterial|\bfinish\b|filled|sealed/],
-  ["colours", /colou?rs?\b|another finish|other finish|another colou?r|version in another/],
+  ["colours", /colou?rs?\b|another finish|other finish|another colou?r|version in another|is there an? [\w ]{1,30}version|do you have it in/],
   ["dimmable", /\bdimm|be dimmed/],
   ["certificates", /certificat|test report|\ben \d{4,5}/],
   ["com_fabric", /own fabric|\bcom\b|fabric requirement|how much fabric/],
@@ -24,6 +24,7 @@ const KEYWORDS: [Field, RegExp][] = [
   ["leather", /leather/],
   ["outdoor", /outside|outdoors?|near the sea|all year|weather/],
   ["care", /\bstain(s|ed|ing)?\b|children|sealed|clean/], // \b: not "stainless"
+  ["sealing", /\bseal(ed|ing|ant)?\b|impregnat/],
   ["availability", /still available|discontinued|in stock|\bavailable\b/],
   // \b: not "Costa Black"; lookahead: "price category" is a fabric question (fabric_category), not a price
   ["price", /\bprices?\b(?!\s+category)|\bcosts?\b|wholesale|discount|\brrp\b/],
@@ -35,7 +36,7 @@ const FROM_INTENT: Partial<Record<Intent, Field[]>> = {
   lead_time: ["lead_time"],
   price_list: ["price"],
   certificate: ["certificates"],
-  material_finish: ["material", "colours"],
+  material_finish: ["material"], // "other colours?" comes from keywords only: it triggers a yellow flag
   availability: ["availability"],
 };
 

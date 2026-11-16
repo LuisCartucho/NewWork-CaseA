@@ -57,6 +57,7 @@ export interface Extraction {
   productName: string | null;
   variantHints: string[];
   factsAsked: string[];
+  provider?: string; // which LLM produced it ("Gemini" | "Groq")
 }
 
 /** One product (products.csv `name`) mentioned in the email, narrowed by variant hints. */
@@ -96,9 +97,11 @@ export interface PipelineResult {
   resolution: Resolution;
   facts: Fact[];
   conflicts: string[];
+  missing: string[]; // asked for but not in our data
   flags: Flag[];
   status: Status;
   draft: string;
-  aiUsed: boolean; // false => "AI unavailable, facts only"
+  aiUsed: boolean; // the draft was written by an LLM; false => "AI unavailable, facts only"
+  ai: { extract: string | null; draft: string | null }; // provider per AI step, null = not used
   duplicateOf?: string;
 }

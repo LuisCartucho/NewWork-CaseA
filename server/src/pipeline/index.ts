@@ -20,14 +20,15 @@ export async function runPipeline(email: Email, data: Data): Promise<PipelineRes
   });
   const flags = decide({ redaction, extraction, resolution, lookup: found, body: redaction.redactedBody }); // 5. rules
 
-  let draft = await draftReply({                                           // 6. LLM
+  const ai = await draftReply({                                            // 6. LLM
     redactedBody: redaction.redactedBody, facts: found.facts, flags, missing: found.missing,
   });
-  const aiUsed = draft !== null && extraction !== null;
-  if (draft === null) draft = factsOnlyDraft(found.facts, found.missing);
+  const aiUsed = ai !== null;
+  const draft = ai?.text ?? factsOnlyDraft(found.facts, found.missing);
 
-  const bad = unknownNumbers(draft, found.facts, resolution.chosen);       // 7. plain code
-  if (aiUsed && bad.length) {
+  // 7. plain code. Runs on EVERY AI draft, even if extraction (step 2) fell back to keywords.
+  const bad = aiUsed ? unknownNumbers(draft, found.facts, resolution.chosen) : [];
+  if (bad.length) {
     flags.push({ level: "red", reason: `The draft contains numbers not found in our data (${bad.join(", ")}). Do not send without checking.` });
   }
 
@@ -37,7 +38,8 @@ export async function runPipeline(email: Email, data: Data): Promise<PipelineRes
   return {
     email: { ...email, body: redaction.redactedBody }, // never keep the unredacted body
     redaction, extraction, resolution,
-    facts: found.facts, conflicts: found.conflicts,
+    facts: found.facts, conflicts: found.conflicts, missing: found.missing,
     flags, status: worst(flags), draft, aiUsed,
+    ai: { extract: extraction?.provider ?? null, draft: ai?.provider ?? null },
   };
 }

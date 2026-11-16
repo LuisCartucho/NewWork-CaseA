@@ -13,8 +13,8 @@ export const config = {
     pass: process.env.BASIC_AUTH_PASS ?? "",
   },
   llm: {
-    gemini: { key: process.env.GEMINI_API_KEY ?? "", model: process.env.GEMINI_MODEL ?? "gemini-2.0-flash" },
-    groq: { key: process.env.GROQ_API_KEY ?? "", model: process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile" },
+    gemini: { key: process.env.GEMINI_API_KEY ?? "", model: process.env.GEMINI_MODEL ?? "gemini-3.5-flash" },
+    groq: { key: process.env.GROQ_API_KEY ?? "", model: process.env.GROQ_MODEL ?? "openai/gpt-oss-120b" },
   },
   paths: {
     data: path.join(serverRoot, "data"),

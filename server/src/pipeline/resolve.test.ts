@@ -1,3 +1,6 @@
+// Offline and deterministic: never call an LLM from tests.
+process.env.LLM_DISABLED = "1";
+
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { resolve } from "./resolve.js";

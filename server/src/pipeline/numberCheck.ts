@@ -8,7 +8,8 @@ import type { Fact, Product } from "../types.js";
 
 export function unknownNumbers(draft: string, facts: Fact[], products: Product[] = []): string[] {
   const allowed = new Set([
-    ...facts.flatMap((f) => numbersIn(`${f.value} ${f.source}`)),
+    // Labels are built from our data too ("Price category of Hallingdal 65"), so their numbers count.
+    ...facts.flatMap((f) => numbersIn(`${f.label} ${f.value} ${f.source}`)),
     ...products.flatMap((p) => numbersIn(`${p.name} ${p.variant} ${p.sku}`)),
   ]);
   return [...new Set(numbersIn(draft).filter((n) => !allowed.has(n)))];

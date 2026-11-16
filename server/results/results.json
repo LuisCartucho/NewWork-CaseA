@@ -12,7 +12,24 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "price_list",
+        "lead_time",
+        "other"
+      ],
+      "family": null,
+      "productName": "Covent Club Chair",
+      "variantHints": [
+        "COM"
+      ],
+      "factsAsked": [
+        "price",
+        "lead time",
+        "fabric needed per chair"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -212,6 +229,9 @@
       }
     ],
     "conflicts": [],
+    "missing": [
+      "Covent Club Chair: price (never quoted by this tool)"
+    ],
     "flags": [
       {
         "level": "red",
@@ -219,8 +239,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Covent Club Chair: Lead time: 6-8 weeks for made to order (products.csv SKU 42220; Product Fact Sheet_Covent_Club_Chair.pdf p.1)\n- Covent Club Chair: COM fabric requirement: 0.6 metre per chair; COM orders: contact info@newworks.dk (Product Fact Sheet_Covent_Club_Chair.pdf p.2)\n- Covent Club Chair: price (never quoted by this tool): I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe lead time for a made‑to‑order Covent Club Chair is 6–8 weeks. For the COM fabric option the requirement is 0.6 metre per chair.\n\nI’ll check the pricing details with our team and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -235,7 +259,20 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": null,
+      "productName": "Tense Pendant Lamp",
+      "variantHints": [
+        "Ø90"
+      ],
+      "factsAsked": [
+        "exact dimensions"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -478,6 +515,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -485,8 +523,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Tense Pendant Lamp: Diameter: 90 cm (products.csv SKU 21210, 21210US; Fact Sheet - Tense Pendant.pdf p.2)\n- Tense Pendant Lamp: Height: 17 cm (products.csv SKU 21210, 21210US; Fact Sheet - Tense Pendant.pdf p.2)\n- Tense Pendant Lamp: Cord length: 500 cm (Fact Sheet - Tense Pendant.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Tense Pendant Lamp Ø90 has a diameter of 90 cm and a height of 17 cm.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -501,7 +543,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Dining Table",
+      "variantHints": [
+        "250x95",
+        "fumed oak"
+      ],
+      "factsAsked": [
+        "exact dimensions"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -646,6 +702,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -653,8 +710,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Dining Table: Width: 250 cm (products.csv SKU 42721; Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf p.2)\n- Atlas Dining Table: Depth: 95 cm (products.csv SKU 42721; Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf p.2)\n- Atlas Dining Table: Height: 74 cm (products.csv SKU 42721; Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Atlas Dining Table in fumed oak has the following dimensions:\n- Width: 250 cm\n- Depth: 95 cm\n- Height: 74 cm\n\nLet us know if you need any further information.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -669,7 +730,20 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": null,
+      "productName": "Rand Side Table",
+      "variantHints": [
+        "stainless steel"
+      ],
+      "factsAsked": [
+        "exact dimensions"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -781,6 +855,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -788,8 +863,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Rand Side Table: Width: 40 cm (products.csv SKU 45111; Rand Side Table Steel - Fact Sheet.pdf p.2)\n- Rand Side Table: Depth: 40 cm (products.csv SKU 45111; Rand Side Table Steel - Fact Sheet.pdf p.2)\n- Rand Side Table: Height: 48.4 cm (products.csv SKU 45111; Rand Side Table Steel - Fact Sheet.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Rand Side Table in stainless steel measures 40 cm wide, 40 cm deep, and 48.4 cm high.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -804,7 +883,20 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "lead_time"
+      ],
+      "family": null,
+      "productName": "Tembo Lounge Chair",
+      "variantHints": [
+        "category C fabric"
+      ],
+      "factsAsked": [
+        "lead time"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -964,6 +1056,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "yellow",
@@ -971,8 +1064,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Tembo Lounge Chair: Lead time: 6-8 weeks (products.csv SKU 40101-C; Tembo Lounge Chair New Works Fact Sheet.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Tembo Lounge Chair with a Category C fabric has a lead time of 6‑8 weeks. I’ll confirm with our team whether that timing can meet a delivery before Christmas and get back to you.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -987,7 +1084,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "lead_time"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Dining Table",
+      "variantHints": [
+        "200x95",
+        "natural oak"
+      ],
+      "factsAsked": [
+        "lead time"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -1107,6 +1218,9 @@
     },
     "facts": [],
     "conflicts": [],
+    "missing": [
+      "Atlas Dining Table: lead time"
+    ],
     "flags": [
       {
         "level": "yellow",
@@ -1118,8 +1232,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Dining Table: lead time: I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for your inquiry about the Atlas Dining Table in natural oak. I’ll check the current lead time with our team and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -1134,7 +1252,18 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "lead_time"
+      ],
+      "family": null,
+      "productName": "Covent Club Chair",
+      "variantHints": [],
+      "factsAsked": [
+        "current lead time"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -1562,6 +1691,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "yellow",
@@ -1573,8 +1703,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Covent Club Chair: Lead time (42220, 42220-A, 42220-B, 42220-C, 42220-D, 42220-E, 42220-F): 6-8 weeks for made to order (products.csv SKU 42220, 42220-A, 42220-B, 42220-C, 42220-D, 42220-E, 42220-F; Product Fact Sheet_Covent_Club_Chair.pdf p.1)\n- Covent Club Chair: Lead time (Barnum 024): Stock item (Product Fact Sheet_Covent_Club_Chair.pdf p.1)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Covent Club Chair is a made‑to‑order item with a lead time of 6‑8 weeks for the following variants: 42220, 42220‑A, 42220‑B, 42220‑C, 42220‑D, 42220‑E and 42220‑F. The Barnum 024 version is a stock item and can be supplied from inventory.\n\nIf you need a specific delivery schedule, our team will follow up with you once we have the exact variant and order details.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -1589,7 +1723,20 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": "Tana",
+      "productName": "Tana Wall Shelf",
+      "variantHints": [
+        "walnut"
+      ],
+      "factsAsked": [
+        "exact dimensions"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -1717,6 +1864,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -1724,8 +1872,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Tana Wall Shelf: Width: 75 cm (products.csv SKU 42432; Tana Wall Mounted Shelf_Product Fact Sheet.pdf p.1)\n- Tana Wall Shelf: Depth: 18.6 cm (products.csv SKU 42432; Tana Wall Mounted Shelf_Product Fact Sheet.pdf p.1)\n- Tana Wall Shelf: Height: 17.5 cm (products.csv SKU 42432; Tana Wall Mounted Shelf_Product Fact Sheet.pdf p.1)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Tana Wall Shelf in walnut measures 75 cm wide, 18.6 cm deep, and 17.5 cm high.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -1740,7 +1892,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": "Kantarell",
+      "productName": "Kantarell Pendant Ø60",
+      "variantHints": [
+        "Ø60",
+        "nickel plated"
+      ],
+      "factsAsked": [
+        "exact dimensions"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -1984,6 +2150,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -1991,8 +2158,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Kantarell Pendant Lamp: Diameter: 60 cm (products.csv SKU 22111, 22111US; Fact Sheet - Kantarell Pendant.pdf p.2)\n- Kantarell Pendant Lamp: Height: 51 cm (products.csv SKU 22111, 22111US; Fact Sheet - Kantarell Pendant.pdf p.2)\n- Kantarell Pendant Lamp: Canopy diameter: 13 cm (Fact Sheet - Kantarell Pendant.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Kantarell Pendant Ø60 in nickel plated has a diameter of 60 cm, a total height of 51 cm, and a canopy diameter of 13 cm.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -2007,7 +2178,25 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions",
+        "weight",
+        "other"
+      ],
+      "family": "Kizu",
+      "productName": "Kizu Table Lamp Large",
+      "variantHints": [
+        "Large",
+        "Kunis Breccia",
+        "EU"
+      ],
+      "factsAsked": [
+        "exact dimensions",
+        "weight"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -2033,7 +2222,8 @@
           ],
           "hints": [
             "EU",
-            "Kunis Breccia"
+            "Kunis Breccia",
+            "Large"
           ]
         }
       ],
@@ -2570,6 +2760,7 @@
     "conflicts": [
       "Kizu Table Lamp Large 20415: Kunis Breccia is not on the fact sheet p.1 (it lists White Marble, Black Marble, Gris du Marais Marble, Breccia Pernice Marble, Rosso Levanto Marble)."
     ],
+    "missing": [],
     "flags": [
       {
         "level": "yellow",
@@ -2577,8 +2768,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Kizu Table Lamp Large: Diameter: 30 cm (products.csv SKU 20415; Kizu Table Lamp Large New Works Fact Sheet.pdf p.1)\n- Kizu Table Lamp Large: Height: 45 cm (products.csv SKU 20415; Kizu Table Lamp Large New Works Fact Sheet.pdf p.1)\n- Kizu Table Lamp Large: Net weight: 5.6 kg (products.csv SKU 20415)\n- Kizu Table Lamp Large: Weight incl. packaging: 7.8 kg (Kizu Table Lamp Large New Works Fact Sheet.pdf p.1)\n- Kizu Table Lamp Large: Packaging dimensions: H 37 x W 37 x D 55 cm (Kizu Table Lamp Large New Works Fact Sheet.pdf p.1)",
-    "aiUsed": false
+    "draft": "Hi,\n\nHere are the specifications for the Kizu Table Lamp Large:\n\n- Diameter: 30 cm  \n- Height: 45 cm  \n- Net weight: 5.6 kg  \n- Weight including packaging: 7.8 kg  \n- Packaging dimensions: H 37 cm × W 37 cm × D 55 cm  \n\nI’ll forward the fact sheet to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -2593,7 +2788,20 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": null,
+      "productName": "Coupe Bar Stool 65",
+      "variantHints": [
+        "black"
+      ],
+      "factsAsked": [
+        "exact seat height"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -2746,6 +2954,9 @@
     },
     "facts": [],
     "conflicts": [],
+    "missing": [
+      "Coupe Stool / Bar Stool: seat height"
+    ],
     "flags": [
       {
         "level": "yellow",
@@ -2757,8 +2968,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Coupe Stool / Bar Stool: seat height: I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for your question about the Coupe Bar Stool 65 in black. I’ll check the exact seat height for you and get back shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -2773,7 +2988,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "weight"
+      ],
+      "family": null,
+      "productName": "Karl-Johan Table Lamp",
+      "variantHints": [
+        "smoked oak"
+      ],
+      "factsAsked": [
+        "weight with packaging",
+        "weight without packaging"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -3080,6 +3309,9 @@
       "Karl-Johan Table Lamp 20310UK: weight in products.csv (10.2 kg) is not less than the weight incl. packaging on the fact sheet p.1 (1.9 kg). It is probably the packed weight in the net weight field.",
       "Karl-Johan Table Lamp 20310US: weight in products.csv (10.2 kg) is not less than the weight incl. packaging on the fact sheet p.1 (1.9 kg). It is probably the packed weight in the net weight field."
     ],
+    "missing": [
+      "Karl-Johan Table Lamp: net weight"
+    ],
     "flags": [
       {
         "level": "yellow",
@@ -3091,8 +3323,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Karl-Johan Table Lamp: Weight incl. packaging: 1.9 kg (Karl-Johan Table Lamp New Works Fact Sheet.pdf p.1)\n- Karl-Johan Table Lamp: Packaging dimensions: H 35 x W 30 x D 30 cm (Karl-Johan Table Lamp New Works Fact Sheet.pdf p.1)\n- Karl-Johan Table Lamp: net weight: I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Karl‑Johan Table Lamp in smoked oak weighs 1.9 kg including packaging.\n\nWe’ll check on the net weight (without packaging) and get back to you.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -3107,7 +3343,16 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "price_list"
+      ],
+      "family": "Atlas",
+      "productName": null,
+      "variantHints": [],
+      "factsAsked": [],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -4200,6 +4445,11 @@
     },
     "facts": [],
     "conflicts": [],
+    "missing": [
+      "Atlas Stool: price (never quoted by this tool)",
+      "Atlas Coffee Table: price (never quoted by this tool)",
+      "Atlas Dining Table: price (never quoted by this tool)"
+    ],
     "flags": [
       {
         "level": "red",
@@ -4207,8 +4457,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Stool: price (never quoted by this tool): I'll check this with the team and come back to you.\n- Atlas Coffee Table: price (never quoted by this tool): I'll check this with the team and come back to you.\n- Atlas Dining Table: price (never quoted by this tool): I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for your request. I’ll coordinate with our team to provide you with the latest wholesale price list for the Atlas family.\n\nRegarding the Atlas Stool, Atlas Coffee Table, and Atlas Dining Table, I’ll check the pricing details and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -4223,7 +4477,16 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "price_list"
+      ],
+      "family": "Kizu",
+      "productName": null,
+      "variantHints": [],
+      "factsAsked": [],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -7037,6 +7300,10 @@
     },
     "facts": [],
     "conflicts": [],
+    "missing": [
+      "Kizu Table Lamp Large: price (never quoted by this tool)",
+      "Kizu Table Lamp Small: price (never quoted by this tool)"
+    ],
     "flags": [
       {
         "level": "red",
@@ -7044,8 +7311,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Kizu Table Lamp Large: price (never quoted by this tool): I'll check this with the team and come back to you.\n- Kizu Table Lamp Small: price (never quoted by this tool): I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for reaching out. I’ll have our team send you the latest wholesale price list for the Kizu family.\n\nRegarding the Kizu Table Lamp Large and Kizu Table Lamp Small pricing, I’ll check with the team and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -7060,7 +7331,18 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "lead_time"
+      ],
+      "family": null,
+      "productName": "Covent Club Chair",
+      "variantHints": [],
+      "factsAsked": [
+        "current lead time"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -7488,6 +7770,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "yellow",
@@ -7503,8 +7786,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Covent Club Chair: Lead time (42220, 42220-A, 42220-B, 42220-C, 42220-D, 42220-E, 42220-F): 6-8 weeks for made to order (products.csv SKU 42220, 42220-A, 42220-B, 42220-C, 42220-D, 42220-E, 42220-F; Product Fact Sheet_Covent_Club_Chair.pdf p.1)\n- Covent Club Chair: Lead time (Barnum 024): Stock item (Product Fact Sheet_Covent_Club_Chair.pdf p.1)",
-    "aiUsed": false,
+    "draft": "Hi,\n\nThe Covent Club Chair is a made‑to‑order item for the following variants: 42220, 42220‑A, 42220‑B, 42220‑C, 42220‑D, 42220‑E and 42220‑F, with a lead time of 6‑8 weeks. The Barnum 024 variant is a stock item and can be supplied from stock.\n\nIf you need a specific delivery schedule, please let us know the exact variant you require and we’ll confirm the timing with our team.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    },
     "duplicateOf": "M007"
   },
   {
@@ -7520,7 +7807,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "lead_time"
+      ],
+      "family": null,
+      "productName": "Knot Rug",
+      "variantHints": [
+        "300x400",
+        "warm grey"
+      ],
+      "factsAsked": [
+        "lead time"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -7672,6 +7973,9 @@
     },
     "facts": [],
     "conflicts": [],
+    "missing": [
+      "Knot Rug: lead time"
+    ],
     "flags": [
       {
         "level": "yellow",
@@ -7683,8 +7987,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Knot Rug: lead time: I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for your inquiry about the Knot Rug 300x400 in warm grey. I’ll check the current lead time with our team and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -7699,7 +8007,22 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "material_finish"
+      ],
+      "family": null,
+      "productName": "May Lounge Armchair",
+      "variantHints": [
+        "dark green",
+        "light grey"
+      ],
+      "factsAsked": [
+        "other colours",
+        "stay outside all year near the sea"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -7874,6 +8197,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "yellow",
@@ -7881,8 +8205,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- May Lounge Armchair: Material: Steel (bent, welded tube frame; cold-formed seat and back) with primer and outdoor powder-coat top coat (May Lounge Armchair - Fact sheet.pdf p.1)\n- May Lounge Armchair: Variants in products.csv: Dark Green; Light Grey (products.csv SKU 43250, 43251)\n- May Lounge Armchair: Colours on fact sheet: Light Grey, Dark Green (May Lounge Armchair - Fact sheet.pdf p.2)\n- May Lounge Armchair: Use: Outdoor (May Lounge Armchair - Fact sheet.pdf p.1)\n- May Lounge Armchair: Outdoor care: With regular use, minor rust spots may naturally appear. Scratches or chips in the powder coat make those areas more prone to corrosion. Placing the furniture near the sea can accelerate the corrosion process. (May Lounge Armchair - Fact sheet.pdf p.1)\n- May Lounge Armchair: Status: active (products.csv SKU 43250, 43251)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe May Lounge Armchair is currently offered in Light Grey and Dark Green.\n\nIt is designed for outdoor use, but please note that regular exposure near the sea can accelerate corrosion, and minor rust spots may appear over time.\n\nIf you have any further questions or would like to discuss an order, our team will follow up with you.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -7897,7 +8225,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "material_finish",
+        "other"
+      ],
+      "family": "Brolly",
+      "productName": "Brolly Pendant",
+      "variantHints": [
+        "black anodised aluminium"
+      ],
+      "factsAsked": [
+        "dimmable"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -8158,6 +8500,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "yellow",
@@ -8165,8 +8508,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Brolly Pendant Lamp: Material: Brushed anodized aluminium (Fact Sheet - Brolly Pendant.pdf p.1)\n- Brolly Pendant Lamp: Variants in products.csv: Ø70, Black Anodised Aluminium, EU/AU/UK; Ø70, Black Anodized Aluminium, US; Ø90, Black Anodised Aluminium, EU/AU/UK; Ø90, Black Anodized Aluminium, US (products.csv SKU 21520, 21520US, 21530, 21530US)\n- Brolly Pendant Lamp: Dimmable: Yes (Triac phase dimming) (Fact Sheet - Brolly Pendant.pdf p.3)\n- Brolly Pendant Lamp: Status: active (products.csv SKU 21520, 21520US, 21530, 21530US)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Brolly Pendant Lamp is currently offered in brushed anodized aluminium (black anodised aluminium) for all listed sizes and regions. It is dimmable using Triac phase dimming.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -8181,7 +8528,20 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "certificate"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Stool",
+      "variantHints": [
+        "lacquered MDF"
+      ],
+      "factsAsked": [
+        "test certificates"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -8538,6 +8898,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "red",
@@ -8545,8 +8906,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Stool: Certificates: FSC-C205234 only. No strength/safety test listed for the lacquered version. (Atlas Stool - Fact Sheet.pdf p.3)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Atlas Stool in lacquered MDF is covered by the FSC‑C205234 certificate. I’ll check with our team regarding any additional test certificates and get back to you.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -8561,7 +8926,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Dining Table",
+      "variantHints": [
+        "250x95",
+        "fumed oak"
+      ],
+      "factsAsked": [
+        "exact dimensions"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -8706,6 +9085,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -8713,8 +9093,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Dining Table: Width: 250 cm (products.csv SKU 42721; Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf p.2)\n- Atlas Dining Table: Depth: 95 cm (products.csv SKU 42721; Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf p.2)\n- Atlas Dining Table: Height: 74 cm (products.csv SKU 42721; Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Atlas Dining Table in fumed oak has the following dimensions:\n- Width: 250 cm\n- Depth: 95 cm\n- Height: 74 cm\n\nLet us know if you need any further information.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -8729,7 +9113,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "certificate"
+      ],
+      "family": "Tense",
+      "productName": "Tense Pendant Lamp Ø55",
+      "variantHints": [
+        "Ø55",
+        "US version"
+      ],
+      "factsAsked": [
+        "test certificates"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -8922,6 +9320,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "red",
@@ -8929,8 +9328,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Tense Pendant Lamp: Certificates: CE, ETL, SAA (Fact Sheet - Tense Pendant.pdf p.4)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for your request. We can provide the CE, ETL and SAA test certificates for the Tense Pendant Lamp Ø55 (US version). I’ll coordinate with our team to gather the documents and will get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -8945,7 +9348,19 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "availability",
+        "order"
+      ],
+      "family": null,
+      "productName": "Pleat Pitcher",
+      "variantHints": [
+        "grey/fuchsia"
+      ],
+      "factsAsked": [],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -9217,6 +9632,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "red",
@@ -9232,8 +9648,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Pleat Pitcher: Status: discontinued (products.csv SKU 11610)\n- Pi-No-Pi-No Vase: Status: discontinued (products.csv SKU 10303)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Pleat Pitcher is currently discontinued, and the Pi‑No‑Pi‑No vase is also discontinued. Our team will follow up with you regarding the order details.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -9248,7 +9668,19 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": null,
+      "productName": "Tembo Lounge Chair",
+      "variantHints": [],
+      "factsAsked": [
+        "exact dimensions",
+        "seat height"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -9610,6 +10042,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -9617,8 +10050,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Tembo Lounge Chair: Width: 96.3 cm (products.csv SKU 40101-A, 40101-B, 40101-C, 40101-D, 40101-E, 40101-F; Tembo Lounge Chair New Works Fact Sheet.pdf p.2)\n- Tembo Lounge Chair: Depth: 81 cm (products.csv SKU 40101-A, 40101-B, 40101-C, 40101-D, 40101-E, 40101-F; Tembo Lounge Chair New Works Fact Sheet.pdf p.2)\n- Tembo Lounge Chair: Height: 101.5 cm (products.csv SKU 40101-A, 40101-B, 40101-C, 40101-D, 40101-E, 40101-F; Tembo Lounge Chair New Works Fact Sheet.pdf p.2)\n- Tembo Lounge Chair: Seat height: 40 cm (Tembo Lounge Chair New Works Fact Sheet.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Tembo Lounge Chair measures 96.3 cm wide, 81 cm deep, and 101.5 cm high. The seat height is 40 cm.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -9633,7 +10070,16 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "price_list"
+      ],
+      "family": "Tense",
+      "productName": null,
+      "variantHints": [],
+      "factsAsked": [],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -10040,6 +10486,9 @@
     },
     "facts": [],
     "conflicts": [],
+    "missing": [
+      "Tense Pendant Lamp: price (never quoted by this tool)"
+    ],
     "flags": [
       {
         "level": "red",
@@ -10047,8 +10496,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Tense Pendant Lamp: price (never quoted by this tool): I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for reaching out. I’ll check with our team regarding the current wholesale price for the Tense Pendant Lamp and get back to you shortly. I’ll also arrange to resend the latest wholesale price list for the Tense family.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -10063,7 +10516,22 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "material_finish"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Coffee Table",
+      "variantHints": [
+        "travertine",
+        "oak"
+      ],
+      "factsAsked": [
+        "travertine filled and sealed",
+        "oak version in same size"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -10306,7 +10774,9 @@
         }
       ],
       "ambiguous": true,
-      "unmatchedHints": []
+      "unmatchedHints": [
+        "oak"
+      ]
     },
     "facts": [
       {
@@ -10376,6 +10846,23 @@
         ]
       },
       {
+        "label": "Atlas Coffee Table: Variants in products.csv",
+        "value": "82x82, Unfilled Travertine; 82x82, Costa Black; 82x82, Gris Du Marais; 60x60, Unfilled Travertine; 60x60, Costa Black; 60x60, Gris Du Marais; 82x82, Natural Oak; 82x82, Fumed Oak; 60x60, Natural Oak; 60x60, Fumed Oak",
+        "source": "products.csv SKU 42610, 42611, 42612, 42620, 42621, 42622, 42630, 42631, 42640, 42641",
+        "skus": [
+          "42610",
+          "42611",
+          "42612",
+          "42620",
+          "42621",
+          "42622",
+          "42630",
+          "42631",
+          "42640",
+          "42641"
+        ]
+      },
+      {
         "label": "Atlas Coffee Table: Care",
         "value": "Stone is a natural material and sensitive to liquids; spilled liquids not removed immediately can leave a permanent stain on the table top.",
         "source": "Atlas Coffee Table - Fact Sheet.pdf p.1",
@@ -10386,15 +10873,30 @@
       }
     ],
     "conflicts": [],
+    "missing": [
+      "Atlas Coffee Table: sealing"
+    ],
     "flags": [
       {
         "level": "yellow",
+        "reason": "Not in our data: Atlas Coffee Table: sealing. The draft says we will check."
+      },
+      {
+        "level": "yellow",
         "reason": "The retailer didn't say which Atlas Coffee Table variant (2 possible), and the answer differs between them."
+      },
+      {
+        "level": "yellow",
+        "reason": "Asks about other colours/finishes. Our data only shows what exists today, not what is possible or planned."
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Coffee Table: Width (82x82, Unfilled Travertine): 82 cm (products.csv SKU 42610; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Width (60x60, Unfilled Travertine): 60 cm (products.csv SKU 42620; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Depth (82x82, Unfilled Travertine): 82 cm (products.csv SKU 42610; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Depth (60x60, Unfilled Travertine): 60 cm (products.csv SKU 42620; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Height (82x82, Unfilled Travertine): 26.5 cm (products.csv SKU 42610; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Height (60x60, Unfilled Travertine): 36 cm (products.csv SKU 42620; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Material: Natural stone: travertine limestone (Atlas Coffee Table - Fact Sheet.pdf p.1)\n- Atlas Coffee Table: Finish: Unfilled Travertine (Atlas Coffee Table - Fact Sheet.pdf p.3)\n- Atlas Coffee Table: Care: Stone is a natural material and sensitive to liquids; spilled liquids not removed immediately can leave a permanent stain on the table top. (Atlas Coffee Table - Fact Sheet.pdf p.1)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Atlas Coffee Table is offered in Natural Oak in both the 82 cm × 82 cm and 60 cm × 60 cm sizes, so an oak version is available in the same dimensions.\n\nThe table’s travertine surface is finished as Unfilled Travertine. Stone is a natural material and can be sensitive to liquids; spills should be cleaned promptly to avoid staining.\n\nWe will check with our team regarding whether the travertine surface is sealed and get back to you.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -10409,7 +10911,21 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "dimensions"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Coffee Table",
+      "variantHints": [
+        "82x82",
+        "Costa Black"
+      ],
+      "factsAsked": [
+        "height"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -10650,6 +11166,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "yellow",
@@ -10657,8 +11174,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Coffee Table: Width: 82 cm (products.csv SKU 42611; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Depth: 82 cm (products.csv SKU 42611; Atlas Coffee Table - Fact Sheet.pdf p.2)\n- Atlas Coffee Table: Height: 26.5 cm (products.csv SKU 42611; Atlas Coffee Table - Fact Sheet.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Atlas Coffee Table in Costa Black has a height of 26.5 cm.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -10679,7 +11200,22 @@
         "private person's name"
       ]
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "order",
+        "lead_time"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Dining Table",
+      "variantHints": [
+        "200x95",
+        "fumed oak"
+      ],
+      "factsAsked": [
+        "lead time"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -10799,6 +11335,9 @@
     },
     "facts": [],
     "conflicts": [],
+    "missing": [
+      "Atlas Dining Table: lead time"
+    ],
     "flags": [
       {
         "level": "red",
@@ -10814,8 +11353,12 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Dining Table: lead time: I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for your request. I’ll check the lead time for the Atlas Dining Table and get back to you shortly. Our team will also follow up to process the order and arrange delivery.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -10830,7 +11373,23 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "material_finish",
+        "other"
+      ],
+      "family": "Nebra",
+      "productName": "Nebra Floor Lamp",
+      "variantHints": [
+        "white"
+      ],
+      "factsAsked": [
+        "shade material",
+        "dimmed",
+        "another colour"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -10926,6 +11485,9 @@
       }
     ],
     "conflicts": [],
+    "missing": [
+      "Nebra Floor Lamp: dimmable"
+    ],
     "flags": [
       {
         "level": "yellow",
@@ -10937,8 +11499,12 @@
       }
     ],
     "status": "yellow",
-    "draft": "AI unavailable, facts only.\n\n- Nebra Floor Lamp: Material: Pleated shade in PES (polyester) textile pressed with a stiff plastic film; LED module in cast aluminium; steel tubes (Nebra Floor - Fact Sheet + Disassembly.pdf p.1)\n- Nebra Floor Lamp: Variants in products.csv: White (products.csv SKU 22250)\n- Nebra Floor Lamp: Colours on fact sheet: One version only: 22250 Floor Lamp (Nebra Floor - Fact Sheet + Disassembly.pdf p.2)\n- Nebra Floor Lamp: dimmable: I'll check this with the team and come back to you.",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Nebra Floor Lamp features a pleated shade made of PES (polyester) textile pressed with a stiff plastic film, supported by steel tubes and an LED module in cast aluminium. Currently the lamp is available in a white finish only.\n\nI’ll check with our team regarding dimmable functionality and get back to you.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -10953,7 +11519,22 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "material_finish",
+        "other"
+      ],
+      "family": "Tembo",
+      "productName": "Tembo Lounge Chair",
+      "variantHints": [
+        "leather"
+      ],
+      "factsAsked": [
+        "upholstered in leather",
+        "price category"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -11258,9 +11839,24 @@
         }
       ],
       "ambiguous": true,
-      "unmatchedHints": []
+      "unmatchedHints": [
+        "leather"
+      ]
     },
     "facts": [
+      {
+        "label": "Tembo Lounge Chair: Material",
+        "value": "Upholstery, steel corpus, moulded foam core and wooden feet",
+        "source": "Tembo Lounge Chair New Works Fact Sheet.pdf p.2",
+        "skus": [
+          "40101-A",
+          "40101-B",
+          "40101-C",
+          "40101-D",
+          "40101-E",
+          "40101-F"
+        ]
+      },
       {
         "label": "Tembo Lounge Chair: Price category of Hallingdal 65",
         "value": "Category C",
@@ -11289,6 +11885,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "green",
@@ -11296,8 +11893,12 @@
       }
     ],
     "status": "green",
-    "draft": "AI unavailable, facts only.\n\n- Tembo Lounge Chair: Price category of Hallingdal 65: Category C (Tembo Lounge Chair New Works Fact Sheet.pdf p.3)\n- Tembo Lounge Chair: Leather upholstery: Upholstery with leather not possible (Tembo Lounge Chair New Works Fact Sheet.pdf p.2)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThe Tembo Lounge Chair cannot be upholstered in leather. The price category for the Hallingdal option is Category C.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   },
   {
     "email": {
@@ -11312,7 +11913,18 @@
       "containsPersonalData": false,
       "redactedFields": []
     },
-    "extraction": null,
+    "extraction": {
+      "intents": [
+        "certificate"
+      ],
+      "family": "Atlas",
+      "productName": "Atlas Dining Table",
+      "variantHints": [],
+      "factsAsked": [
+        "test certificates"
+      ],
+      "provider": "Groq"
+    },
     "resolution": {
       "matches": [
         {
@@ -11537,6 +12149,7 @@
       }
     ],
     "conflicts": [],
+    "missing": [],
     "flags": [
       {
         "level": "red",
@@ -11544,7 +12157,11 @@
       }
     ],
     "status": "red",
-    "draft": "AI unavailable, facts only.\n\n- Atlas Dining Table: Certificates: EN 15372:2023 (strength, durability and safety, non-domestic tables), test severity L2; FSC Mix (wood); factory certifications ISO 14001, ISO 50001, ISO 9001. The test report itself is not in the data. (Atlas Dining Table - Fact Sheet + Disassembly Guide.pdf p.3)",
-    "aiUsed": false
+    "draft": "Hi,\n\nThank you for your request. The Atlas Dining Table is certified to EN 15372:2023 (strength, durability and safety, non‑domestic tables) with test severity L2, and the wood is FSC Mix. The factory also holds ISO 14001, ISO 50001 and ISO 9001 certifications. I will check with our team regarding the specific test certificates and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "aiUsed": true,
+    "ai": {
+      "extract": "Groq",
+      "draft": "Groq"
+    }
   }
 ]
