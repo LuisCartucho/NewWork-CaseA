@@ -1,0 +1,153 @@
+sku,name,family,category,variant,width_cm,depth_cm,height_cm,weight_kg,material,lead_time_weeks,made_to_order,rrp_dkk,status
+42730,Atlas Stool,Atlas,Stool,Natural Oak,32,32,44,8.49,Solid Oak,,false,3995,active
+42731,Atlas Stool,Atlas,Stool,Fumed Oak,32,32,44,8.49,Fumed Oak,,false,4495,active
+42732,Atlas Stool,Atlas,Stool,Espresso,32,32,44,9.2,FSC MDF,,false,1995,active
+42733,Atlas Stool,Atlas,Stool,Burgundy,32,32,44,9.2,FSC MDF,,false,1995,active
+42734,Atlas Stool,Atlas,Stool,Creme,32,32,44,9.2,FSC MDF,,false,1995,active
+42735,Atlas Stool,Atlas,Stool,"Round, Espresso",36,36,44,11,FSC MDF,,false,1995,active
+42736,Atlas Stool,Atlas,Stool,"Round, Burgundy",36,36,44,11,FSC MDF,,false,1995,active
+42737,Atlas Stool,Atlas,Stool,"Round, Creme",36,36,44,11,FSC MDF,,false,1995,active
+42610,Atlas Coffee Table,Atlas,Coffee Table,"82x82, Unfilled Travertine",82,82,26.5,80,Marble,,false,14995,active
+42611,Atlas Coffee Table,Atlas,Coffee Table,"82x82, Costa Black",82,82,26.5,80,Marble,,false,14995,active
+42612,Atlas Coffee Table,Atlas,Coffee Table,"82x82, Gris Du Marais",82,82,26.5,80,Marble,,false,18995,active
+42620,Atlas Coffee Table,Atlas,Coffee Table,"60x60, Unfilled Travertine",60,60,36,60,Marble,,false,12995,active
+42621,Atlas Coffee Table,Atlas,Coffee Table,"60x60, Costa Black",60,60,36,60,Marble,,false,12995,active
+42622,Atlas Coffee Table,Atlas,Coffee Table,"60x60, Gris Du Marais",60,60,36,60,Marble,,false,15995,active
+42630,Atlas Coffee Table,Atlas,Coffee Table,"82x82, Natural Oak",82,82,26.5,25,Solid Oak,,false,13995,active
+42631,Atlas Coffee Table,Atlas,Coffee Table,"82x82, Fumed Oak",82,82,26.5,25,Solid Oak,,false,14995,active
+42640,Atlas Coffee Table,Atlas,Coffee Table,"60x60, Natural Oak",60,60,36,18,Solid Oak,,false,9995,active
+42641,Atlas Coffee Table,Atlas,Coffee Table,"60x60, Fumed Oak",60,60,36,18,Solid Oak,,false,10995,active
+42710,Atlas Dining Table,Atlas,Dining Table,"200x95, Natural Oak",200,95,74,46,Solid Oak,,false,34995,active
+42711,Atlas Dining Table,Atlas,Dining Table,"200x95, Fumed Oak",200,95,74,46,Solid Oak,,false,36995,active
+42720,Atlas Dining Table,Atlas,Dining Table,"250x95, Natural Oak",250,95,74,56,Solid Oak,,false,39995,active
+42721,Atlas Dining Table,Atlas,Dining Table,"250x95, Fumed Oak",250,95,74,56,Solid Oak,,false,42995,active
+20410,Kizu Table Lamp Large,Kizu,Table Lamp,"White Marble, EU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20410AU,Kizu Table Lamp Large,Kizu,Table Lamp,"White Marble, AU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20410CN,Kizu Table Lamp Large,Kizu,Table Lamp,"White Marble, CN",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20410UK,Kizu Table Lamp Large,Kizu,Table Lamp,"White Marble, UK",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20410US,Kizu Table Lamp Large,Kizu,Table Lamp,"White Marble, US",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20411,Kizu Table Lamp Large,Kizu,Table Lamp,"Black Marble, EU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20411AU,Kizu Table Lamp Large,Kizu,Table Lamp,"Black Marble, AU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20411CN,Kizu Table Lamp Large,Kizu,Table Lamp,"Black Marble, CN",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20411UK,Kizu Table Lamp Large,Kizu,Table Lamp,"Black Marble, UK",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20411US,Kizu Table Lamp Large,Kizu,Table Lamp,"Black Marble, US",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20412,Kizu Table Lamp Large,Kizu,Table Lamp,"Gris du Marais, EU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20412AU,Kizu Table Lamp Large,Kizu,Table Lamp,"Gris du Marais, AU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20412CN,Kizu Table Lamp Large,Kizu,Table Lamp,"Gris du Marais, CN",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20412UK,Kizu Table Lamp Large,Kizu,Table Lamp,"Gris du Marais, UK",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20412US,Kizu Table Lamp Large,Kizu,Table Lamp,"Gris du Marais, US",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20413,Kizu Table Lamp Large,Kizu,Table Lamp,"Breccia Pernice, EU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20413AU,Kizu Table Lamp Large,Kizu,Table Lamp,"Breccia Pernice, AU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20413CN,Kizu Table Lamp Large,Kizu,Table Lamp,"Breccia Pernice, CN",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20413UK,Kizu Table Lamp Large,Kizu,Table Lamp,"Breccia Pernice, UK",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20413US,Kizu Table Lamp Large,Kizu,Table Lamp,"Breccia Pernice, US",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20414,Kizu Table Lamp Large,Kizu,Table Lamp,"Rosso Levanto, EU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20414AU,Kizu Table Lamp Large,Kizu,Table Lamp,"Rosso Levanto, AU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20414CN,Kizu Table Lamp Large,Kizu,Table Lamp,"Rosso Levanto, CN",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20414UK,Kizu Table Lamp Large,Kizu,Table Lamp,"Rosso Levanto, UK",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20414US,Kizu Table Lamp Large,Kizu,Table Lamp,"Rosso Levanto, US",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20415,Kizu Table Lamp Large,Kizu,Table Lamp,"Kunis Breccia, Large, EU",30,30,45,5.6,Acrylic; Marble,,false,3495,active
+20415AU,Kizu Table Lamp Large,Kizu,Table Lamp,"Kunis Breccia, AU",30,30,45,7.8,Acrylic; Marble,,false,3495,active
+20415UK,Kizu Table Lamp Large,Kizu,Table Lamp,"Kunis Breccia, UK",30,30,45,7.8,Acrylic; Marble,,false,3495,active
+20415US,Kizu Table Lamp Large,Kizu,Table Lamp,"Kunis Breccia, US",30,30,45,7.8,Acrylic; Marble,,false,3495,active
+20420,Kizu Table Lamp Small,Kizu,Table Lamp,"White Marble, EU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20420AU,Kizu Table Lamp Small,Kizu,Table Lamp,"White Marble, AU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20420CN,Kizu Table Lamp Small,Kizu,Table Lamp,"White Marble, CN",25,25,35,3,Acrylic; Marble,,false,2795,active
+20420UK,Kizu Table Lamp Small,Kizu,Table Lamp,"White Marble, UK",25,25,35,3,Acrylic; Marble,,false,2795,active
+20420US,Kizu Table Lamp Small,Kizu,Table Lamp,"White Marble, US",25,25,35,3,Acrylic; Marble,,false,2795,active
+20421,Kizu Table Lamp Small,Kizu,Table Lamp,"Black Marble, EU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20421AU,Kizu Table Lamp Small,Kizu,Table Lamp,"Black Marble, AU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20421CN,Kizu Table Lamp Small,Kizu,Table Lamp,"Black Marble, CN",25,25,35,3,Acrylic; Marble,,false,2795,active
+20421UK,Kizu Table Lamp Small,Kizu,Table Lamp,"Black Marble, UK",25,25,35,3,Acrylic; Marble,,false,2795,active
+20421US,Kizu Table Lamp Small,Kizu,Table Lamp,"Black Marble, US",25,25,35,3,Acrylic; Marble,,false,2795,active
+20422,Kizu Table Lamp Small,Kizu,Table Lamp,"Gris du Marais, EU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20422AU,Kizu Table Lamp Small,Kizu,Table Lamp,"Gris du Marais, AU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20422CN,Kizu Table Lamp Small,Kizu,Table Lamp,"Gris du Marais, CN",25,25,35,3,Acrylic; Marble,,false,2795,active
+20422UK,Kizu Table Lamp Small,Kizu,Table Lamp,"Gris du Marais, UK",25,25,35,3,Acrylic; Marble,,false,2795,active
+20422US,Kizu Table Lamp Small,Kizu,Table Lamp,"Gris du Marais, US",25,25,35,3,Acrylic; Marble,,false,2795,active
+20423,Kizu Table Lamp Small,Kizu,Table Lamp,"Breccia Pernice, EU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20423AU,Kizu Table Lamp Small,Kizu,Table Lamp,"Breccia Pernice, AU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20423CN,Kizu Table Lamp Small,Kizu,Table Lamp,"Breccia Pernice, CN",25,25,35,3,Acrylic; Marble,,false,2795,active
+20423UK,Kizu Table Lamp Small,Kizu,Table Lamp,"Breccia Pernice, UK",25,25,35,3,Acrylic; Marble,,false,2795,active
+20423US,Kizu Table Lamp Small,Kizu,Table Lamp,"Breccia Pernice, US",25,25,35,3,Acrylic; Marble,,false,2795,active
+20424,Kizu Table Lamp Small,Kizu,Table Lamp,"Rosso Levanto, EU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20424AU,Kizu Table Lamp Small,Kizu,Table Lamp,"Rosso Levanto, AU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20424CN,Kizu Table Lamp Small,Kizu,Table Lamp,"Rosso Levanto, CN",25,25,35,3,Acrylic; Marble,,false,2795,active
+20424UK,Kizu Table Lamp Small,Kizu,Table Lamp,"Rosso Levanto, UK",25,25,35,3,Acrylic; Marble,,false,2795,active
+20424US,Kizu Table Lamp Small,Kizu,Table Lamp,"Rosso Levanto, US",25,25,35,3,Acrylic; Marble,,false,2795,active
+20425,Kizu Table Lamp Small,Kizu,Table Lamp,"Kunis Breccia, Small, EU",25,25,35,3,Acrylic; Marble,,false,2795,active
+20425AU,Kizu Table Lamp Small,Kizu,Table Lamp,"Kunis Breccia, AU",25,25,35,4.4,Acrylic; Marble,,false,2795,active
+20425UK,Kizu Table Lamp Small,Kizu,Table Lamp,"Kunis Breccia, UK",25,25,35,4.4,Acrylic; Marble,,false,2795,active
+20425US,Kizu Table Lamp Small,Kizu,Table Lamp,"Kunis Breccia, US",25,25,35,4.4,Acrylic; Marble,,false,2795,active
+45110,Rand Side Table,Rand Tables,Side Table,Black,40,40,48.4,12.75,carbon steel,,,2495,active
+45111,Rand Side Table,Rand Tables,Side Table,Stainless Steel,40,40,48.4,12.75,S/S 304,,,3995,active
+22110,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø60, Black, EU/AU/UK",60,60,51,6.9,Aluminium; Steel,,false,6495,active
+22110US,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø60, Black, US",60,60,51,6.9,Aluminium; Steel,,false,6495,active
+22111,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø60, Nickel Plated, EU/AU/UK",60,60,51,6.9,Aluminium; Steel,,false,6495,active
+22111US,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø60, Nickel Plated, US",60,60,51,6.9,Aluminium; Steel,,false,6495,active
+22120,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø55, Black, EU/AU/UK",55,55,40,5.8,Aluminium; Steel,,false,6495,active
+22120US,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø55, Black, US",55,55,40,5.8,Aluminium; Steel,,false,6495,active
+22121,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø55, Nickel Plated, EU/AU/UK",55,55,40,5.8,Aluminium; Steel,,false,6495,active
+22121US,Kantarell Pendant Lamp,Kantarell,Pendant,"Ø55, Nickel Plated, US",55,55,40,5.8,Aluminium; Steel,,false,6495,active
+21240,Tense Pendant Lamp,Tense,Pendant,"Ø55, EU/UK/AU",55,55,10,0.7,Tyvek,,false,3295,active
+21240US,Tense Pendant Lamp,Tense,Pendant,"Ø55, US",55,55,10,0.7,Tyvek,,false,3295,active
+21230,Tense Pendant Lamp,Tense,Pendant,"Ø70, EU/UK/AU",70,70,14,0.9,Tyvek,,false,3795,active
+21230US,Tense Pendant Lamp,Tense,Pendant,"Ø70, US/JP",70,70,14,0.9,Tyvek,,false,3795,active
+21210,Tense Pendant Lamp,Tense,Pendant,"Ø90, EU/UK/AU",90,90,17,1.3,Tyvek,,false,4295,active
+21210US,Tense Pendant Lamp,Tense,Pendant,"Ø90, US/JP",90,90,17,1.3,Tyvek,,false,4295,active
+21220,Tense Pendant Lamp,Tense,Pendant,"Ø120, EU/UK/AU",120,120,20,1.5,Tyvek,,false,4795,active
+21220US,Tense Pendant Lamp,Tense,Pendant,"Ø120, US/JP",120,120,20,1.5,Tyvek,,false,4795,active
+22250,Nebra Floor Lamp,Nebra,Floor Lamp,White,40,40,148-175,8.4,ABS; Steel; Textile,,false,6995,active
+20310,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Smoked Oak w. White Opal Glass, EU",23,23,23.5,10.2,Glass; Oak,,false,1995,active
+20310AU,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Smoked Oak w. White Opal Glass, AU",23,23,,10.2,Glass; Oak,,false,1995,active
+20310UK,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Smoked Oak w. White Opal Glass, UK",23,23,23,10.2,Glass; Oak,,false,1995,active
+20310US,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Smoked Oak w. White Opal Glass, US",23,23,,10.2,Glass; Oak,,false,1995,active
+20311,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Black Marquina w. Smoked Glass, EU",23,23,23.5,11.55,Glass; Marble,,false,2295,active
+20311AU,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Black Marquina w. Smoked Glass, AU",23,23,,11.55,Glass; Marble,,false,2295,active
+20311UK,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Black Marquina w. Smoked Glass, UK",23,23,,11.55,Glass; Marble,,false,2295,active
+20311US,Karl-Johan Table Lamp,Karl-Johan,Table Lamp,"Black Marquina w. Smoked Glass, US",23,23,,11.55,Glass; Marble,,false,2295,active
+21520,Brolly Pendant Lamp,Brolly,Pendant,"Ø70, Black Anodised Aluminium, EU/AU/UK",70,70,29,3,Aluminium; PC; Steel,,false,6995,active
+21520US,Brolly Pendant Lamp,Brolly,Pendant,"Ø70, Black Anodized Aluminium, US",70,70,29,3,Aluminium; PC; Steel,,false,6995,active
+21530,Brolly Pendant Lamp,Brolly,Pendant,"Ø90, Black Anodised Aluminium, EU/AU/UK",90,90,32,4,Aluminium; PC; Steel,,false,8995,active
+21530US,Brolly Pendant Lamp,Brolly,Pendant,"Ø90, Black Anodized Aluminium, US",90,90,32,4,Aluminium; PC; Steel,,false,8995,active
+40101-A,Tembo Lounge Chair,Tembo,Lounge Chair,A,96.3,81,101.5,21,Oak; Upholstered,6-8,,15995,active
+40101-B,Tembo Lounge Chair,Tembo,Lounge Chair,B,96.3,81,101.5,21,Oak; Upholstered,6-8,,17495,active
+40101-C,Tembo Lounge Chair,Tembo,Lounge Chair,C,96.3,81,101.5,21,Oak; Upholstered,6-8,,18995,active
+40101-D,Tembo Lounge Chair,Tembo,Lounge Chair,D,96.3,81,101.5,21,Oak; Upholstered,6-8,,19995,active
+40101-E,Tembo Lounge Chair,Tembo,Lounge Chair,E,96.3,81,101.5,21,Oak; Upholstered,6-8,,21995,active
+40101-F,Tembo Lounge Chair,Tembo,Lounge Chair,F,96.3,81,101.5,,"Upholstery, steel corpus, moulded foam core, wooden feet",6-8,,25995,active
+42220,Covent Club Chair,Covent,Lounge Chair,COM,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,6-8,true,9995,active
+42220-A,Covent Club Chair,Covent,Lounge Chair,A,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,6-8,true,9995,active
+42220-B,Covent Club Chair,Covent,Lounge Chair,B,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,6-8,true,10995,active
+42220-C,Covent Club Chair,Covent,Lounge Chair,C,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,6-8,true,11995,active
+42220-D,Covent Club Chair,Covent,Lounge Chair,D,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,6-8,true,12995,active
+42220-E,Covent Club Chair,Covent,Lounge Chair,E,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,6-8,true,13995,active
+42220-F,Covent Club Chair,Covent,Lounge Chair,F,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,6-8,true,16995,active
+42220NEBA024,Covent Club Chair,Covent,Dining Chair,Barnum 024,60,54.5,80,11.2,MDF; Mold; fabric; fibertex; foam; gliders; plywood; screws; steel; wadding; zipper,,false,10995,active
+42430,Tana Wall Shelf,New Works,Shelf,Oak,75,18.6,17.5,3.5,Veneer (wood),,false,1595,active
+42431,Tana Wall Shelf,New Works,Shelf,Black Stained Oak,75,18.6,17.5,3.5,Veneer (wood),,false,1595,active
+42432,Tana Wall Shelf,New Works,Shelf,Walnut,75,18.6,17.5,3.5,Veneer (wood),,false,1595,active
+44830,Coupe Stool / Bar Stool,,Stool,"Coupe Stool, Stainless Steel",40,40,46,11.8,Steel,,,3995,active
+44831,Coupe Stool / Bar Stool,,Stool,"Coupe Stool, Black",40,40,46,11.8,carbon steel,,,1995,active
+44820,Coupe Stool / Bar Stool,,Stool,"Coupe Bar Stool, Stainless Steel, 65",40,40,66,13.6,Steel,,,4995,active
+44821,Coupe Stool / Bar Stool,,Stool,"Coupe Bar Stool, Black, 65",40,40,66,13.6,carbon steel,,,2995,active
+44810,Coupe Stool / Bar Stool,,Stool,"Coupe Bar Stool, Stainless Steel, 75",40,40,76,14.8,Steel,,,4995,active
+44811,Coupe Stool / Bar Stool,,Stool,"Coupe Bar Stool, Black, 75",40,40,76,14.8,carbon steel,,,2995,active
+43250,May Lounge Armchair,May,Outdoor Table,Dark Green,59,62.8,71.9,13,Steel,,false,3195,active
+43251,May Lounge Armchair,May,Outdoor Table,Light Grey,59,62.8,71.9,13,Steel,,false,3195,active
+12110,Knot Rug,Knot,Rug,"200 x 300, Off-White",200,300,2,28.2,Recycled PET,,false,11995,active
+12111,Knot Rug,Knot,Rug,"200 x 300, Warm Grey",200,300,2,28.2,Recycled PET,,false,11995,active
+12112,Knot Rug,Knot,Rug,"200 x 300, Soft Brown",200,300,2,28.2,Recycled PET,,false,11995,active
+12120,Knot Rug,Knot,Rug,"300 x 400, Off-White",300,400,2.7,63.5,Recycled PET,,false,24995,active
+12121,Knot Rug,Knot,Rug,"300 x 400, Warm Grey",300,400,2.7,63.5,Recycled PET,,false,24995,active
+12122,Knot Rug,Knot,Rug,"300 x 400, Soft Brown",300,400,2.7,63.5,Recycled PET,,false,24995,active
+11610,Pleat Pitcher,Pleat,Pitcher/Vase,,9,9,21,0.5,Steel,,false,699,discontinued
+10301,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Com. Set, Opal White/Bronze/Green+Lid",11,11,14.5,1.3,Glass,,false,799,discontinued
+10303,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Com. Set, Grey/Fuchsia/Opal White+Lid",11,11,14.5,1.3,Glass,,false,799,discontinued
+10310,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Opal White, Glass Vase",11,11,12,0.9,Glass,,false,249,discontinued
+10311,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Green, Glass Vase",11,11,12,0.9,Glass,,false,249,discontinued
+10312,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Grey, Glass Vase",11,11,12,0.9,Glass,,false,249,discontinued
+10320,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Bronce/Green, Set of Glass Rings",11,11,10,0.8,Glass,,false,449,discontinued
+10321,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Amber/Brown, Set of Glass Rings",11,11,10,0.8,Glass,,false,449,discontinued
+10322,Pi-No-Pi-No Vase,Pi-No-Pi-No,Vase,"Fuchsia/Opal White, Set of Glass Ring",11,11,10,0.8,Glass,,false,449,discontinued
+10330,Pi-No-Pi-No Vase,Pi-No-Pi-No,Lid,"Oak Wood, Lid",11,11,2.5,0.3,Oak,,false,99,discontinued
