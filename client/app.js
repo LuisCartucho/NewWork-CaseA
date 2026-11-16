@@ -56,7 +56,12 @@ function detail(r) {
       </div>
     </header>
 
-    <!-- Left: the conversation (email, then reply, then why). Right: what it's based on. -->
+    <section class="card flags flags-${r.status}" aria-label="Why this status">
+      <h2>Why ${esc(STATUS[r.status].short.toLowerCase())}</h2>
+      <ul>${r.flags.map((f) => `<li class="flag flag-${f.level}"><span class="dot" aria-hidden="true"></span><span>${esc(f.reason)}</span></li>`).join("")}</ul>
+    </section>
+
+    <!-- Left: the conversation (email, then reply). Right: what it's based on. -->
     <div class="grid">
       <div class="col">
         <section class="card">
@@ -74,11 +79,6 @@ function detail(r) {
             <button class="btn" id="copy">Copy draft</button>
             <span class="muted small" id="copied" role="status"></span>
           </div>
-        </section>
-
-        <section class="card flags flags-${r.status}" aria-label="Why this status">
-          <h2>Why ${esc(STATUS[r.status].short.toLowerCase())}</h2>
-          <ul>${r.flags.map((f) => `<li class="flag flag-${f.level}"><span class="dot" aria-hidden="true"></span><span>${esc(f.reason)}</span></li>`).join("")}</ul>
         </section>
       </div>
 
