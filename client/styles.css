@@ -62,9 +62,7 @@ main { max-width: 1180px; margin: 0 auto; padding: 24px; outline: none; }
 .empty { text-align: center; padding: 64px 16px; }
 .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
 .col { min-width: 0; }
-.grid-even { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
-.grid-even > .card { display: flex; flex-direction: column; }
-@media (max-width: 860px) { .grid, .grid-even { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); } }
 .detail, .card, .page-head { min-width: 0; overflow-wrap: anywhere; }
 
 /* status dots, pills, badges */
