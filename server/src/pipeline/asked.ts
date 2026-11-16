@@ -25,7 +25,8 @@ const KEYWORDS: [Field, RegExp][] = [
   ["outdoor", /outside|outdoors?|near the sea|all year|weather/],
   ["care", /\bstain(s|ed|ing)?\b|children|sealed|clean/], // \b: not "stainless"
   ["availability", /still available|discontinued|in stock|\bavailable\b/],
-  ["price", /price|\bcosts?\b|wholesale|discount|\brrp\b/], // \b: not "Costa Black"
+  // \b: not "Costa Black"; lookahead: "price category" is a fabric question (fabric_category), not a price
+  ["price", /\bprices?\b(?!\s+category)|\bcosts?\b|wholesale|discount|\brrp\b/],
 ];
 
 const FROM_INTENT: Partial<Record<Intent, Field[]>> = {

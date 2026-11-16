@@ -226,7 +226,7 @@ function fabricNames(value: string): string[] {
 function withUnit(value: string, unit: string): string {
   if (!unit) return value;
   const n = leadingNumber(value);
-  if (!n) return value;
+  if (!n) return /\d/.test(value) ? `${value} ${unit}` : value; // "H 35 x W 30 x D 30" -> "… cm"
   const rest = value.trim().slice(value.trim().match(/^[\d.,\s-]+/)![0].trimEnd().length);
   return `${n} ${unit}${rest}`;
 }

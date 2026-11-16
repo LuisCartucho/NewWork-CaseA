@@ -14,7 +14,20 @@ for (const email of data.emails) {
   results.push(await runPipeline(email, data));
   console.log(email.id, ICON[results.at(-1)!.status]);
 }
-// TODO step 4: duplicate grouping (same retailer + same body).
+// Duplicates: same retailer + same subject + same body -> answer once (M007 = M015).
+// Same question from DIFFERENT retailers (M003 / M020) is not a duplicate: both need a reply.
+const seen = new Map<string, string>();
+for (const r of results) {
+  const key = [r.email.from_retailer, r.email.subject, r.email.body].map((s) => s.trim().toLowerCase()).join("\u0000");
+  const first = seen.get(key);
+  if (first) {
+    r.duplicateOf = first;
+    r.flags.unshift({ level: "yellow", reason: `Duplicate of ${first} (same retailer, same text). Reply once.` });
+    if (r.status === "green") r.status = "yellow";
+  } else {
+    seen.set(key, r.email.id);
+  }
+}
 
 fs.mkdirSync(config.paths.results, { recursive: true });
 fs.writeFileSync(path.join(config.paths.results, "results.json"), JSON.stringify(results, null, 2));

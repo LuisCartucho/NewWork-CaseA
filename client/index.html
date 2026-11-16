@@ -7,15 +7,21 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Retailer Inbox Helper</h1>
-    <nav>
-      <a href="#inbox">Inbox</a>
-      <a href="#try">Try your own email</a>
-      <a href="#issues">Data issues</a>
+  <header class="topbar">
+    <a class="brand" href="#inbox">
+      <span class="brand-mark" aria-hidden="true">NW</span>
+      <span>Retailer Inbox Helper</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#inbox" data-nav="inbox">Inbox</a>
+      <a href="#try" data-nav="try">Try your own email</a>
+      <a href="#issues" data-nav="issues">Data issues</a>
     </nav>
   </header>
-  <main id="app">Loading…</main>
+  <main id="app" tabindex="-1">Loading…</main>
+  <footer class="foot">
+    Drafts only. Every answer comes from products.csv and the fact sheets, with its source. Prices, orders and personal data always go to a person.
+  </footer>
   <script src="app.js"></script>
 </body>
 </html>

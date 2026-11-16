@@ -31,6 +31,9 @@ export async function runPipeline(email: Email, data: Data): Promise<PipelineRes
     flags.push({ level: "red", reason: `The draft contains numbers not found in our data (${bad.join(", ")}). Do not send without checking.` });
   }
 
+  const rank = { red: 0, yellow: 1, green: 2 } as const;
+  flags.sort((a, b) => rank[a.level] - rank[b.level]); // most serious reason first
+
   return {
     email: { ...email, body: redaction.redactedBody }, // never keep the unredacted body
     redaction, extraction, resolution,
