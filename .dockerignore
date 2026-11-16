@@ -1,0 +1,14 @@
+# Never send secrets or local build output into the image.
+**/.env
+**/node_modules
+**/dist
+.git
+.idea
+*.log
+
+# Not needed at runtime: the app reads fact_sheet_facts.json, not the PDFs or their text.
+server/data/fact_sheets
+server/data/fact_sheets_text
+server/scripts
+server/src/**/*.test.ts
+docs

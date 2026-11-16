@@ -130,8 +130,10 @@ NewWork-CaseA/
 │           ├── numberCheck.ts 7. no unknown numbers         (code)
 │           └── *.test.ts      Tests next to the code they test
 ├── docs/data_issues.md        Hand-checked comparison of products.csv and the fact sheets
-├── package.json               Root scripts for hosting (build / start from the repo root)
-└── render.yaml                Render blueprint (alternative to Fly.io)
+├── Dockerfile                 Two-stage image: compile TypeScript, then slim runtime (non-root)
+├── .dockerignore              Keeps .env, node_modules, PDFs and tests out of the image
+├── fly.toml                   Fly.io app config (region, health check, auto-stop)
+└── package.json               Root convenience scripts (npm run dev / batch from the repo root)
 ```
 
 ### API
@@ -170,16 +172,28 @@ npm run dev               # http://localhost:3000, reloads on save
 
 Without any AI key the app runs in facts-only mode. `.env` is git-ignored; never commit keys.
 
-## Deploy
+## Deploy (Fly.io)
 
-The host does not run the batch: the Inbox reads the committed `server/results/results.json`.
-Run `npm run batch` locally and commit `server/results/` before deploying.
+Live at **https://newworks-inbox-helper.fly.dev** (basic auth). One small machine in Stockholm
+(`arn`) that stops when idle and starts on the next request, so the first page load after a
+quiet period takes a few seconds.
 
-Set `BASIC_AUTH_USER`, `BASIC_AUTH_PASS`, `GEMINI_API_KEY` and `GROQ_API_KEY` as secrets on the host,
-and point its health check at `/health`. The app reads `PORT` from the environment.
+The server does not run the batch: the Inbox reads the committed `server/results/results.json`.
+To update what the Inbox shows, run `npm run batch` locally, commit `server/results/`, then deploy.
 
-- **Fly.io** (planned): Dockerfile + `fly.toml` to be added; secrets via `fly secrets set`.
-- **Render**: New → Blueprint → pick the repo (uses `render.yaml`).
+```
+fly deploy --ha=false                      # build on Fly's servers and roll out (one machine)
+fly secrets set BASIC_AUTH_PASS=...        # change a secret (restarts the app)
+fly secrets list                           # names only; values are never shown
+fly logs                                   # live server logs, including [llm] fallbacks
+```
+
+Secrets on Fly: `BASIC_AUTH_USER`, `BASIC_AUTH_PASS`, `GEMINI_API_KEY`, `GROQ_API_KEY`,
+`GEMINI_MODEL`, `GROQ_MODEL`. They live only in Fly, never in `fly.toml` or the image.
+The deployed app uses its own strong password, separate from your local `.env`.
+
+`--ha=false` keeps a single machine; by default Fly starts two for redundancy, which a demo
+doesn't need. The health check (`/health`) needs no login and returns no data.
 
 ## Known limitations
 

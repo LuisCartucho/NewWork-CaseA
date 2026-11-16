@@ -1,0 +1,29 @@
+# Fly.io config. Secrets (never in this file) are set with:
+#   fly secrets set BASIC_AUTH_USER=... BASIC_AUTH_PASS=... GEMINI_API_KEY=... GROQ_API_KEY=...
+app = "newworks-inbox-helper"
+primary_region = "arn" # Stockholm: closest region to Denmark
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "3000"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  # Sleep when idle, wake on the next request: costs next to nothing for a demo.
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/health" # no auth, no data
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
