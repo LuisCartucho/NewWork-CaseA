@@ -1,17 +1,11 @@
 // Plain JS, no build step. Hash routing:
-//   #inbox · #email/M001 · #try · #issues
+//   #inbox · #email/M001 (both: the Inbox split view) · #try · #issues
 // Every piece of data is escaped with esc() before it goes into innerHTML.
 const app = document.getElementById("app");
-
-// Status in action words, never colour names. Order = the order sections appear in.
-const STATUS = {
-  red: { label: "Needs a person", tag: "Person", heading: "What needs a person", icon: "!" },
-  yellow: { label: "Check before sending", tag: "Check", heading: "What to check", icon: "?" },
-  green: { label: "Ready to send", tag: "Ready", heading: "Why it's ready", icon: "✓" },
-};
-const STATUS_ORDER = ["red", "yellow", "green"];
+const pop = document.getElementById("popover");
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 
 async function getJson(url, opts) {
   const res = await fetch(url, opts);
@@ -20,24 +14,74 @@ async function getJson(url, opts) {
   return body;
 }
 
-// Results are loaded once per page load and reused by Inbox and Email detail.
-let resultsCache = null;
-const loadResults = async () => (resultsCache ??= await getJson("/api/results"));
+// Loaded once per page load and reused by every view.
+// The promise is shared so two callers at start-up get the same array (not two separate fetches).
+let resultsCache = null, resultsPromise = null;
+const loadResults = () => (resultsPromise ??= getJson("/api/results")
+  .then((r) => (resultsCache = r), (e) => { resultsPromise = null; throw e; }));
+let issuesCache = null, issuesPromise = null;
+const loadIssues = () => (issuesPromise ??= getJson("/api/data-issues")
+  .then((r) => (issuesCache = r), (e) => { issuesPromise = null; throw e; }));
+
+// ---------- status ----------
+
+const svg = (body) => `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+const ICON = {
+  check: svg(`<path d="M3.5 8.5l3 3 6-7"/>`),
+  alert: svg(`<circle cx="8" cy="8" r="6.25"/><path d="M8 4.75v3.5"/><circle cx="8" cy="11.1" r=".6" fill="currentColor"/>`),
+  person: svg(`<circle cx="8" cy="5.25" r="2.6"/><path d="M2.75 13.75c.6-2.7 2.8-4.25 5.25-4.25s4.65 1.55 5.25 4.25"/>`),
+};
+
+// Pipeline statuses are green/yellow/red; the UI only ever says Ready / Check / Person.
+const STATUS = {
+  green: { tag: "Ready", label: "Ready to send", cls: "ready", icon: ICON.check },
+  yellow: { tag: "Check", label: "Check before sending", cls: "check", icon: ICON.alert },
+  red: { tag: "Person", label: "Needs a person", cls: "person", icon: ICON.person },
+};
+const STATUS_ORDER = ["red", "yellow", "green"];
+
+/** Icon + word, never colour alone. */
+const statusLabel = (status, long = false) =>
+  `<span class="st st-${STATUS[status].cls}">${STATUS[status].icon}<span>${esc(long ? STATUS[status].label : STATUS[status].tag)}</span></span>`;
+
+// ---------- handled (per browser) ----------
+
+const HANDLED_KEY = "nw-inbox-handled";
+const handled = new Set((() => {
+  try { return JSON.parse(localStorage.getItem(HANDLED_KEY)) || []; } catch { return []; }
+})());
+const saveHandled = () => { try { localStorage.setItem(HANDLED_KEY, JSON.stringify([...handled])); } catch { /* private mode */ } };
+const isHandled = (r) => handled.has(r.email.id);
+/** Identical emails are one conversation and one reply, so they are handled together. */
+function setHandled(r, on) {
+  for (const id of [r.email.id, ...(r.identicalTo ?? [])]) on ? handled.add(id) : handled.delete(id);
+  saveHandled();
+  updateNavCounts();
+}
+
+/** One row per conversation (identical emails grouped, like Gmail): open ones first (Person, Check, Ready; oldest first), handled ones last. */
+const rows = () => (resultsCache ?? []).filter((r) => !r.duplicateOf)
+  .sort((a, b) => isHandled(a) - isHandled(b)
+    || STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status)
+    || a.email.date.localeCompare(b.email.date) || a.email.id.localeCompare(b.email.id));
+
+function updateNavCounts() {
+  const inboxEl = document.getElementById("nav-inbox-count");
+  const issuesEl = document.getElementById("nav-issues-count");
+  if (resultsCache) {
+    const left = rows().filter((r) => !isHandled(r)).length;
+    inboxEl.textContent = left;
+    inboxEl.title = `${plural(left, "email")} left`;
+  }
+  if (issuesCache) {
+    issuesEl.textContent = issuesCache.groups.length;
+    issuesEl.title = plural(issuesCache.groups.length, "issue");
+  }
+}
 
 // ---------- shared pieces ----------
 
-/** The one status component (inbox row, detail header, try page): icon + words + colour. */
-const statusBadge = (status, size = "full") =>
-  `<span class="status status-${status}"><span class="status-icon" aria-hidden="true">${STATUS[status].icon}</span>${esc(size === "tag" ? STATUS[status].tag : STATUS[status].label)}</span>`;
-
-/** Header tags on the detail page. The AI provider is shown under the draft, not here. */
-const badges = (r) => [
-  r.identicalTo?.length ? `<span class="tag tag-strong">Identical to ${esc(r.identicalTo.join(", "))}</span>` : "",
-  r.sameQuestionAs?.length ? `<span class="tag">Same question as ${esc(r.sameQuestionAs.join(", "))}</span>` : "",
-  r.redaction?.containsPersonalData ? `<span class="tag tag-warn">Personal data removed</span>` : "",
-].join("");
-
-/** Redacted body: [PHONE]-style tokens shown as small grey "phone number removed" tags. */
+/** Redacted body: [PHONE]-style tokens shown as small grey "phone number removed" marks. */
 const REDACTED = {
   NAME: "name removed", ADDRESS: "address removed", "POSTCODE CITY": "postcode and city removed",
   PHONE: "phone number removed", EMAIL: "email address removed", "PERSONAL ID": "personal ID removed",
@@ -45,199 +89,304 @@ const REDACTED = {
 const emailBody = (text) => esc(text).replace(/\[(NAME|ADDRESS|POSTCODE CITY|PHONE|EMAIL|PERSONAL ID)\]/g,
   (_, k) => `<span class="redacted">${REDACTED[k]}</span>`);
 
-/** Product name without the "Product: " prefix used in fact labels. */
+/** "Kizu Table Lamp Large: Net weight" -> "Net weight". */
 const factLabel = (label) => label.replace(/^[^:]+:\s*/, "");
+const factProduct = (label) => label.split(":")[0];
 
-/** "products.csv SKU 42710, 42711; Atlas … Fact Sheet.pdf p.2" -> clickable source pills. */
-function sourcePills(f) {
-  return f.source.split("; ").map((part) => {
-    const csv = part.match(/^products\.csv SKU (.+)$/);
-    const sheet = part.match(/^(.+\.pdf) p\.(\d+)$/);
-    if (csv) {
-      const skus = csv[1].split(", ");
-      const shown = skus.length > 2 ? `${skus[0]} +${skus.length - 1}` : skus.join(", ");
-      return `<button type="button" class="src" data-src="csv" data-skus="${esc(skus.join(","))}" aria-haspopup="dialog">products.csv · ${esc(shown)}</button>`;
+/** Numbers, sizes and weights in tabular mono; prose (materials) stays in the body font. */
+const isMeasure = (v) => /\d/.test(v)
+  && !/\p{L}/u.test(v.replace(/\b(cm|mm|m|kg|g|W|V|lm|K|H|D|x|weeks?|wk)\b/g, ""));
+
+// Data issue keys ("Kizu Table Lamp Large|weight_kg") -> the fact row they put in doubt.
+const FIELD_ROW = {
+  weight_kg: /^Net weight/, width_cm: /^Width/, depth_cm: /^Depth/, height_cm: /^Height/,
+  lead_time_weeks: /^Lead time/, seat_height_cm: /^Seat height/, weight_incl_packaging_kg: /^Weight incl/,
+};
+
+/** Notes to show on specific fact rows: implausible sheet values and flagged data issues. */
+function rowNotes(r, product, f) {
+  const notes = [];
+  if (f.doubt) notes.push(`Not trusted: ${f.doubt}`);
+  for (const flag of r.flags) {
+    for (const key of flag.issueKeys ?? []) {
+      const [p, field] = key.split("|");
+      if (p === product && FIELD_ROW[field]?.test(factLabel(f.label))) notes.push(factLabel(flag.short ?? flag.reason));
     }
-    if (sheet) {
-      return `<button type="button" class="src" data-src="sheet" data-file="${esc(sheet[1])}" data-page="${sheet[2]}" data-label="${esc(f.label)}" aria-haspopup="dialog">Fact sheet · p.${sheet[2]}</button>`;
-    }
-    return `<span class="src src-plain">${esc(part)}</span>`;
-  }).join("");
+  }
+  return [...new Set(notes)];
 }
 
-/** One line per variant: "42220 · Covent Club Chair · COM". */
-function productCard(r) {
-  if (!r.resolution.matches.length) return `<p class="muted">No product from our range recognised.</p>`;
-  return r.resolution.matches.map((m) => {
-    const line = (p) => `<li><code>${esc(p.sku)}</code> · ${esc(m.name)}${p.variant ? ` · ${esc(p.variant)}` : ""}${
-      p.status !== "active" ? ` <span class="tag tag-warn">${esc(p.status)}</span>` : ""}</li>`;
+/** One quiet "Sources:" line per product, each part clickable to see the csv row or sheet text. */
+function sourcesLine(facts) {
+  const skus = new Set();
+  const sheets = new Map(); // "file|page" -> label to look up
+  for (const f of facts) {
+    for (const part of f.source.split("; ")) {
+      const csv = part.match(/^products\.csv SKU (.+)$/);
+      const sheet = part.match(/^(.+\.pdf) p\.(\d+)$/);
+      if (csv) csv[1].split(", ").forEach((s) => skus.add(s));
+      else if (sheet && !sheets.has(`${sheet[1]}|${sheet[2]}`)) sheets.set(`${sheet[1]}|${sheet[2]}`, f.label);
+    }
+  }
+  const parts = [];
+  if (skus.size) {
+    const list = [...skus];
+    const shown = list.length > 2 ? `${list[0]} +${list.length - 1}` : list.join(", ");
+    parts.push(`<button type="button" class="src" data-src="csv" data-skus="${esc(list.join(","))}" aria-haspopup="dialog">products.csv · <span class="num">${esc(shown)}</span></button>`);
+  }
+  for (const [key, label] of sheets) {
+    const [file, page] = key.split("|");
+    parts.push(`<button type="button" class="src" data-src="sheet" data-file="${esc(file)}" data-page="${page}" data-label="${esc(label)}" aria-haspopup="dialog">Fact sheet · <span class="num">p.${page}</span></button>`);
+  }
+  return parts.length ? `<p class="sources">Sources: ${parts.join(`<span class="sep">·</span>`)}</p>` : "";
+}
+
+/** Verified catalog data: product, SKU, key-value table, one sources line. */
+function catalogBlock(r) {
+  const byProduct = new Map();
+  for (const f of r.facts) {
+    const p = factProduct(f.label);
+    if (!byProduct.has(p)) byProduct.set(p, []);
+    byProduct.get(p).push(f);
+  }
+  const names = [...new Set([...r.resolution.matches.map((m) => m.name), ...byProduct.keys()])];
+  // Conflicts already spelled out in the notice above aren't repeated here.
+  const conflicts = (r.conflicts ?? []).filter((c) => !r.flags.some((f) => f.reason.includes(c.replace(/^.*?:\s*/, ""))));
+
+  const block = (name) => {
+    const m = r.resolution.matches.find((x) => x.name === name);
+    const facts = byProduct.get(name) ?? [];
+    const v = m?.variants ?? [];
+    const one = v.length === 1 ? v[0] : null;
+    const status = (p) => (p.status !== "active" ? ` <span class="warn-text">· ${esc(p.status)}</span>` : "");
     return `
       <div class="product">
-        <ul class="skus">${m.variants.map(line).join("")}</ul>
-        <span class="tag ${m.variants.length === 1 ? "tag-ok" : "tag-warn"}">${m.variants.length === 1 ? "Exact SKU" : `${m.variants.length} variants possible: not specified`}</span>
+        <div class="product-head">
+          <div>
+            <div class="product-name">${esc(name)}</div>
+            ${one ? `<div class="product-variant">${esc(one.variant || "Single variant")}${status(one)}</div>` : ""}
+            ${v.length > 1 ? `<div class="product-variant warn-text">${v.length} variants possible · not specified</div>` : ""}
+          </div>
+          ${one ? `<div class="sku num">SKU ${esc(one.sku)}</div>` : ""}
+        </div>
+        ${v.length > 1 ? `<ul class="variant-list">${v.map((p) => `<li><span class="num">${esc(p.sku)}</span> · ${esc(p.variant || "–")}${status(p)}</li>`).join("")}</ul>` : ""}
+        ${facts.length ? `
+          <dl class="kv">${facts.map((f) => {
+            const notes = rowNotes(r, name, f);
+            return `
+            <div class="kv-row${f.doubt ? " kv-doubt" : ""}">
+              <dt>${esc(factLabel(f.label))}</dt>
+              <dd>
+                <span class="${isMeasure(f.value) ? "num" : ""} kv-value">${esc(f.value)}</span>
+                ${notes.map((n) => `<span class="row-note">${ICON.alert}${esc(n)}</span>`).join("")}
+              </dd>
+            </div>`;
+          }).join("")}
+          </dl>
+          ${sourcesLine(facts)}` : ""}
       </div>`;
-  }).join("");
+  };
+
+  return `
+    <section class="catalog" aria-label="Verified catalog data">
+      <h2 class="label">Verified catalog data</h2>
+      ${names.length ? names.map(block).join("") : `<p class="muted">No product from our range recognised.</p>`}
+      ${r.missing?.length ? `<p class="quiet-list"><span class="quiet-title">Not in our data:</span> ${r.missing.map(esc).join(" · ")}</p>` : ""}
+      ${conflicts.length ? `
+        <div class="quiet-list warn-text">
+          <span class="quiet-title">Sources disagree</span>
+          <ul>${conflicts.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>
+        </div>` : ""}
+    </section>`;
 }
 
-/** "Before sending": one item per flag action. Green with nothing open: read once and send. */
+/** Flat tinted notice for Check / Person; nothing at all for Ready. */
+function notice(r) {
+  if (r.status === "green") return "";
+  const flags = [...r.flags].sort((a, b) => STATUS_ORDER.indexOf(a.level) - STATUS_ORDER.indexOf(b.level));
+  return `
+    <div class="notice notice-${STATUS[r.status].cls}" role="note">
+      <p class="notice-title">${STATUS[r.status].icon}<span>${r.status === "red" ? "Needs a person" : "Check before sending"}</span></p>
+      <ul>${flags.map((f) => `<li>${esc(f.reason)}</li>`).join("")}</ul>
+    </div>`;
+}
+
+/** "Before sending": one item per flag action. Nothing open: read once and send. */
 function checklist(r) {
   const items = [...new Set(r.flags.map((f) => f.action).filter(Boolean))];
   if (!items.length) items.push("Read the draft once and send");
   return items;
 }
 
-function detail(r) {
-  const byProduct = new Map();
-  for (const f of r.facts) {
-    const product = f.label.split(":")[0];
-    if (!byProduct.has(product)) byProduct.set(product, []);
-    byProduct.get(product).push(f);
-  }
-  const checks = checklist(r);
+/** Who answers a Person email, from what the flags say. */
+function recommendedOwner(r) {
+  const text = r.flags.filter((f) => f.level === "red").map((f) => f.reason).join(" ").toLowerCase();
+  const intents = r.extraction?.intents ?? [];
+  if (/price/.test(text) || intents.includes("price_list")) return "sales";
+  if (/certificat/.test(text) || intents.includes("certificate")) return "compliance";
+  if (/order|discontinued|personal|customer details/.test(text) || intents.includes("order")) return "orders";
+  return "team";
+}
+const OWNER = {
+  sales: { name: "your Regional Sales Representative", line: "Pricing is handled by your sales representative, who will come back to you directly." },
+  compliance: { name: "Technical Compliance", line: "I've passed this to our compliance team, who will send the documents or confirm what is available." },
+  orders: { name: "Order Operations", line: "I've passed this to our order team, who will confirm the details with you directly." },
+  team: { name: "the product team", line: "I'm checking this with our product team and will come back to you with a confirmed answer." },
+};
 
-  return `
-  <article class="detail">
-    <header class="detail-head">
-      <div class="eyebrow">${esc(r.email.id)} · ${esc(r.email.from_retailer)} · ${esc(r.email.date)}</div>
-      <h1>${esc(r.email.subject || "(no subject)")}</h1>
-      <div class="row gap wrap">${statusBadge(r.status)} ${badges(r)}</div>
-    </header>
-
-    <section class="card flags flags-${r.status}" aria-label="${esc(STATUS[r.status].heading)}">
-      <h2>${esc(STATUS[r.status].heading)}</h2>
-      <ul>${r.flags.map((f) => `<li class="flag flag-${f.level}"><span class="status-icon" aria-hidden="true">${STATUS[f.level].icon}</span><span>${esc(f.reason)}</span></li>`).join("")}</ul>
-    </section>
-
-    <!-- Workflow order: email -> facts -> draft. Three columns on wide screens, stacked otherwise. -->
-    <div class="detail-grid">
-      <section class="card" aria-label="Email">
-        <h2>Email</h2>
-        <blockquote class="email">${emailBody(r.email.body)}</blockquote>
-        ${r.redaction?.containsPersonalData ? `<p class="muted small">Removed before anything else saw this email: ${esc(r.redaction.redactedFields.join(", "))}.</p>` : ""}
-      </section>
-
-      <section class="card" aria-label="Facts found">
-        <h2>Facts found</h2>
-        ${productCard(r)}
-        ${r.facts.length ? [...byProduct].map(([product, facts]) => `
-          ${byProduct.size > 1 ? `<h3>${esc(product)}</h3>` : ""}
-          <dl class="facts">${facts.map((f) => `
-            <div class="fact${f.doubt ? " fact-doubt" : ""}">
-              <dt>${esc(factLabel(f.label))}</dt>
-              <dd>
-                <div class="fact-value">${esc(f.value)}</div>
-                ${f.doubt ? `<div class="fact-note">Not trusted: ${esc(f.doubt)}</div>` : ""}
-                <div class="srcs">${sourcePills(f)}</div>
-              </dd>
-            </div>`).join("")}
-          </dl>`).join("") : `<p class="muted">No facts found.</p>`}
-        ${r.missing?.length ? `
-          <h3>Not in our data</h3>
-          <ul class="plain">${r.missing.map((m) => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
-        ${r.conflicts.length ? `
-          <h3>Sources disagree</h3>
-          <ul class="plain small">${r.conflicts.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
-      </section>
-
-      <section class="card" aria-label="Draft reply">
-        <h2>Draft reply</h2>
-        <textarea id="draft" class="draft" rows="6" aria-label="Draft reply">${esc(r.draft)}</textarea>
-        <p class="ai-line">${r.aiUsed
-          ? `Drafted by ${esc(r.ai?.draft ?? "AI")} · every number checked against our data`
-          : "AI unavailable. Facts only, no draft: write the reply from the facts."}</p>
-        <fieldset class="checklist">
-          <legend>Before sending</legend>
-          ${checks.map((c, i) => `<label><input type="checkbox" class="check" id="check-${i}"> <span>${esc(c)}</span></label>`).join("")}
-        </fieldset>
-        <div class="row gap wrap">
-          <button class="btn" id="copy" disabled>Copy draft</button>
-          <span class="small" id="copied" role="status"></span>
-        </div>
-      </section>
-    </div>
-    <div id="popover" class="popover" role="dialog" aria-modal="false" hidden></div>
-  </article>`;
+/**
+ * Person emails get a short holding reply instead of the AI draft: it acknowledges the
+ * question and promises nothing that isn't verified. A person then answers it properly.
+ */
+function holdingReply(r) {
+  const names = r.resolution.matches.map((m) => m.name);
+  const about = names.length ? ` about the ${names.join(" and ")}` : "";
+  return `Hi,\n\nThank you for your message${about}. ${OWNER[recommendedOwner(r)].line}\n\nBest regards,\nNew Works Sales Support`;
 }
 
-/** Draft box, checklist gate on Copy, and source popovers. */
-function wireDetail(r) {
-  const draft = document.getElementById("draft");
-  const btn = document.getElementById("copy");
-  const note = document.getElementById("copied");
-  if (!draft || !btn) return;
+/** What goes in the reply box: the checked draft, or the holding reply for Person emails. */
+function replyFor(r) {
+  if (r.status === "red") {
+    const owner = OWNER[recommendedOwner(r)].name;
+    return {
+      text: holdingReply(r),
+      checks: [`Forward the email to ${owner}`],
+      note: `Holding reply · ${owner.replace(/^(your|the) /, "")} answers the question itself`,
+    };
+  }
+  return {
+    text: r.draft ?? "",
+    checks: checklist(r),
+    note: r.aiUsed ? `Drafted by ${r.ai?.draft ?? "AI"} · every number checked against our data`
+      : "AI unavailable. Facts only: write the reply from the catalog data.",
+  };
+}
 
-  const grow = () => { draft.style.height = "auto"; draft.style.height = `${draft.scrollHeight + 2}px`; };
-  draft.addEventListener("input", grow);
-  grow();
+const draftEdits = new Map(); // email id -> edited draft, kept while moving between emails
+
+function draftBlock(r, { inbox }) {
+  const reply = replyFor(r);
+  const text = draftEdits.get(r.email.id) ?? reply.text;
+  return `
+    <section class="draft-block" aria-label="Draft reply">
+      <div class="block-head">
+        <h2 class="label">${r.status === "red" ? "Reply to retailer" : "Draft reply"}</h2>
+        <button type="button" class="link" id="reset-draft" ${draftEdits.has(r.email.id) ? "" : "hidden"}>Reset draft</button>
+      </div>
+      <textarea id="draft" class="draft" rows="${r.status === "red" ? 8 : 11}" aria-label="Draft reply">${esc(text)}</textarea>
+      <p class="fine">${esc(reply.note)}</p>
+      <fieldset class="checklist">
+        <legend class="label">Before sending</legend>
+        ${reply.checks.map((c, i) => `<label><input type="checkbox" class="check" id="check-${i}"><span>${esc(c)}</span></label>`).join("")}
+      </fieldset>
+      <div class="actions">
+        ${inbox ? `<button type="button" class="btn" id="copy-handled" disabled>Copy &amp; mark handled</button>` : ""}
+        <button type="button" class="btn${inbox ? " btn-secondary" : ""}" id="copy-only" disabled>${inbox ? "Copy only" : "Copy draft"}</button>
+        <span class="helper" id="copy-status" role="status"></span>
+      </div>
+    </section>`;
+}
+
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
+}
+
+/** Draft box: reset link, checklist gate on both copy buttons. */
+function wireDraft(r, { onHandled } = {}) {
+  const draft = document.getElementById("draft");
+  if (!draft) return;
+  const reset = document.getElementById("reset-draft");
+  const status = document.getElementById("copy-status");
+  const copyHandled = document.getElementById("copy-handled");
+  const copyOnly = document.getElementById("copy-only");
+  const original = replyFor(r).text;
+
+  draft.addEventListener("input", () => {
+    if (draft.value === original) draftEdits.delete(r.email.id);
+    else draftEdits.set(r.email.id, draft.value);
+    reset.hidden = draft.value === original;
+  });
+  reset.onclick = () => { draft.value = original; draftEdits.delete(r.email.id); reset.hidden = true; draft.focus(); };
 
   // The draft never looks send-ready while checks are open.
   const checks = [...document.querySelectorAll(".check")];
   const update = () => {
     const open = checks.filter((c) => !c.checked).length;
-    btn.disabled = open > 0;
-    note.textContent = open ? `${open} check${open === 1 ? "" : "s"} open: tick them to copy` : "";
+    [copyHandled, copyOnly].forEach((b) => b && (b.disabled = open > 0));
+    status.textContent = open ? `Tick ${plural(open, "check")} to copy` : "";
   };
   checks.forEach((c) => c.addEventListener("change", update));
   update();
 
-  btn.onclick = async () => {
-    try {
-      await navigator.clipboard.writeText(draft.value);
-      note.textContent = "Copied.";
-    } catch {
-      draft.select();
-      note.textContent = "Press Ctrl+C to copy.";
-    }
+  const copy = async () => {
+    if (await copyText(draft.value)) return true;
+    draft.select();
+    status.textContent = "Press Ctrl+C to copy.";
+    return false;
   };
-
-  // Source pills: show the csv row or the fact sheet lines.
-  const pop = document.getElementById("popover");
-  const close = () => { pop.hidden = true; document.querySelector(".src[aria-expanded='true']")?.setAttribute("aria-expanded", "false"); };
-  document.querySelectorAll(".src[data-src]").forEach((b) => (b.onclick = async (ev) => {
-    ev.stopPropagation();
-    const wasOpen = b.getAttribute("aria-expanded") === "true";
-    close();
-    if (wasOpen) return;
-    b.setAttribute("aria-expanded", "true");
-    pop.innerHTML = `<p class="muted small">Loading…</p>`;
-    place(pop, b);
-    pop.hidden = false;
-    if (b.dataset.src === "csv") {
-      const rows = b.dataset.skus.split(",").map((sku) => r.resolution.candidates.find((p) => p.sku === sku)).filter(Boolean);
-      pop.innerHTML = `<div class="pop-title">products.csv</div>
-        <div class="table-wrap"><table class="pop-table">
-          <thead><tr><th>SKU</th><th>Variant</th><th>W × D × H cm</th><th>Weight kg</th><th>Material</th><th>Lead time</th><th>Status</th></tr></thead>
-          <tbody>${rows.map((p) => `<tr><td><code>${esc(p.sku)}</code></td><td>${esc(p.variant)}</td><td>${esc([p.width_cm, p.depth_cm, p.height_cm].map((x) => x || "–").join(" × "))}</td><td>${esc(p.weight_kg || "–")}</td><td>${esc(p.material)}</td><td>${esc(p.lead_time_weeks ? `${p.lead_time_weeks} weeks` : "–")}</td><td>${esc(p.status)}</td></tr>`).join("")}</tbody>
-        </table></div>`;
-    } else {
-      try {
-        const q = new URLSearchParams({ file: b.dataset.file, page: b.dataset.page, label: b.dataset.label });
-        const src = await getJson(`/api/source?${q}`);
-        pop.innerHTML = `<div class="pop-title">${esc(src.file)}, page ${src.page}</div>
-          <pre class="pop-lines">${src.lines.map(esc).join("\n")}</pre>
-          <p class="muted small">Text extracted from the PDF. The value above was checked by hand against this page.</p>`;
-      } catch (e) {
-        pop.innerHTML = `<p class="small">Couldn't load the source: ${esc(e.message)}</p>`;
-      }
-    }
-    place(pop, b);
-  }));
-  document.addEventListener("click", (e) => { if (!pop.contains(e.target)) close(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+  copyOnly.onclick = async () => { if (await copy()) status.textContent = "Copied."; };
+  if (copyHandled) copyHandled.onclick = async () => { if (await copy()) onHandled?.(); };
 }
 
-/** Position the popover under its pill, inside the viewport. */
-function place(pop, anchor) {
+// ---------- source popover ----------
+
+let popAnchor = null;
+function closePop() {
+  pop.hidden = true;
+  popAnchor?.setAttribute("aria-expanded", "false");
+  popAnchor = null;
+}
+/** Position the popover under its anchor, inside the viewport. */
+function place(anchor) {
   const a = anchor.getBoundingClientRect();
   const width = Math.min(560, window.innerWidth - 32);
   pop.style.width = `${width}px`;
   pop.style.left = `${Math.max(16, Math.min(a.left + window.scrollX, window.scrollX + window.innerWidth - width - 16))}px`;
   pop.style.top = `${a.bottom + window.scrollY + 6}px`;
 }
+let popResult = null; // the result whose sources are on screen
+async function openPop(b) {
+  const r = popResult;
+  b.setAttribute("aria-expanded", "true");
+  popAnchor = b;
+  pop.innerHTML = `<p class="muted">Loading…</p>`;
+  place(b);
+  pop.hidden = false;
+  if (b.dataset.src === "csv") {
+    const found = b.dataset.skus.split(",").map((sku) => r?.resolution.candidates.find((p) => p.sku === sku)).filter(Boolean);
+    pop.innerHTML = `<div class="pop-title">products.csv</div>
+      <div class="table-wrap"><table class="pop-table">
+        <thead><tr><th>SKU</th><th>Variant</th><th>W × D × H cm</th><th>Weight kg</th><th>Material</th><th>Lead time</th><th>Status</th></tr></thead>
+        <tbody>${found.map((p) => `<tr><td class="num">${esc(p.sku)}</td><td>${esc(p.variant)}</td><td class="num">${esc([p.width_cm, p.depth_cm, p.height_cm].map((x) => x || "–").join(" × "))}</td><td class="num">${esc(p.weight_kg || "–")}</td><td>${esc(p.material)}</td><td class="num">${esc(p.lead_time_weeks ? `${p.lead_time_weeks} wk` : "–")}</td><td>${esc(p.status)}</td></tr>`).join("")}</tbody>
+      </table></div>`;
+  } else {
+    try {
+      const q = new URLSearchParams({ file: b.dataset.file, page: b.dataset.page, label: b.dataset.label });
+      const src = await getJson(`/api/source?${q}`);
+      if (popAnchor !== b) return;
+      pop.innerHTML = `<div class="pop-title">${esc(src.file)}, page ${src.page}</div>
+        <pre class="pop-lines">${src.lines.map(esc).join("\n")}</pre>
+        <p class="fine">Text extracted from the PDF. The values were checked by hand against this page.</p>`;
+    } catch (e) {
+      pop.innerHTML = `<p>Couldn't load the source: ${esc(e.message)}</p>`;
+    }
+  }
+  place(b);
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest?.(".src[data-src]");
+  if (b) {
+    const wasOpen = b === popAnchor;
+    closePop();
+    if (!wasOpen) openPop(b);
+    return;
+  }
+  if (!pop.contains(e.target)) closePop();
+});
 
-// ---------- pages ----------
+// ---------- Inbox: master–detail ----------
 
-const inboxState = { filter: "all", q: "" };
+const inboxState = { filter: "all", q: "", hideHandled: false, selected: null };
 
 const TOPIC = {
   dimensions: "Dimensions", seat_height: "Seat height", weight: "Weight", lead_time: "Lead time",
@@ -249,155 +398,251 @@ const INTENT_TOPIC = {
   dimensions: "Dimensions", weight: "Weight", lead_time: "Lead time", price_list: "Price",
   certificate: "Certificates", material_finish: "Material", availability: "Availability", order: "Order",
 };
-
-/** 1–2 tags: "Lead time · Covent", "COM fabric". */
-function topicTags(r) {
-  const topics = r.asked?.length
-    ? r.asked.map((a) => TOPIC[a]).filter(Boolean)
-    : (r.extraction?.intents ?? []).map((i) => INTENT_TOPIC[i]).filter(Boolean);
-  const product = [...new Set(r.resolution.matches.map((m) => m.name.split(" ")[0]))].join(" + ");
-  const first = topics[0] ? `${topics[0]}${product ? ` · ${product}` : ""}` : product;
-  return [first, topics[1]].filter(Boolean);
-}
-
-/** For green rows: the answer itself, e.g. "Ø90 × 17 cm" or "250 × 95 × 74 cm · seat 40 cm". */
-function answerPreview(r) {
-  const v = (name) => r.facts.find((f) => factLabel(f.label).replace(/ \(.*$/, "") === name)?.value;
-  const num = (s) => s?.match(/^[\d.\-]+/)?.[0];
-  const [dia, w, d, h] = ["Diameter", "Width", "Depth", "Height"].map(v);
-  const parts = [];
-  if (dia && h) parts.push(`Ø${num(dia)} × ${num(h)} cm`);
-  else if (w && d && h) parts.push(`${num(w)} × ${num(d)} × ${num(h)} cm`);
-  if (v("Seat height")) parts.push(`seat ${v("Seat height")}`);
-  if (v("Net weight")) parts.push(v("Net weight"));
-  // Otherwise the facts that answer the question; general material text last.
-  const rest = [...r.facts].sort((a, b) => /^Material/.test(factLabel(a.label)) - /^Material/.test(factLabel(b.label)));
-  if (!parts.length) parts.push(...rest.slice(0, 2).map((f) => `${factLabel(f.label)}: ${f.value}`));
-  return parts.join(" · ");
-}
+const topic = (r) => (r.asked?.length
+  ? r.asked.map((a) => TOPIC[a]).filter(Boolean)
+  : (r.extraction?.intents ?? []).map((i) => INTENT_TOPIC[i]).filter(Boolean))[0] ?? "General";
 
 const daysWaiting = (date) => Math.max(0, Math.floor((Date.now() - Date.parse(`${date}T00:00:00`)) / 86_400_000));
-const waitingLabel = (days) => (days === 0 ? "today" : `waiting ${days} day${days === 1 ? "" : "s"}`);
 
-function inboxRow(r) {
+const searchText = (r) => [
+  r.email.id, ...(r.identicalTo ?? []), r.email.subject, r.email.from_retailer,
+  ...r.resolution.matches.flatMap((m) => [m.name, ...m.variants.map((v) => v.sku)]),
+].join(" ").toLowerCase();
+
+/** Rows after filter and search; handled rows only when not hidden (or asked for). */
+function visibleRows(includeHandled = !inboxState.hideHandled) {
+  const q = inboxState.q.trim().toLowerCase();
+  return rows().filter((r) => (inboxState.filter === "all" || r.status === inboxState.filter)
+    && (includeHandled || !isHandled(r))
+    && (!q || searchText(r).includes(q)));
+}
+
+const goTo = (id) => location.replace(`#email/${encodeURIComponent(id)}`);
+
+function queueItem(r) {
+  const done = isHandled(r);
   const days = daysWaiting(r.email.date);
-  const tags = [
-    ...topicTags(r).map((t) => `<span class="tag">${esc(t)}</span>`),
-    r.identicalTo?.length ? `<span class="tag tag-strong">${r.identicalTo.length + 1} identical emails</span>` : "",
-    r.sameQuestionAs?.length ? `<span class="tag">Same question as ${esc(r.sameQuestionAs.join(", "))}</span>` : "",
-    r.redaction?.containsPersonalData ? `<span class="tag tag-warn">Personal data removed</span>` : "",
-  ].join("");
-  const line = r.status === "green" ? answerPreview(r) : (r.flags[0]?.short ?? r.flags[0]?.reason);
   return `
     <li>
-      <a class="mail mail-${r.status}" href="#email/${encodeURIComponent(r.email.id)}">
-        <span class="mail-status">${statusBadge(r.status, "tag")}</span>
-        <span class="mail-main">
-          <span class="mail-top">
-            <span class="mail-from">${esc(r.email.from_retailer)}</span>
-            <span class="mail-wait${days > 7 ? " overdue" : ""}" title="Received ${esc(r.email.date)}">${waitingLabel(days)}</span>
-          </span>
-          <span class="mail-subject"><span class="mail-id">${esc(r.email.id)}</span> ${esc(r.email.subject)}</span>
-          <span class="mail-line${r.status === "green" ? " mail-answer" : ""}" title="${esc(r.flags[0]?.reason ?? "")}">${esc(line)}</span>
-          <span class="mail-tags">${tags}</span>
+      <a class="q-item${done ? " is-done" : ""}" href="#email/${encodeURIComponent(r.email.id)}"
+        data-id="${esc(r.email.id)}" ${r.email.id === inboxState.selected ? `aria-current="true"` : ""}>
+        <span class="q-line1">
+          <span class="q-from">${esc(r.email.from_retailer)}${r.identicalTo?.length ? ` <span class="q-count num" title="${r.identicalTo.length + 1} emails in this conversation">${r.identicalTo.length + 1}</span>` : ""}</span>
+          <span class="num q-wait${!done && days >= 10 ? " is-late" : ""}" title="Received ${esc(r.email.date)}">${done ? "" : `${days}d`}</span>
         </span>
+        <span class="q-subject">${esc(r.email.subject || "(no subject)")}</span>
+        <span class="q-meta">${done ? `<span class="st st-done">${ICON.check}<span>Handled</span></span>` : statusLabel(r.status)}<span class="sep">·</span>${esc(topic(r))}<span class="sep">·</span><span class="num">${esc(r.email.id)}</span></span>
       </a>
     </li>`;
 }
 
-async function inbox() {
+function renderRail() {
+  const all = rows();
+  const counts = { all: all.length, red: 0, yellow: 0, green: 0 };
+  for (const r of all) counts[r.status]++;
+  document.getElementById("seg").innerHTML = [["all", "All"], ...STATUS_ORDER.slice().reverse().map((k) => [k, STATUS[k].tag])]
+    .map(([k, label]) => `<button type="button" data-filter="${k}" aria-pressed="${inboxState.filter === k}">${esc(label)} <span class="num seg-count">${counts[k]}</span></button>`)
+    .join("");
+
+  const left = all.filter((r) => !isHandled(r)).length;
+  const anyHandled = all.some(isHandled);
+  document.getElementById("rail-meta").innerHTML = `
+    <span>${plural(left, "email")} remaining</span>
+    ${anyHandled ? `<button type="button" class="link" id="hide-handled" aria-pressed="${inboxState.hideHandled}">${inboxState.hideHandled ? "Show handled" : "Hide handled"}</button>` : ""}`;
+
+  const list = visibleRows();
+  // Handled emails sit under their own divider at the bottom, so open work is never mixed with done work.
+  const firstDone = list.findIndex(isHandled);
+  const doneCount = list.filter(isHandled).length;
+  document.getElementById("queue").innerHTML = list.length
+    ? list.map((r, i) => (i === firstDone ? `<li class="q-divider">${ICON.check}Handled <span class="num">${doneCount}</span></li>` : "") + queueItem(r)).join("")
+    : `<li class="q-empty">${left || inboxState.q || inboxState.filter !== "all" ? "No emails match." : "All done. Nothing left in the inbox."}</li>`;
+  document.querySelector(".q-item[aria-current]")?.scrollIntoView({ block: "nearest" });
+}
+
+function paneHtml(r) {
+  const list = visibleRows();
+  const i = list.indexOf(r);
+  const prev = i > 0 ? list[i - 1] : null;
+  const next = i >= 0 ? list[i + 1] : null;
+  const done = isHandled(r);
+  const extras = [
+    r.identicalTo?.length ? `${r.identicalTo.length + 1} identical emails · one reply covers both` : "",
+    r.sameQuestionAs?.length ? `Same question as ${esc(r.sameQuestionAs.join(", "))}` : "",
+    r.redaction?.containsPersonalData ? "Personal data removed" : "",
+  ].filter(Boolean);
+  return `
+    <a class="back link" href="#inbox">← Back to inbox</a>
+    <header class="pane-head">
+      <div class="pane-title">
+        <p class="meta"><span class="num">${esc(r.email.id)}</span><span class="sep">·</span>${esc(r.email.from_retailer)}<span class="sep">·</span><span class="num">${esc(r.email.date)}</span><span class="sep">·</span>${statusLabel(r.status)}</p>
+        <h1>${esc(r.email.subject || "(no subject)")}</h1>
+        ${extras.length ? `<p class="meta">${extras.join(`<span class="sep">·</span>`)}</p>` : ""}
+      </div>
+      <div class="pane-controls">
+        <span class="num muted">${i >= 0 ? `${i + 1} of ${list.length}` : `– of ${list.length}`}</span>
+        <button type="button" class="btn btn-quiet" data-go="${esc(prev?.email.id ?? "")}" ${prev ? "" : "disabled"} aria-label="Previous email">Prev</button>
+        <button type="button" class="btn btn-quiet" data-go="${esc(next?.email.id ?? "")}" ${next ? "" : "disabled"} aria-label="Next email">Next</button>
+        <button type="button" class="btn btn-secondary" id="toggle-handled" aria-pressed="${done}">${done ? `${ICON.check}Handled` : "Mark handled"}</button>
+      </div>
+    </header>
+    ${done ? `<div class="notice notice-done" role="note"><p class="notice-title">${ICON.check}<span>Handled</span></p>
+      <p>You've already dealt with this email. <button type="button" class="link" id="undo-handled">Move it back to the inbox</button></p></div>` : notice(r)}
+    <div class="work">
+      <div class="work-left">
+        <section aria-label="Retailer message">
+          ${thread(r)}
+          ${r.redaction?.containsPersonalData ? `<p class="fine">Removed before anything else saw this email: ${esc(r.redaction.redactedFields.join(", "))}.</p>` : ""}
+        </section>
+        <hr>
+        ${catalogBlock(r)}
+      </div>
+      <div class="work-right">
+        ${draftBlock(r, { inbox: true })}
+      </div>
+    </div>`;
+}
+
+/** One message, or the whole conversation (oldest first) when identical emails were grouped. */
+function thread(r) {
+  const ids = [r.email.id, ...(r.identicalTo ?? [])];
+  if (ids.length === 1) return `<h2 class="label">Retailer message</h2><div class="prose">${emailBody(r.email.body)}</div>`;
+  const msgs = ids.map((id) => resultsCache.find((x) => x.email.id === id)?.email).filter(Boolean)
+    .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+  return `<h2 class="label">Retailer messages <span class="muted">(${msgs.length})</span></h2>
+    <div class="thread">${msgs.map((e) => `
+      <article class="msg">
+        <p class="msg-head"><strong>${esc(e.from_retailer)}</strong><span class="sep">·</span><span class="num">${esc(e.id)}</span><span class="sep">·</span><span class="num">${esc(e.date)}</span></p>
+        <div class="prose">${emailBody(e.body)}</div>
+      </article>`).join("")}
+    </div>`;
+}
+
+/** The next open email below this one, else the first open one (read before it moves to "Handled"). */
+function nextOpenAfter(r) {
+  const list = visibleRows(true);
+  const i = list.indexOf(r);
+  return list.slice(i + 1).find((x) => x !== r && !isHandled(x)) ?? list.find((x) => x !== r && !isHandled(x));
+}
+
+function renderPane(r) {
+  const pane = document.getElementById("pane");
+  closePop();
+  popResult = r;
+  pane.innerHTML = paneHtml(r);
+  pane.scrollTop = 0;
+  // "Copy & mark handled": mark it, then straight on to the next open email.
+  const onHandled = () => {
+    const next = nextOpenAfter(r);
+    setHandled(r, true);
+    renderRail();
+    if (next) goTo(next.email.id);
+    else location.hash = "#inbox"; // nothing left: back to the list
+  };
+  wireDraft(r, { onHandled });
+  pane.querySelectorAll("[data-go]").forEach((b) => (b.onclick = () => b.dataset.go && goTo(b.dataset.go)));
+  const toggle = () => {
+    setHandled(r, !isHandled(r));
+    renderRail();
+    renderPane(r);
+  };
+  document.getElementById("toggle-handled").onclick = toggle;
+  const undo = document.getElementById("undo-handled");
+  if (undo) undo.onclick = toggle;
+}
+
+function wireShell() {
+  const q = document.getElementById("q");
+  q.value = inboxState.q;
+  q.oninput = () => { inboxState.q = q.value; renderRail(); };
+  document.getElementById("pane").addEventListener("scroll", closePop, { passive: true }); // popover is page-positioned
+  document.getElementById("split").addEventListener("click", (e) => {
+    const f = e.target.closest("[data-filter]");
+    if (f) { inboxState.filter = f.dataset.filter; renderRail(); return; }
+    if (e.target.closest("#hide-handled")) { inboxState.hideHandled = !inboxState.hideHandled; renderRail(); }
+  });
+}
+
+async function inboxView(id) {
   const at = location.hash;
   const results = await loadResults();
-  if (location.hash !== at) return; // the user moved on while this loaded: don't draw over the new page
+  if (location.hash !== at) return; // the user moved on while this loaded
+  updateNavCounts();
   if (!results.length) {
     app.innerHTML = `<div class="empty"><h1>No results yet</h1><p>Run <code>npm run batch</code> in <code>server/</code>, then reload.</p></div>`;
     return;
   }
-  // Counts are per email (adds up to the total); identical emails are shown as one row.
-  const counts = { all: results.length, red: 0, yellow: 0, green: 0 };
-  for (const r of results) counts[r.status]++;
+  let r = id ? results.find((x) => x.email.id === id) : null;
+  if (id && !r) {
+    app.innerHTML = `<div class="empty"><h1>Email ${esc(id)} not found</h1><p><a class="link" href="#inbox">Back to inbox</a></p></div>`;
+    return;
+  }
+  // #inbox is just the list; an email opens beside it only once one is chosen.
+  if (r?.duplicateOf) r = results.find((x) => x.email.id === r.duplicateOf) ?? r; // opens its conversation
+  inboxState.selected = r?.email.id ?? null;
 
-  app.innerHTML = `
-    <div class="page-head">
-      <h1>Inbox</h1>
-      <p class="trust">Drafts only. Every answer comes from products.csv and the fact sheets, with its source.
-        Prices, orders and personal data always go to a person.</p>
-    </div>
-    <div class="toolbar">
-      <div class="chips" role="group" aria-label="Show">
-        <button class="chip" data-filter="all" aria-pressed="${inboxState.filter === "all"}">All <span class="count">${counts.all}</span></button>
-        ${STATUS_ORDER.map((k) => `
-          <button class="chip chip-${k}" data-filter="${k}" aria-pressed="${inboxState.filter === k}">
-            <span class="status-icon" aria-hidden="true">${STATUS[k].icon}</span>${esc(STATUS[k].label)} <span class="count">${counts[k]}</span>
-          </button>`).join("")}
-      </div>
-      <input type="search" id="q" placeholder="Search subject, retailer, product…" value="${esc(inboxState.q)}" aria-label="Search">
-    </div>
-    <div id="list"></div>`;
-
-  const render = () => {
-    const q = inboxState.q.toLowerCase();
-    const matches = (r) => !q || [r.email.id, r.email.subject, r.email.from_retailer, ...r.resolution.matches.map((m) => m.name)]
-      .join(" ").toLowerCase().includes(q);
-    const html = STATUS_ORDER
-      .filter((k) => inboxState.filter === "all" || inboxState.filter === k)
-      .map((k) => {
-        const all = results.filter((r) => r.status === k && matches(r));
-        // One row per identical group (the first email); oldest first.
-        const rows = all.filter((r) => !r.duplicateOf).sort((a, b) => a.email.date.localeCompare(b.email.date) || a.email.id.localeCompare(b.email.id));
-        if (!all.length) return "";
-        return `
-          <section class="inbox-section inbox-${k}" aria-label="${esc(STATUS[k].label)}">
-            <h2>${statusBadge(k)} <span class="count">${all.length}</span></h2>
-            <ul class="inbox">${rows.map(inboxRow).join("")}</ul>
-          </section>`;
-      }).join("");
-    document.getElementById("list").innerHTML = html || `<p class="muted empty-row">No emails match.</p>`;
-  };
-  render();
-
-  app.querySelectorAll("[data-filter]").forEach((b) => (b.onclick = () => {
-    inboxState.filter = b.dataset.filter;
-    app.querySelectorAll("[data-filter]").forEach((x) => x.setAttribute("aria-pressed", x === b));
-    render();
-  }));
-  document.getElementById("q").oninput = (e) => { inboxState.q = e.target.value; render(); };
+  if (!document.getElementById("split")) {
+    app.innerHTML = `
+      <div class="split" id="split">
+        <aside class="rail" aria-label="Email queue">
+          <div class="rail-head">
+            <input type="search" id="q" placeholder="Search retailer, SKU, product…" aria-label="Search emails" autocomplete="off">
+            <div class="seg" id="seg" role="group" aria-label="Filter by status"></div>
+            <div class="rail-meta" id="rail-meta"></div>
+          </div>
+          <ul class="queue" id="queue"></ul>
+        </aside>
+        <section class="pane" id="pane" aria-label="Selected email"></section>
+      </div>`;
+    wireShell();
+  }
+  const split = document.getElementById("split");
+  if (split.classList.contains("has-selection") !== Boolean(r)) window.scrollTo(0, 0); // list <-> split switch
+  split.classList.toggle("has-selection", Boolean(r));
+  renderRail();
+  if (r) renderPane(r);
+  else { closePop(); document.getElementById("pane").innerHTML = ""; }
 }
 
-async function emailPage(id) {
-  const at = location.hash;
-  const results = await loadResults();
-  if (location.hash !== at) return; // the user moved on while this loaded: don't draw over the new page
-  const r = results.find((x) => x.email.id === id);
-  if (!r) { app.innerHTML = `<p>Email ${esc(id)} not found. <a href="#inbox">Back to inbox</a></p>`; return; }
-  // Same order as the inbox section: same status, oldest first, identical emails shown once.
-  const section = results
-    .filter((x) => x.status === r.status && (!x.duplicateOf || x === r))
-    .sort((a, b) => a.email.date.localeCompare(b.email.date) || a.email.id.localeCompare(b.email.id));
-  const i = section.indexOf(r);
-  const prev = section[i - 1], next = section[i + 1];
-  app.innerHTML = `
-    <nav class="row between crumbs" aria-label="Email navigation">
-      <a href="#inbox">← Inbox</a>
-      <span class="row gap small">
-        <span class="muted">${esc(STATUS[r.status].label)} · ${i + 1} of ${section.length}</span>
-        ${prev ? `<a href="#email/${encodeURIComponent(prev.email.id)}">‹ ${esc(prev.email.id)}</a>` : `<span class="muted">‹ previous</span>`}
-        ${next ? `<a href="#email/${encodeURIComponent(next.email.id)}">${esc(next.email.id)} ›</a>` : `<span class="muted">next ›</span>`}
-      </span>
-    </nav>
-    ${detail(r)}`;
-  wireDetail(r);
-}
+// ArrowUp / ArrowDown move through the queue when not typing.
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (!pop.hidden) { closePop(); return; }
+    // Esc closes the open email and goes back to the plain list.
+    if (inboxState.selected && document.getElementById("split") && !e.target.closest?.("input, textarea, select")) location.hash = "#inbox";
+    return;
+  }
+  if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+  if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if (!document.getElementById("split")) return;
+  if (e.target.closest?.("input, textarea, select, [contenteditable]")) return;
+  const list = visibleRows();
+  if (!list.length) return;
+  e.preventDefault();
+  const i = list.findIndex((r) => r.email.id === inboxState.selected);
+  const next = e.key === "ArrowDown" ? list[Math.min(list.length - 1, i + 1)] : list[Math.max(0, i - 1)];
+  if (next && next.email.id !== inboxState.selected) goTo(next.email.id);
+});
+
+// ---------- Draft from Email ----------
 
 const EXAMPLES = [
   { label: "Dimensions", subject: "Dimensions Atlas Coffee Table", body: "Hi,\nCould you confirm the exact dimensions of the Atlas Coffee Table 60x60 in fumed oak?\nThanks" },
   { label: "Ambiguous variant", subject: "Atlas Stool weight", body: "Hello,\nHow much does the Atlas Stool in espresso weigh, with and without packaging?\nBest regards" },
   { label: "Personal data", subject: "Delivery", body: "Hi,\nPlease deliver one Knot Rug 200x300 in off-white to our customer: Jens Hansen, Nørrebrogade 12, 2200 København, phone +45 30 12 34 56.\nThanks" },
 ];
-
 const tryState = { subject: "", body: "" };
 
-/** "Removed before AI: 1 phone number, 1 personal ID" from the [PHONE]-style tokens left in the text. */
+/** A rough early hint only; the server does the real removal. */
+function piiHint(text) {
+  const found = [];
+  if (/[\w.+-]+@[\w-]+\.[\w.]+/.test(text)) found.push("email addresses");
+  if (/\+?\d[\d\s-]{7,}\d/.test(text)) found.push("phone numbers");
+  if (/\b\p{L}+(gade|vej|straat|weg|stra(ss|ß)e|street|road|allé|plads)\s+\d+/iu.test(text) || /\b\d{4,5}\s+\p{Lu}\p{L}+/u.test(text)) found.push("addresses");
+  if (/\b(customer|client|kunde)\s*:?\s+\p{Lu}\p{L}+\s+\p{Lu}\p{L}+/u.test(text)) found.push("names");
+  return found;
+}
+
 const REDACTED_WORDS = {
   NAME: ["name", "names"], ADDRESS: ["street address", "street addresses"],
   "POSTCODE CITY": ["postcode and city", "postcodes and cities"], PHONE: ["phone number", "phone numbers"],
@@ -415,36 +660,76 @@ const TRY_STEPS = [
   [0, "Removing personal data…"],
   [600, "Looking up products…"],
   [1500, "Drafting the reply…"],
-  [12000, "The AI is slow. If it takes over 20 seconds you'll get the facts without a draft."],
+  [12000, "The AI is slow. After 20 seconds you'll get the facts without a draft."],
 ];
 
 function tryPage() {
+  // Two states: centred and roomy while writing; after a result the email moves left (compact)
+  // and the triage, catalog data and draft take the right.
   app.innerHTML = `
-    <div class="page-head">
-      <h1>Try your own email</h1>
-      <p class="trust">Paste a retailer question. Personal data is removed first, and only the cleaned text goes to the AI.
-        Nothing is stored by this tool.</p>
-    </div>
-    <form class="card tryform" id="tryform">
-      <div class="examples">
-        <span class="examples-label">Try an example:</span>
-        ${EXAMPLES.map((e, i) => `<button type="button" class="chip" data-example="${i}">${esc(e.label)}</button>`).join("")}
-      </div>
-      <label><span>Subject <span class="muted">(optional)</span></span><input id="t-subject" maxlength="300" value="${esc(tryState.subject)}"></label>
-      <label><span>Email text</span><textarea id="t-body" rows="8" maxlength="5000" required>${esc(tryState.body)}</textarea></label>
-      <div class="row gap wrap">
-        <button class="btn" type="submit" id="t-go">Draft a reply</button>
-        <span class="small" id="t-status" role="status" aria-live="polite"></span>
-      </div>
-    </form>
-    <div id="t-result"></div>`;
+    <div class="page try" id="try">
+      <section class="try-input" aria-label="Email to draft from">
+        <div class="try-head">
+          <h1>Draft from email</h1>
+          <button type="button" class="link try-clear" id="t-clear">New email</button>
+        </div>
+        <p class="lede">Paste a retailer question. Personal details are removed before anything goes to the AI, and nothing is stored.</p>
+        <form id="tryform" class="form">
+          <div class="examples">
+            <span class="label">Examples</span>
+            ${EXAMPLES.map((e, i) => `<button type="button" class="btn btn-quiet btn-sm" data-example="${i}">${esc(e.label)}</button>`).join("")}
+          </div>
+          <label class="field"><span class="label">Subject <span class="muted">(optional)</span></span>
+            <input id="t-subject" maxlength="300" value="${esc(tryState.subject)}"></label>
+          <label class="field"><span class="label">Email text</span>
+            <textarea id="t-body" rows="12" maxlength="5000" required placeholder="Hi, could you confirm the dimensions of…">${esc(tryState.body)}</textarea></label>
+          <p class="pii-hint" id="pii-hint" hidden></p>
+          <div class="actions">
+            <button class="btn" type="submit" id="t-go">Draft a reply</button>
+            <span class="helper" id="t-status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+        <section class="how" aria-label="How every email is checked">
+          <h2 class="label">How every email is checked</h2>
+          <dl>
+            <div><dt>${statusLabel("green", true)}</dt><dd>Every requested dimension or spec matches products.csv and the fact sheet.</dd></div>
+            <div><dt>${statusLabel("yellow", true)}</dt><dd>Partial match, missing detail, or catalog disagreement flagged for review.</dd></div>
+            <div><dt>${statusLabel("red", true)}</dt><dd>Pricing, orders, certificates, or personal data detected.</dd></div>
+          </dl>
+        </section>
+      </section>
+      <section class="try-result" id="t-result" aria-label="Triage and draft" hidden></section>
+    </div>`;
+
+  const page = document.getElementById("try");
+  const out = document.getElementById("t-result");
+  document.getElementById("t-clear").onclick = () => {
+    page.classList.remove("has-result");
+    out.hidden = true;
+    out.innerHTML = "";
+    closePop();
+    document.getElementById("t-subject").value = "";
+    document.getElementById("t-body").value = "";
+    tryState.subject = tryState.body = "";
+    document.getElementById("pii-hint").hidden = true;
+    document.getElementById("t-subject").focus();
+  };
 
   const subject = document.getElementById("t-subject");
   const body = document.getElementById("t-body");
+  const hint = document.getElementById("pii-hint");
+  const showHint = () => {
+    const found = piiHint(`${subject.value}\n${body.value}`);
+    hint.hidden = !found.length;
+    hint.innerHTML = found.length ? `${ICON.alert}<span>Looks like this contains personal details (${esc(found.join(", "))}). They're removed before the text is sent to the AI.</span>` : "";
+  };
+  subject.oninput = body.oninput = showHint;
+  showHint();
   app.querySelectorAll("[data-example]").forEach((b) => (b.onclick = () => {
     const e = EXAMPLES[b.dataset.example];
     subject.value = e.subject;
     body.value = e.body;
+    showHint();
     body.focus();
   }));
 
@@ -454,9 +739,7 @@ function tryPage() {
     tryState.body = body.value;
     const go = document.getElementById("t-go");
     const status = document.getElementById("t-status");
-    const out = document.getElementById("t-result");
     go.disabled = true;
-    out.innerHTML = "";
     const timers = TRY_STEPS.map(([ms, text]) => setTimeout(() => (status.textContent = text), ms));
     try {
       const r = await getJson("/api/try", {
@@ -464,13 +747,22 @@ function tryPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ subject: subject.value, body: body.value }),
       });
+      draftEdits.delete(r.email.id);
+      closePop();
+      popResult = r;
       out.innerHTML = `
-        <p class="privacy-note${r.redaction?.containsPersonalData ? " privacy-found" : ""}">${esc(redactionSummary(r))}</p>
-        ${r.aiTimedOut ? `<p class="notice">The AI took longer than 20 seconds, so this is the facts-only version. Try again in a minute for a drafted reply.</p>` : ""}
-        ${detail(r)}`;
-      wireDetail(r);
+        <p class="meta">${statusLabel(r.status, true)}<span class="fine block">${esc(redactionSummary(r))}</span></p>
+        ${r.aiTimedOut ? `<div class="notice notice-check" role="note"><p>The AI took longer than 20 seconds, so this is the facts-only version. Try again in a minute for a drafted reply.</p></div>` : ""}
+        ${notice(r)}
+        ${catalogBlock(r)}
+        <hr>
+        ${draftBlock(r, { inbox: false })}`;
+      out.hidden = false;
+      page.classList.add("has-result");
+      wireDraft(r);
       status.textContent = "";
-      out.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (window.matchMedia("(max-width: 899px)").matches) out.scrollIntoView({ behavior: "smooth", block: "start" });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
       status.textContent = `Something went wrong: ${e.message}`;
     } finally {
@@ -479,6 +771,8 @@ function tryPage() {
     }
   };
 }
+
+// ---------- Catalog Issues ----------
 
 const KIND = {
   mismatch: "Values disagree",
@@ -492,50 +786,52 @@ const KIND = {
 const SEVERITY = { wrong: "Wrong value", inconsistent: "Inconsistent", missing: "Missing", cosmetic: "Cosmetic" };
 const issuesState = { kind: "all" };
 
-const emailLinks = (ids) => ids.map((id) => `<a href="#email/${encodeURIComponent(id)}">${esc(id)}</a>`).join(", ");
-const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+const emailLinks = (ids) => ids.map((id) => `<a class="link num" href="#email/${encodeURIComponent(id)}">${esc(id)}</a>`).join(", ");
 
 /** One row per SKU, for the product data owner's spreadsheet. */
 function issuesCsv(groups) {
   const cell = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const rows = [["Product", "SKU", "Variant", "Type", "Severity", "Issue", "Affects emails"]];
+  const out = [["Product", "SKU", "Variant", "Type", "Severity", "Issue", "Affects emails"]];
   for (const g of groups) {
-    for (const s of g.skus) rows.push([g.product, s.sku, s.variant, KIND[g.kind], SEVERITY[g.severity], s.message, g.affects.join(" ")]);
+    for (const s of g.skus) out.push([g.product, s.sku, s.variant, KIND[g.kind], SEVERITY[g.severity], s.message, g.affects.join(" ")]);
   }
-  return rows.map((r) => r.map(cell).join(",")).join("\r\n");
+  return out.map((r) => r.map(cell).join(",")).join("\r\n");
 }
 
 async function issues() {
   const at = location.hash;
-  const report = await getJson("/api/data-issues");
+  const report = await loadIssues();
   if (location.hash !== at) return; // the user moved on while this loaded
+  updateNavCounts();
   const { totals, top, allAffecting, yellowNotFromData, groups } = report;
   const counts = {};
   for (const g of groups) counts[g.kind] = (counts[g.kind] ?? 0) + 1;
 
   app.innerHTML = `
-    <div class="page-head">
-      <h1>Data issues</h1>
-      <div class="trust summary">
-        <p><strong>${plural(totals.issues, "problem")} in ${plural(totals.products, "product")}</strong>, grouped into ${plural(totals.groups, "fix", "fixes")} below,
-          most important first. Fixing them in the product data makes them right everywhere: this tool, the website and retailers' feeds.</p>
-        <p>Fixing the top ${top.count} would turn <strong>${plural(top.fixesEmails.length, "email")}</strong> from yellow to green${top.fixesEmails.length ? ` (${emailLinks(top.fixesEmails)})` : ""}.
-          Fixing all ${allAffecting.count} that affect emails would turn <strong>${allAffecting.fixesEmails.length}</strong> green${allAffecting.fixesEmails.length ? ` (${emailLinks(allAffecting.fixesEmails)})` : ""}.
-          ${yellowNotFromData ? `The other ${plural(yellowNotFromData, "yellow email")} ${yellowNotFromData === 1 ? "is" : "are"} waiting on information that isn't in the data at all, such as lead times and seat heights.` : ""}</p>
-      </div>
-    </div>
-    <div class="toolbar">
-      <div class="chips" role="group" aria-label="Filter by type">
-        <button class="chip" data-kind="all" aria-pressed="${issuesState.kind === "all"}">All <span class="count">${groups.length}</span></button>
+    <div class="page">
+      <header class="page-head">
+        <div>
+          <h1>Catalog issues</h1>
+          <p class="lede">
+            ${plural(totals.issues, "problem")} in ${plural(totals.products, "product")}, grouped into ${plural(totals.groups, "fix", "fixes")}, most important first.
+            Fixing the top ${top.count} would turn ${plural(top.fixesEmails.length, "email")} from Check to Ready${top.fixesEmails.length ? ` (${emailLinks(top.fixesEmails)})` : ""};
+            fixing all ${allAffecting.count} that affect emails would turn ${allAffecting.fixesEmails.length} Ready${allAffecting.fixesEmails.length ? ` (${emailLinks(allAffecting.fixesEmails)})` : ""}.
+            ${yellowNotFromData ? `The other ${plural(yellowNotFromData, "Check email")} ${yellowNotFromData === 1 ? "is" : "are"} waiting on information that isn't in the data at all, such as lead times and seat heights.` : ""}
+            Fixes made in the product data carry through to this tool, the website and retailers' feeds.
+          </p>
+        </div>
+        <button class="btn btn-secondary" id="export" type="button">Export CSV</button>
+      </header>
+      <div class="seg seg-wrap" role="group" aria-label="Filter by type">
+        <button type="button" data-kind="all" aria-pressed="${issuesState.kind === "all"}">All <span class="num seg-count">${groups.length}</span></button>
         ${Object.entries(KIND).filter(([k]) => counts[k]).map(([k, label]) => `
-          <button class="chip" data-kind="${k}" aria-pressed="${issuesState.kind === k}">${esc(label)} <span class="count">${counts[k]}</span></button>`).join("")}
+          <button type="button" data-kind="${k}" aria-pressed="${issuesState.kind === k}">${esc(label)} <span class="num seg-count">${counts[k]}</span></button>`).join("")}
       </div>
-      <button class="btn btn-ghost" id="export" type="button">Export as CSV</button>
-    </div>
-    <div class="card table-card"><div class="table-wrap"><table class="issues">
-      <thead><tr><th>Issue</th><th>Type</th><th>Severity</th><th>Affects emails</th></tr></thead>
-      <tbody id="issue-rows"></tbody>
-    </table></div></div>`;
+      <div class="table-wrap issues-card"><table class="issues">
+        <thead><tr><th>Product &amp; issue</th><th>Type</th><th>Severity</th><th>Emails</th></tr></thead>
+        <tbody id="issue-rows"></tbody>
+      </table></div>
+    </div>`;
 
   const render = () => {
     const shown = groups.filter((g) => issuesState.kind === "all" || g.kind === issuesState.kind);
@@ -544,13 +840,13 @@ async function issues() {
         <td>
           <div class="issue-title">${esc(g.title)}</div>
           <div class="issue-text">${esc(g.message)}</div>
-          ${g.skus.length > 1 ? `<details class="issue-skus"><summary>${g.skus.length} SKUs</summary>
-            <ul>${g.skus.map((s) => `<li><code>${esc(s.sku)}</code> ${esc(s.variant || "")}${new Set(g.skus.map((x) => x.message)).size > 1 ? `: ${esc(s.message)}` : ""}</li>`).join("")}</ul>
-          </details>` : `<div class="muted small"><code>${esc(g.skus[0].sku)}</code></div>`}
+          ${g.skus.length > 1 ? `<details class="issue-skus"><summary><span class="num">${g.skus.length}</span> SKUs</summary>
+            <ul>${g.skus.map((s) => `<li><span class="num">${esc(s.sku)}</span> ${esc(s.variant || "")}${new Set(g.skus.map((x) => x.message)).size > 1 ? `: ${esc(s.message)}` : ""}</li>`).join("")}</ul>
+          </details>` : `<div class="fine">SKU <span class="num">${esc(g.skus[0].sku)}</span></div>`}
         </td>
-        <td class="small">${esc(KIND[g.kind])}</td>
-        <td><span class="sev sev-${g.severity}">${esc(SEVERITY[g.severity])}</span></td>
-        <td class="small">${g.affects.length ? emailLinks(g.affects) : `<span class="muted">none</span>`}</td>
+        <td class="cell-muted">${esc(KIND[g.kind])}</td>
+        <td><span class="sev sev-${g.severity}">${g.severity === "wrong" || g.severity === "inconsistent" ? ICON.alert : ""}${esc(SEVERITY[g.severity])}</span></td>
+        <td>${g.affects.length ? emailLinks(g.affects) : `<span class="muted">none</span>`}</td>
       </tr>`).join("") || `<tr><td colspan="4" class="muted">No issues of this type.</td></tr>`;
   };
   render();
@@ -576,15 +872,20 @@ async function route() {
   const [page, arg] = (location.hash.slice(1) || "inbox").split("/");
   const nav = page === "email" ? "inbox" : page;
   document.querySelectorAll("[data-nav]").forEach((a) => a.setAttribute("aria-current", a.dataset.nav === nav ? "page" : "false"));
+  const stayInInbox = (page === "email" || page === "inbox") && document.getElementById("split");
+  if (!stayInInbox) closePop();
   try {
-    if (page === "email") await emailPage(decodeURIComponent(arg ?? ""));
+    if (page === "email") await inboxView(decodeURIComponent(arg ?? ""));
     else if (page === "try") tryPage();
     else if (page === "issues") await issues();
-    else await inbox();
+    else await inboxView(null);
   } catch (e) {
     app.innerHTML = `<div class="empty"><h1>Something went wrong</h1><p>${esc(e.message)}</p></div>`;
   }
-  window.scrollTo(0, 0);
+  if (!stayInInbox) window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", route);
 route();
+// Tab counts, whichever page opens first.
+loadResults().then(updateNavCounts, () => {});
+loadIssues().then(updateNavCounts, () => {});

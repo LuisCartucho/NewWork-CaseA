@@ -3,22 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Retailer Inbox Helper</title>
+  <title>New Works Inbox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#inbox">
-      <span class="brand-mark" aria-hidden="true">NW</span>
-      <span>Retailer Inbox Helper</span>
-    </a>
-    <nav aria-label="Main">
-      <a href="#inbox" data-nav="inbox">Inbox</a>
-      <a href="#try" data-nav="try">Try your own email</a>
-      <a href="#issues" data-nav="issues">Data issues</a>
+    <a class="wordmark" href="#inbox">New Works Inbox</a>
+    <nav class="tabs" aria-label="Main">
+      <a href="#inbox" data-nav="inbox">Inbox <span class="tab-count num" id="nav-inbox-count"></span></a>
+      <a href="#try" data-nav="try">Draft from Email</a>
+      <a href="#issues" data-nav="issues">Catalog Issues <span class="tab-count num" id="nav-issues-count"></span></a>
     </nav>
+    <div class="topbar-action"><a class="btn" href="#try">Paste email</a></div>
   </header>
   <main id="app" tabindex="-1">Loading…</main>
+  <div id="popover" class="popover" role="dialog" aria-modal="false" hidden></div>
   <script src="app.js"></script>
 </body>
 </html>
