@@ -1,7 +1,8 @@
 # New Works: Retailer Inbox Helper (Case A)
 
 A tool for Sales Support that reads retailer emails, finds the answer in New Works' own product
-data, drafts a reply, and marks each email **green / yellow / red** with a plain-language reason.
+data, drafts a reply, and marks each email **Ready / Check / Person** (green / yellow / red) with a
+plain-language reason.
 
 The guiding rule: **the AI writes, the code decides.** Facts, SKUs, prices and the status come
 from plain code over the product data. The AI only reads the question and words the reply, and
@@ -9,11 +10,11 @@ every number it writes is checked against the data before anyone sees it.
 
 ## What it does with the 30 sample emails
 
-| Status | Count | Meaning | Examples |
+| Status in the app | Count | Meaning | Examples |
 |---|---|---|---|
-| 🟢 Green | 8 | Every fact found, sources agree: ready to send | Dimensions (M002–M004), Tembo seat height (M023), Hallingdal = category C (M029) |
-| 🟡 Yellow | 13 | Usable draft, but check something first | Lead time "before Christmas", variant not specified, sources disagree, fact not in data |
-| 🔴 Red | 9 | A person must handle it | Price lists, certificates, orders, personal data, discontinued products |
+| ✓ **Ready to send** (green) | 8 | Every requested dimension or spec matches products.csv and the fact sheet | Dimensions (M002–M004), Tembo seat height (M023), Hallingdal = category C (M029) |
+| ⓘ **Check before sending** (yellow) | 12 | Partial match, missing detail, or catalog disagreement flagged for review | Lead time "before Christmas", variant not specified, sources disagree, fact not in data |
+| 👤 **Needs a person** (red) | 10 | Pricing, orders, certificates, or personal data detected | Price lists, certificates, orders, personal data, discontinued products |
 
 Some things it catches that are easy to get wrong:
 
@@ -25,8 +26,61 @@ Some things it catches that are easy to get wrong:
   "light source included"), so the answer is "we'll check", not "yes".
 - **M027 private customer order**: name, address, phone and personal ID are removed **before** any
   other step, including the AI.
-- **M007 = M015**: same retailer, same text, so it's marked as a duplicate. M003 / M020 (same
-  question, different retailers) are not duplicates: both need a reply.
+- **M007 = M015**: same retailer, same text, so the Inbox shows them as one conversation (like
+  Gmail) with both messages and one reply. M003 / M020 (same question, different retailers) are not
+  duplicates: both need a reply.
+
+## Using the app
+
+Three tabs along the top, plus a **Paste email** button that opens *Draft from Email*. The page is
+light grey with white panels; colour is used only on the small status icons, so a long list stays
+calm. It works on phones (one panel at a time) and follows the system's light or dark mode.
+
+### Inbox
+
+- **Opens as a plain list** of the emails, open work first: Person, then Check, then Ready, oldest
+  first within each. Each row shows the retailer, subject, status, topic and email ID; the right
+  side shows how many days it has waited (a small red dot from 10 days). Identical emails are one
+  row with a count, e.g. "Studio Living NL **2**".
+- **Search** by retailer, SKU, product or email ID, and **filter** by All / Ready / Check / Person.
+- **Click an email (or press ↓)** to open it beside the list. ↑ / ↓ move between emails, Esc or
+  "← Back to inbox" closes it, and Prev / Next step through the current filter.
+- **The open email** shows:
+  - a yellow or red box listing exactly what to check, or why a person is needed (nothing for Ready);
+  - the retailer's message, or every message of a conversation;
+  - **Verified catalog data**: product, variant and SKU, a table of the facts found, an amber note
+    on any row whose data is in doubt, and one *Sources* line (click products.csv or the fact sheet
+    page to see the row or the PDF text);
+  - the **reply**, which you can edit (*Reset draft* undoes edits), with a short **Before sending**
+    checklist underneath.
+- **Copy & mark handled** stays disabled until every check is ticked. It copies the reply, marks
+  the email handled and opens the next open email. *Copy only* copies without marking.
+- **Person emails** get a short holding reply instead of the AI draft (it thanks the retailer and
+  says the right team will follow up, without promising anything), plus one check:
+  "Forward the email to …" Regional Sales (prices), Technical Compliance (certificates),
+  Order Operations (orders, discontinued items, customer details) or the product team.
+- **Handled emails** move to a green *Handled* section at the bottom, faded and labelled
+  "✓ Handled"; opening one shows a green banner with *Move it back to the inbox*. *Hide handled*
+  removes them from the list. Handled marks are saved in the browser (localStorage), so each
+  person and browser has their own.
+
+### Draft from Email
+
+For a new retailer email that isn't in the sample set. Paste the subject (optional) and the text,
+or use one of the three examples (Dimensions, Ambiguous variant, Personal data), then
+**Draft a reply**. A note appears while typing if the text looks like it contains personal details;
+they are removed on the server before anything is sent to the AI. The form starts centred and
+roomy; once the result is in, the email moves to the left and the status, verified catalog data and
+reply appear on the right, in the same layout as the Inbox. *New email* starts over. Nothing is
+stored. The page also explains how every email is checked (Ready / Check / Person).
+
+### Catalog Issues
+
+The problems found between products.csv and the fact sheets, grouped into fixes per product and
+sorted by impact. The summary at the top says which emails would turn from Check to Ready if the
+data were fixed, with links that open those emails in the Inbox. Filter by type (values disagree,
+packed weight stored as net weight, missing values …), expand *N SKUs* to see every affected SKU,
+and use **Export CSV** (one row per SKU) to hand the list to whoever owns the product data.
 
 ## How it works
 
@@ -72,8 +126,9 @@ Free tiers are rate-limited, so `npm run batch` paces itself and retries busy em
 
 ## Data issues
 
-Comparing `products.csv` with the 19 fact sheets SKU by SKU finds **38 issues**, shown on the
-*Data issues* page. For example: packed weight stored as net weight (Karl-Johan, Kizu Kunis Breccia,
+Comparing `products.csv` with the 19 fact sheets SKU by SKU by hand found **38 issues**. The
+*Catalog Issues* page runs the same comparison automatically at startup and groups what it finds
+into fixes per product. For example: packed weight stored as net weight (Karl-Johan, Kizu Kunis Breccia,
 Pi-No-Pi-No), heights that differ or are missing (Karl-Johan), and a variant missing from its fact
 sheet (Kizu Kunis Breccia). The full hand-checked write-up is in
 [`docs/data_issues.md`](docs/data_issues.md). Fixing these in the product data turns more answers green.
@@ -98,8 +153,8 @@ sheet (Kizu Kunis Breccia). The full hand-checked write-up is in
 NewWork-CaseA/
 ├── client/                    Static web UI, served by the server
 │   ├── index.html
-│   ├── app.js                 Inbox · Email detail · Try your own email · Data issues
-│   └── styles.css             Light and dark mode, works on phones
+│   ├── app.js                 Inbox (list + open email) · Draft from Email · Catalog Issues
+│   └── styles.css             Grey page, white panels; light and dark mode; works on phones
 ├── server/                    Node.js + TypeScript + Express
 │   ├── data/                  Read-only inputs
 │   │   ├── products.csv
@@ -144,8 +199,9 @@ All routes except `/health` require HTTP basic auth.
 |---|---|
 | `GET /health` | Health check for the host (no auth, no data) |
 | `GET /api/results` | Precomputed results for the 30 emails (Inbox) |
-| `POST /api/try` | Runs the pipeline live on `{ subject, body }` (Try your own email) |
-| `GET /api/data-issues` | Every CSV vs fact sheet conflict, computed at startup |
+| `POST /api/try` | Runs the pipeline live on `{ subject, body }` (Draft from Email) |
+| `GET /api/data-issues` | Every CSV vs fact sheet conflict, computed at startup (Catalog Issues) |
+| `GET /api/source` | The fact sheet lines behind a value (the *Sources* links) |
 
 ## Run locally
 
@@ -204,3 +260,4 @@ doesn't need. The health check (`/health`) needs no login and returns no data.
 - In an email about two products, size and colour words are applied to both.
 - AI drafts can differ slightly between runs; the Inbox shows precomputed results, and the number
   check runs on every draft.
+- "Handled" is stored per browser, not on the server, so it isn't shared between colleagues.
