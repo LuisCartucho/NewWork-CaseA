@@ -769,7 +769,7 @@
       "intents": [
         "dimensions"
       ],
-      "family": null,
+      "family": "Rand",
       "productName": "Rand Side Table",
       "variantHints": [
         "stainless steel"
@@ -1108,7 +1108,7 @@
       }
     ],
     "status": "yellow",
-    "draft": "Hi,\n\nThe Tembo Lounge Chair in a category C fabric has a lead time of 6‑8 weeks. I’ll confirm the exact timing for your requested delivery window and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Tembo Lounge Chair in a category C fabric has a lead time of 6–8 weeks. I’ll confirm the exact timing for your requested delivery window and get back to you.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -1761,7 +1761,7 @@
       }
     ],
     "status": "yellow",
-    "draft": "Hi,\n\nThe Covent Club Chair lead time depends on the specific model:\n\n- For the made‑to‑order variants (42220, 42220‑A, 42220‑B, 42220‑C, 42220‑D, 42220‑E, 42220‑F) the lead time is 6–8 weeks.\n- The Barnum 024 version is a stock item and can be supplied from stock.\n\nIf you let us know which variant you need, we’ll confirm the exact timing for your order.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Covent Club Chair is available in several variants. For the made‑to‑order models (42220, 42220‑A, 42220‑B, 42220‑C, 42220‑D, 42220‑E, 42220‑F) the lead time is 6‑8 weeks. The Barnum 024 variant is a stock item and can be supplied from existing inventory.\n\nI’ll check the exact availability for the specific variant you need and get back to you with confirmation.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -2227,7 +2227,7 @@
       }
     ],
     "status": "green",
-    "draft": "Hi,\n\nThe Kantarell Pendant Ø60 in nickel plated has a diameter of 60 cm, a total height of 51 cm, and a canopy diameter of 13 cm.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Kantarell Pendant Ø60 in nickel plated has a diameter of 60 cm, a height of 51 cm, and a canopy diameter of 13 cm.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -2258,11 +2258,12 @@
       "variantHints": [
         "Large",
         "Kunis Breccia",
-        "EU"
+        "EU version"
       ],
       "factsAsked": [
         "exact dimensions",
-        "weight"
+        "weight",
+        "fact sheet"
       ],
       "provider": "Groq"
     },
@@ -2856,7 +2857,7 @@
       }
     ],
     "status": "yellow",
-    "draft": "Hi,\n\nHere are the specifications for the Kizu Table Lamp Large:\n\n- Diameter: 30 cm  \n- Height: 45 cm  \n- Net weight: 5.6 kg  \n- Weight including packaging: 7.8 kg  \n- Packaging dimensions: H 37 × W 37 × D 55 cm  \n\nI’ll double‑check the exact finish you mentioned (Kunis Breccia) and confirm the details for the EU version. I’ll get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThank you for your request. The Kizu Table Lamp Large has a diameter of 30 cm, a height of 45 cm, and its packaging dimensions are H 37 × W 37 × D 55 cm. The net weight is listed as 5.6 kg and the weight including packaging is 7.8 kg.\n\nI will verify the exact finish details and the specific weight for the Kunis Breccia EU version with our team and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -3052,12 +3053,6 @@
     ],
     "flags": [
       {
-        "level": "red",
-        "reason": "The draft contains numbers that are not in our data (90). Do not send it without checking them.",
-        "short": "Draft has numbers not in our data (90): don't send",
-        "action": "Remove or verify 90 in the draft"
-      },
-      {
         "level": "yellow",
         "reason": "Seat height for Coupe Stool / Bar Stool is not in products.csv or the fact sheet. The draft says we will check.",
         "short": "Seat height for Coupe Stool / Bar Stool isn't in our data",
@@ -3079,8 +3074,8 @@
         "action": "Check whether 90 cm matters for the answer"
       }
     ],
-    "status": "red",
-    "draft": "Hi,\n\nThank you for your inquiry about the Coupe Bar Stool 65. I’ll check the exact seat height for you and confirm whether it’s suitable for a 90 cm kitchen counter. I’ll get back to you shortly with the details.\n\nBest regards,\nNew Works Sales Support",
+    "status": "yellow",
+    "draft": "Hi,\n\nThank you for your question about the Coupe Bar Stool 65. I’ll check the exact seat height for you and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -3448,7 +3443,7 @@
       }
     ],
     "status": "yellow",
-    "draft": "Hi,\n\nThe Karl‑Johan Table Lamp in smoked oak weighs 1.9 kg including packaging. I’ll check the net weight for you and get back shortly.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Karl‑Johan Table Lamp in smoked oak weighs 1.9 kg including packaging. I’ll check on the net weight and get back to you.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -4587,7 +4582,7 @@
       }
     ],
     "status": "red",
-    "draft": "Hi,\n\nThank you for your request. I’ll check with our team and get the current wholesale price list for the Atlas family over to you.\n\nI’ll also confirm the pricing for the Atlas Stool, Atlas Coffee Table and Atlas Dining Table and follow up shortly.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThank you for your request. I’ll check with our team and get the current wholesale price list for the Atlas family to you shortly.\n\nI’ll also confirm the pricing for the Atlas Stool, Atlas Coffee Table and Atlas Dining Table and follow up with the details.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -7930,7 +7925,7 @@
       }
     ],
     "status": "yellow",
-    "draft": "Hi,\n\nThe Covent Club Chair lead time depends on the variant. For the made‑to‑order models (42220, 42220‑A, 42220‑B, 42220‑C, 42220‑D, 42220‑E, 42220‑F) the lead time is 6–8 weeks. The Barnum 024 version is a stock item and can be supplied from stock.\n\nIf you let us know which variant you need, we’ll confirm the exact timing for your order.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Covent Club Chair is available in several variants. For the made‑to‑order models (42220, 42220‑A, 42220‑B, 42220‑C, 42220‑D, 42220‑E, 42220‑F) the lead time is 6–8 weeks. The Barnum 024 variant is a stock item and can be supplied from stock.\n\nI’ll check the exact availability for the specific variant you need and get back to you.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -7958,7 +7953,7 @@
       "intents": [
         "lead_time"
       ],
-      "family": "Knot",
+      "family": null,
       "productName": "Knot Rug 300x400",
       "variantHints": [
         "300x400",
@@ -8163,17 +8158,16 @@
     },
     "extraction": {
       "intents": [
-        "material_finish",
-        "availability"
+        "material_finish"
       ],
-      "family": null,
+      "family": "May",
       "productName": "May Lounge Armchair",
       "variantHints": [
         "dark green",
         "light grey"
       ],
       "factsAsked": [
-        "other colours",
+        "available in other colours",
         "stay outside all year near the sea"
       ],
       "provider": "Groq"
@@ -8393,9 +8387,11 @@
         "material_finish",
         "other"
       ],
-      "family": null,
+      "family": "Brolly",
       "productName": "Brolly Pendant",
-      "variantHints": [],
+      "variantHints": [
+        "black anodised aluminium"
+      ],
       "factsAsked": [
         "dimmable"
       ],
@@ -8677,7 +8673,7 @@
       }
     ],
     "status": "yellow",
-    "draft": "Hi,\n\nThe Brolly Pendant Lamp is available in brushed anodized aluminium in the finishes listed in our current range (Ø70 and Ø90 in Black Anodised Aluminium for EU/AU/UK and US). It is dimmable with Triac phase dimming.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Brolly Pendant Lamp is dimmable with Triac phase dimming. Regarding finishes, the current available options are Black Anodised Aluminium in the listed sizes and regions. I’ll check with our team to see if any other finishes may become available and get back to you.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -9514,7 +9510,7 @@
       }
     ],
     "status": "red",
-    "draft": "Hi,\n\nWe can provide the test certificates for the Tense Pendant Lamp Ø55 (US version). The available certificates are CE, ETL and SAA. I’ll arrange to send these documents to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThank you for your request. We will locate the CE, ETL and SAA test certificates for the Tense Pendant Lamp Ø55 (US version) and send them to you shortly.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -9542,8 +9538,7 @@
       "family": null,
       "productName": "Pleat Pitcher",
       "variantHints": [
-        "grey",
-        "fuchsia"
+        "grey/fuchsia"
       ],
       "factsAsked": [],
       "provider": "Groq"
@@ -9850,7 +9845,7 @@
       }
     ],
     "status": "red",
-    "draft": "Hi,\n\nThank you for your inquiry. I see that the Pleat Pitcher and the Pi‑No‑Pi‑No Vase are both listed as discontinued. I will check with our team regarding availability or suitable alternatives and will have them follow up with you about the order for the two units.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThank you for your inquiry. I see that the Pleat Pitcher and the Pi‑No‑Pi‑No Vase are both listed as discontinued. I’ll check with our team regarding availability or suitable alternatives and will get back to you.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "quantity": 2,
     "ai": {
@@ -10709,7 +10704,7 @@
       }
     ],
     "status": "red",
-    "draft": "Hi,\n\nThank you for your request. I’ll check with our team and get the current wholesale price list for the Tense family to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThank you for your request. I’ll check with our team and get back to you with the current wholesale price list for the Tense family, including the Tense Pendant Lamp.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -10736,7 +10731,6 @@
       "family": "Atlas",
       "productName": "Atlas Coffee Table",
       "variantHints": [
-        "travertine",
         "oak"
       ],
       "factsAsked": [
@@ -11117,7 +11111,7 @@
       }
     ],
     "status": "yellow",
-    "draft": "Hi,\n\nThe Atlas Coffee Table is offered in Natural Oak and Fumed Oak finishes for both the 82 cm and 60 cm sizes. The stone surface is natural travertine and, as noted in the care information, spilled liquids should be removed promptly to avoid permanent staining. I will check with our team regarding whether the travertine top is filled and sealed and get back to you.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Atlas Coffee Table is offered in Natural Oak and Fumed Oak finishes for both the 82 cm and 60 cm sizes, so an oak version is available in the same dimensions.\n\nThe table’s surface is unfilled travertine and, as noted in the care information, stone is a natural material and can be sensitive to liquids; spills should be cleaned promptly to avoid staining. I will check with our team regarding whether the travertine surface is sealed and get back to you.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -11398,14 +11392,20 @@
     ],
     "flags": [
       {
+        "level": "red",
+        "reason": "The draft contains numbers that are not in our data (27). Do not send it without checking them.",
+        "short": "Draft has numbers not in our data (27): don't send",
+        "action": "Remove or verify 27 in the draft"
+      },
+      {
         "level": "yellow",
         "reason": "The email says 27 cm, but our data says 26.5 cm (height; products.csv SKU 42611; Atlas Coffee Table - Fact Sheet.pdf p.2). Check where 27 cm comes from.",
         "short": "Email says 27 cm; our data says 26.5 cm (height)",
         "action": "Check where 27 cm comes from: our data says 26.5 cm"
       }
     ],
-    "status": "yellow",
-    "draft": "Hi,\n\nThe Atlas Coffee Table in Costa Black has a height of 26.5 cm according to our product specifications.\n\nBest regards,\nNew Works Sales Support",
+    "status": "red",
+    "draft": "Hi,\n\nThe Atlas Coffee Table in Costa Black has a height of 26.5 cm according to our product data.\n\nI’ll look into why the product data feed shows 27 cm and get back to you.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -11625,7 +11625,7 @@
       ],
       "factsAsked": [
         "shade of the Nebra Floor Lamp made of",
-        "dimmed",
+        "can it be dimmed",
         "another colour than white"
       ],
       "provider": "Groq"
@@ -11773,14 +11773,14 @@
         "material_finish",
         "other"
       ],
-      "family": "Tembo",
+      "family": null,
       "productName": "Tembo Lounge Chair",
       "variantHints": [
         "leather"
       ],
       "factsAsked": [
         "upholstered in leather",
-        "price category"
+        "price category of Kvadrat Hallingdal"
       ],
       "provider": "Groq"
     },
@@ -12148,7 +12148,7 @@
       }
     ],
     "status": "green",
-    "draft": "Hi,\n\nThe Tembo Lounge Chair cannot be upholstered in leather. The price category for Kvadrat Hallingdal is Category C.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThe Tembo Lounge Chair cannot be upholstered in leather. The price category for Hallingdal 65 is Category C.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",
@@ -12417,7 +12417,7 @@
       }
     ],
     "status": "red",
-    "draft": "Hi,\n\nThank you for your request. For the Atlas Dining Table we have the following certifications on file: EN 15372:2023 (strength, durability and safety, non‑domestic tables) with test severity L2, FSC Mix for the wood, and factory certifications ISO 14001, ISO 50001 and ISO 9001. I will check with our team for the specific test certificates and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
+    "draft": "Hi,\n\nThank you for your request. The Atlas Dining Table is covered by the EN 15372:2023 certification (strength, durability and safety for non‑domestic tables) with test severity L2, and it also carries FSC Mix wood certification as well as factory certifications ISO 14001, ISO 50001 and ISO 9001. I will check with our team for the specific test certificates and get back to you shortly.\n\nBest regards,\nNew Works Sales Support",
     "aiUsed": true,
     "ai": {
       "extract": "Groq",

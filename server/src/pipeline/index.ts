@@ -12,13 +12,21 @@ import { quantityIn } from "./quantity.js";
 
 export async function runPipeline(email: Email, data: Data, opts: { ai?: boolean } = {}): Promise<PipelineResult> {
   const useAi = opts.ai !== false; // false: facts only (e.g. the Try page fallback when the AI is too slow)
-  const redaction = redact(email.body);                                   // 1. plain code
-  const extraction = useAi ? await extract(email.subject, redaction.redactedBody) : null; // 2. LLM
+  // 1. plain code. The subject is redacted too: it goes to the AI with the body.
+  const bodyRedaction = redact(email.body);
+  const subjectRedaction = redact(email.subject);
+  const subject = subjectRedaction.redactedBody; // only the redacted subject is used from here on
+  const redaction = {
+    ...bodyRedaction,
+    containsPersonalData: bodyRedaction.containsPersonalData || subjectRedaction.containsPersonalData,
+    redactedFields: [...new Set([...bodyRedaction.redactedFields, ...subjectRedaction.redactedFields])],
+  };
+  const extraction = useAi ? await extract(subject, redaction.redactedBody) : null; // 2. LLM
   const resolution = resolve({                                             // 3. plain code
-    extraction, subject: email.subject, redactedBody: redaction.redactedBody, products: data.products,
+    extraction, subject, redactedBody: redaction.redactedBody, products: data.products,
   });
   const found = lookup({                                                   // 4. plain code
-    extraction, resolution, factSheets: data.factSheets, text: [email.subject, redaction.redactedBody].join("\n"),
+    extraction, resolution, factSheets: data.factSheets, text: [subject, redaction.redactedBody].join("\n"),
   });
   const quantity = quantityIn(redaction.redactedBody);                     //    plain code
   const flags = decide({                                                   // 5. rules
@@ -51,7 +59,7 @@ export async function runPipeline(email: Email, data: Data, opts: { ai?: boolean
   flags.sort((a, b) => rank[a.level] - rank[b.level]); // most serious reason first
 
   return {
-    email: { ...email, body: redaction.redactedBody }, // never keep the unredacted body
+    email: { ...email, subject, body: redaction.redactedBody }, // never keep the unredacted subject or body
     redaction, extraction, resolution,
     facts: found.facts, conflicts: found.conflicts, missing: found.missing, asked: found.asked,
     flags, status: worst(flags), draft, aiUsed, ...(quantity ? { quantity } : {}),

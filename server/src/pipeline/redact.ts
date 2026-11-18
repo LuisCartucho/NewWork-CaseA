@@ -63,6 +63,14 @@ const RULES: Rule[] = [
       "gu",
     ),
   },
+  {
+    // A name written as a contact, right before a phone number or email that was already
+    // redacted above: "Order for Anna Lindqvist, +46 70 123 45 67" (often in a subject line).
+    // A product name in that position would be redacted too: a cheap false positive.
+    field: "private person's name",
+    token: "[NAME]",
+    pattern: new RegExp(`${NAME}(?=,?\\s*(?:\\[PHONE\\]|\\[EMAIL\\]))`, "gu"),
+  },
 ];
 
 export function redact(body: string): Redaction {
